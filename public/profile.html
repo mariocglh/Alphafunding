@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AlphaFunding | Mi Perfil</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: { DEFAULT: '#3b82f6', dark: '#2563eb' },
+                        dark: { bg: '#0b0f19', card: '#111827', border: '#1f2937' }
+                    },
+                    fontFamily: { sans: ['Inter', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #0b0f19; color: white; font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="flex h-screen overflow-hidden">
+
+    <aside class="w-20 md:w-64 bg-dark-card border-r border-dark-border flex flex-col justify-between z-30">
+        <div>
+            <div class="h-20 flex items-center justify-center md:justify-start md:px-6 border-b border-dark-border">
+                <i class="ph-fill ph-globe-hemisphere-west text-3xl text-brand md:mr-2"></i>
+                <span class="font-bold text-lg hidden md:block">Alpha<span class="text-brand">Funding</span></span>
+            </div>
+            <nav class="p-4 space-y-2 mt-2">
+                <a href="index.html" class="flex items-center gap-3 p-3 rounded-lg text-gray-400 hover:bg-dark-bg hover:text-white transition group">
+                    <i class="ph-bold ph-house text-xl group-hover:text-brand transition"></i> <span class="hidden md:block">Inicio</span>
+                </a>
+                <a href="dashboard.html" class="flex items-center gap-3 p-3 rounded-lg text-gray-400 hover:bg-dark-bg hover:text-white transition group">
+                    <i class="ph-bold ph-chart-line-up text-xl group-hover:text-brand transition"></i> <span class="hidden md:block">Dashboard</span>
+                </a>
+                <a href="#" class="flex items-center gap-3 p-3 rounded-lg bg-brand/10 text-brand font-bold border border-brand/20">
+                    <i class="ph-fill ph-user-gear text-xl"></i> <span class="hidden md:block">Mi Perfil</span>
+                </a>
+            </nav>
+        </div>
+        <div class="p-4 border-t border-dark-border">
+            <button onclick="logout()" class="w-full flex items-center justify-center md:justify-start gap-3 p-3 text-red-400 hover:bg-red-500/10 rounded-lg transition">
+                <i class="ph-bold ph-sign-out text-xl"></i> <span class="hidden md:block">Cerrar Sesión</span>
+            </button>
+        </div>
+    </aside>
+
+    <main class="flex-1 overflow-y-auto p-6 md:p-12 relative bg-dark-bg">
+        <div class="max-w-3xl mx-auto space-y-8">
+            
+            <div class="border-b border-dark-border pb-6">
+                <h1 class="text-3xl font-bold text-white mb-2">Configuración de la Cuenta</h1>
+                <p class="text-gray-400">Actualiza tu foto, datos personales y seguridad.</p>
+            </div>
+
+            <div class="bg-dark-card border border-dark-border p-8 rounded-2xl flex flex-col md:flex-row items-center gap-8 shadow-lg">
+                <div class="relative group">
+                    <img id="profileImage" src="https://ui-avatars.com/api/?name=User&background=3b82f6&color=fff" class="w-32 h-32 rounded-full object-cover border-4 border-dark-bg shadow-2xl transition group-hover:opacity-75">
+                    
+                    <label for="fileInput" class="absolute bottom-0 right-0 bg-brand text-white p-2.5 rounded-full cursor-pointer hover:bg-brand-dark transition shadow-lg border-4 border-dark-card">
+                        <i class="ph-bold ph-camera text-lg"></i>
+                    </label>
+                    <input type="file" id="fileInput" class="hidden" accept="image/*" onchange="previewImage(event)">
+                </div>
+                
+                <div class="text-center md:text-left space-y-2">
+                    <h3 class="text-xl font-bold text-white" id="displayFullName">Cargando usuario...</h3>
+                    <p class="text-sm text-gray-500">ID de Cliente: <span id="displayId" class="font-mono text-gray-400">...</span></p>
+                    <div class="flex gap-2 justify-center md:justify-start mt-2">
+                        <span class="px-3 py-1 bg-green-500/10 text-green-400 rounded-full text-[10px] font-bold border border-green-500/20 uppercase tracking-wide">Verificado</span>
+                        <span class="px-3 py-1 bg-brand/10 text-brand rounded-full text-[10px] font-bold border border-brand/20 uppercase tracking-wide">Trader</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-dark-card border border-dark-border p-8 rounded-2xl shadow-lg">
+                <h3 class="text-lg font-bold text-white mb-6 flex items-center gap-2">
+                    <i class="ph-bold ph-identification-card text-brand"></i> Información Personal
+                </h3>
+                
+                <form onsubmit="updateProfile(event)" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-2 ml-1">Nombre</label>
+                            <input type="text" id="firstName" class="w-full bg-dark-bg border border-dark-border rounded-xl p-3 text-white focus:border-brand focus:ring-1 focus:ring-brand outline-none transition placeholder-gray-600">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-2 ml-1">Apellidos</label>
+                            <input type="text" id="lastName" class="w-full bg-dark-bg border border-dark-border rounded-xl p-3 text-white focus:border-brand focus:ring-1 focus:ring-brand outline-none transition placeholder-gray-600">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase mb-2 ml-1">Correo Electrónico</label>
+                        <div class="relative">
+                            <i class="ph-bold ph-envelope absolute left-4 top-3.5 text-gray-500"></i>
+                            <input type="email" id="email" class="w-full bg-dark-bg border border-dark-border rounded-xl p-3 pl-10 text-white focus:border-brand focus:ring-1 focus:ring-brand outline-none transition placeholder-gray-600">
+                        </div>
+                    </div>
+
+                    <div class="pt-6 border-t border-dark-border mt-6">
+                        <h3 class="text-lg font-bold text-white mb-6 flex items-center gap-2">
+                            <i class="ph-bold ph-lock-key text-brand"></i> Seguridad
+                        </h3>
+                        <label class="block text-xs font-bold text-gray-500 uppercase mb-2 ml-1">Nueva Contraseña</label>
+                        <div class="relative">
+                            <i class="ph-bold ph-password absolute left-4 top-3.5 text-gray-500"></i>
+                            <input type="password" id="password" placeholder="Dejar en blanco para mantener la actual" class="w-full bg-dark-bg border border-dark-border rounded-xl p-3 pl-10 text-white focus:border-brand focus:ring-1 focus:ring-brand outline-none transition placeholder-gray-600">
+                        </div>
+                        <p class="text-xs text-gray-500 mt-2 ml-1">Mínimo 6 caracteres. Si no quieres cambiarla, no escribas nada.</p>
+                    </div>
+
+                    <div class="flex justify-end pt-4">
+                        <button type="submit" class="bg-brand hover:bg-brand-dark text-white px-8 py-3 rounded-xl font-bold transition shadow-lg shadow-brand/20 flex items-center gap-2">
+                            <i class="ph-bold ph-floppy-disk"></i> Guardar Cambios
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        const API_URL = '';
+        const userId = localStorage.getItem('userId');
+        const token = localStorage.getItem('token');
+
+        // Seguridad básica: Si no hay token, fuera
+        if(!token || !userId) window.location.href = 'index.html';
+
+        // 1. CARGAR DATOS AL ENTRAR
+        async function loadData() {
+            try {
+                // Usamos el endpoint del dashboard para sacar la info (ahorra crear uno nuevo solo para GET)
+                const res = await fetch(`${API_URL}/dashboard/${userId}`, { headers: { 'Authorization': `Bearer ${token}` } });
+                
+                if (res.ok) {
+                    const data = await res.json();
+                    
+                    // Rellenar formulario
+                    const fullName = data.player.name.split(' ');
+                    document.getElementById('firstName').value = fullName[0] || '';
+                    document.getElementById('lastName').value = fullName.slice(1).join(' ') || '';
+                    document.getElementById('email').value = data.player.email;
+                    
+                    // Rellenar tarjeta visual
+                    document.getElementById('displayFullName').innerText = data.player.name;
+                    document.getElementById('displayId').innerText = userId;
+
+                    // Cargar foto guardada (Si existe en localStorage)
+                    const savedPhoto = localStorage.getItem('profilePhoto_' + userId);
+                    if(savedPhoto) {
+                        document.getElementById('profileImage').src = savedPhoto;
+                    } else {
+                        // Si no, generar avatar con iniciales
+                        document.getElementById('profileImage').src = `https://ui-avatars.com/api/?name=${data.player.name}&background=3b82f6&color=fff`;
+                    }
+                } else {
+                    alert("Sesión expirada");
+                    logout();
+                }
+
+            } catch(e) { console.error("Error cargando perfil", e); }
+        }
+
+        // 2. CAMBIAR FOTO (PREVISUALIZAR Y GUARDAR LOCALMENTE)
+        function previewImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imgResult = e.target.result;
+                    // Mostrar en la web
+                    document.getElementById('profileImage').src = imgResult;
+                    // Guardar en el navegador (para que se vea en el index también)
+                    localStorage.setItem('profilePhoto_' + userId, imgResult);
+                    alert("📸 Foto actualizada correctamente");
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // 3. GUARDAR CAMBIOS EN EL SERVIDOR
+        async function updateProfile(e) {
+            e.preventDefault();
+            
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                const res = await fetch(`${API_URL}/users/update-profile`, {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json', 
+                        'Authorization': `Bearer ${token}` 
+                    },
+                    body: JSON.stringify({ 
+                        userId, 
+                        firstName, 
+                        lastName, 
+                        email, 
+                        password // El backend ignorará esto si está vacío
+                    })
+                });
+
+                const result = await res.json();
+
+                if(res.ok) {
+                    alert("✅ " + result.message);
+                    // Actualizar el nombre visual al instante
+                    document.getElementById('displayFullName').innerText = `${firstName} ${lastName}`;
+                    // Limpiar el campo contraseña por seguridad
+                    document.getElementById('password').value = "";
+                } else {
+                    alert("❌ Error: " + result.error);
+                }
+            } catch(err) { 
+                alert("Error de conexión con el servidor"); 
+            }
+        }
+
+        function logout() { 
+            localStorage.clear(); 
+            window.location.href = 'index.html'; 
+        }
+
+        // Iniciar carga
+        loadData();
+    </script>
+</body>
+</html>

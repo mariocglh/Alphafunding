@@ -1,0 +1,122 @@
+{"level":"info","message":"Servidor iniciado correctamente en modo producción.","service":"alpha-trading-engine","timestamp":"2026-01-10 15:27:28"}
+{"level":"info","message":"💰 Nueva cuenta comprada: 718213 (Challenge 100k) por Usuario ID: 339e580a-6802-4f71-8081-86c7e780b41d","service":"alpha-trading-engine","timestamp":"2026-01-10 15:29:50"}
+{"level":"error","message":"❌ Token inválido o expirado para IP: ::1","service":"alpha-trading-engine","timestamp":"2026-01-10 15:29:50"}
+{"level":"info","message":"Servidor iniciado correctamente en modo producción.","service":"alpha-trading-engine","timestamp":"2026-01-10 19:49:03"}
+{"level":"error","message":"❌ Token inválido o expirado para IP: ::1","service":"alpha-trading-engine","timestamp":"2026-01-10 19:50:05"}
+{"level":"error","message":"❌ Token inválido o expirado para IP: ::1","service":"alpha-trading-engine","timestamp":"2026-01-10 19:50:11"}
+{"level":"error","message":"❌ Token inválido o expirado para IP: ::1","service":"alpha-trading-engine","timestamp":"2026-01-10 19:50:42"}
+{"level":"error","message":"❌ Token inválido o expirado para IP: ::1","service":"alpha-trading-engine","timestamp":"2026-01-10 19:52:26"}
+{"level":"error","message":"❌ Token inválido o expirado para IP: ::1","service":"alpha-trading-engine","timestamp":"2026-01-10 19:52:36"}
+{"level":"info","message":"Servidor iniciado correctamente en modo producción.","service":"alpha-trading-engine","timestamp":"2026-01-10 19:55:15"}
+{"level":"info","message":"Servidor iniciado correctamente en modo producción.","service":"alpha-trading-engine","timestamp":"2026-01-10 19:58:43"}
+{"level":"info","message":"✅ Login exitoso: mariocglh@alphafunding.com","service":"alpha-trading-engine","timestamp":"2026-01-10 19:59:13"}
+{"level":"warn","message":"🔒 Intento de login fallido (Password incorrecto): mariocglh@alphafunding.com","service":"alpha-trading-engine","timestamp":"2026-01-10 20:00:44"}
+{"level":"warn","message":"🔒 Intento de login fallido (Password incorrecto): mariocglh@alphafunding.com","service":"alpha-trading-engine","timestamp":"2026-01-10 20:00:48"}
+{"level":"info","message":"✅ Login exitoso: mariocglh@alphafunding.com","service":"alpha-trading-engine","timestamp":"2026-01-10 20:00:56"}
+{"level":"info","message":"📈 Trade ABIERTO: SELL BTCUSD (3.41 lots) @ 90604.85 [Cuenta: 4acfa947-5a9f-49bb-884c-1c02792a3a5d]","service":"alpha-trading-engine","timestamp":"2026-01-10 20:02:38"}
+{"level":"info","message":"📈 Trade ABIERTO: BUY BTCUSD (3.41 lots) @ 90602.59 [Cuenta: 4acfa947-5a9f-49bb-884c-1c02792a3a5d]","service":"alpha-trading-engine","timestamp":"2026-01-10 20:02:41"}
+{"level":"info","message":"📈 Trade ABIERTO: BUY BTCUSD (3.41 lots) @ 90581.99 [Cuenta: 4acfa947-5a9f-49bb-884c-1c02792a3a5d]","service":"alpha-trading-engine","timestamp":"2026-01-10 20:02:43"}
+{"level":"info","message":"📈 Trade ABIERTO: SELL BTCUSD (3.41 lots) @ 90608.15 [Cuenta: 4acfa947-5a9f-49bb-884c-1c02792a3a5d]","service":"alpha-trading-engine","timestamp":"2026-01-10 20:03:01"}
+{"level":"info","message":"📈 Trade ABIERTO: SELL BTCUSD (3.41 lots) @ 90593.91 [Cuenta: 4acfa947-5a9f-49bb-884c-1c02792a3a5d]","service":"alpha-trading-engine","timestamp":"2026-01-10 20:03:02"}
+{"level":"info","message":"📈 Trade ABIERTO: SELL BTCUSD (3.41 lots) @ 90578.68 [Cuenta: 4acfa947-5a9f-49bb-884c-1c02792a3a5d]","service":"alpha-trading-engine","timestamp":"2026-01-10 20:03:03"}
+{"level":"info","message":"💵 Trade CERRADO: BTCUSD. Profit: $-88.73. Nuevo Balance: $99911.27","service":"alpha-trading-engine","timestamp":"2026-01-10 20:03:50"}
+{"level":"error","message":"❌ Error Close Trade: Esta operación ya está cerrada","service":"alpha-trading-engine","timestamp":"2026-01-10 20:03:53"}
+{"level":"info","message":"💵 Trade CERRADO: BTCUSD. Profit: $-28.2. Nuevo Balance: $99883.07","service":"alpha-trading-engine","timestamp":"2026-01-10 20:04:00"}
+{"level":"info","message":"💵 Trade CERRADO: BTCUSD. Profit: $53.37. Nuevo Balance: $99936.44","service":"alpha-trading-engine","timestamp":"2026-01-10 20:04:05"}
+{"level":"info","message":"💵 Trade CERRADO: BTCUSD. Profit: $18.89. Nuevo Balance: $99955.33","service":"alpha-trading-engine","timestamp":"2026-01-10 20:04:11"}
+{"level":"info","message":"💵 Trade CERRADO: BTCUSD. Profit: $0.78. Nuevo Balance: $99956.11","service":"alpha-trading-engine","timestamp":"2026-01-10 20:04:15"}
+{"level":"info","message":"💵 Trade CERRADO: BTCUSD. Profit: $98.69. Nuevo Balance: $100054.8","service":"alpha-trading-engine","timestamp":"2026-01-10 20:04:28"}
+{"level":"info","message":"✅ Login exitoso: mariocglh@alphafunding.com","service":"alpha-trading-engine","timestamp":"2026-01-10 20:27:34"}
+{"level":"info","message":"Servidor iniciado correctamente en modo producción.","service":"alpha-trading-engine","timestamp":"2026-01-10 20:52:36"}
+{"level":"info","message":"📋 Auditoría ejecutada para 718213: AÚN NO","service":"alpha-trading-engine","timestamp":"2026-01-10 20:52:40"}
+{"level":"info","message":"📈 Trade ABIERTO: BUY BTCUSD (1 lots) @ 90628.46 [Cuenta: 4acfa947-5a9f-49bb-884c-1c02792a3a5d]","service":"alpha-trading-engine","timestamp":"2026-01-10 20:53:39"}
+{"level":"info","message":"📋 Auditoría ejecutada para 718213: AÚN NO","service":"alpha-trading-engine","timestamp":"2026-01-10 20:53:40"}
+{"level":"info","message":"💵 Trade CERRADO: BTCUSD. Profit: $-22.13. Nuevo Balance: $100032.67","service":"alpha-trading-engine","timestamp":"2026-01-10 20:53:47"}
+{"level":"info","message":"📋 Auditoría ejecutada para 718213: AÚN NO","service":"alpha-trading-engine","timestamp":"2026-01-10 20:53:48"}
+{"level":"error","message":"❌ Error Close Trade: Esta operación ya está cerrada","service":"alpha-trading-engine","timestamp":"2026-01-10 20:53:57"}
+{"level":"info","message":"📋 Auditoría ejecutada para 718213: AÚN NO","service":"alpha-trading-engine","timestamp":"2026-01-10 20:53:58"}
+{"level":"info","message":"📋 Auditoría ejecutada para 718213: AÚN NO","service":"alpha-trading-engine","timestamp":"2026-01-10 20:54:12"}
+{"level":"info","message":"📋 Auditoría ejecutada para 718213: AÚN NO","service":"alpha-trading-engine","timestamp":"2026-01-10 20:54:20"}
+{"level":"info","message":"📋 Auditoría ejecutada para 718213: AÚN NO","service":"alpha-trading-engine","timestamp":"2026-01-10 20:54:25"}
+{"level":"info","message":"📋 Auditoría ejecutada para 718213: AÚN NO","service":"alpha-trading-engine","timestamp":"2026-01-10 20:54:30"}
+{"level":"info","message":"📈 Trade ABIERTO: BUY BTCUSD (3.9 lots) @ 90628.74 [Cuenta: 4acfa947-5a9f-49bb-884c-1c02792a3a5d]","service":"alpha-trading-engine","timestamp":"2026-01-10 20:54:41"}
+{"level":"info","message":"📋 Auditoría ejecutada para 718213: AÚN NO","service":"alpha-trading-engine","timestamp":"2026-01-10 20:54:42"}
+{"level":"info","message":"📈 Trade ABIERTO: BUY BTCUSD (3.9 lots) @ 90640.05 [Cuenta: 4acfa947-5a9f-49bb-884c-1c02792a3a5d]","service":"alpha-trading-engine","timestamp":"2026-01-10 20:54:43"}
+{"level":"info","message":"📋 Auditoría ejecutada para 718213: AÚN NO","service":"alpha-trading-engine","timestamp":"2026-01-10 20:54:43"}
+{"level":"info","message":"💵 Trade CERRADO: BTCUSD. Profit: $-80.42. Nuevo Balance: $99952.25","service":"alpha-trading-engine","timestamp":"2026-01-10 20:54:57"}
+{"level":"info","message":"📋 Auditoría ejecutada para 718213: AÚN NO","service":"alpha-trading-engine","timestamp":"2026-01-10 20:54:58"}
+{"level":"info","message":"💵 Trade CERRADO: BTCUSD. Profit: $-12.25. Nuevo Balance: $99940","service":"alpha-trading-engine","timestamp":"2026-01-10 20:55:00"}
+{"level":"info","message":"📋 Auditoría ejecutada para 718213: AÚN NO","service":"alpha-trading-engine","timestamp":"2026-01-10 20:55:01"}
+{"level":"info","message":"📋 Auditoría ejecutada para 718213: AÚN NO","service":"alpha-trading-engine","timestamp":"2026-01-10 20:55:18"}
+{"level":"info","message":"📋 Auditoría ejecutada para 718213: AÚN NO","service":"alpha-trading-engine","timestamp":"2026-01-10 20:55:21"}
+{"level":"info","message":"Servidor iniciado correctamente en modo producción.","service":"alpha-trading-engine","timestamp":"2026-01-10 21:03:55"}
+{"level":"info","message":"📋 Auditoría ejecutada para 718213: AÚN NO","service":"alpha-trading-engine","timestamp":"2026-01-10 21:04:00"}
+{"level":"info","message":"Servidor iniciado correctamente en modo producción.","service":"alpha-trading-engine","timestamp":"2026-01-10 21:10:32"}
+{"level":"info","message":"📋 Auditoría ejecutada para 718213: AÚN NO","service":"alpha-trading-engine","timestamp":"2026-01-10 21:10:37"}
+{"level":"info","message":"📈 Trade ABIERTO: BUY BTCUSD (10000 lots) @ 90646.3 [Cuenta: 4acfa947-5a9f-49bb-884c-1c02792a3a5d]","service":"alpha-trading-engine","timestamp":"2026-01-10 21:11:02"}
+{"level":"info","message":"📋 Auditoría ejecutada para 718213: AÚN NO","service":"alpha-trading-engine","timestamp":"2026-01-10 21:11:03"}
+{"level":"info","message":"💵 Trade CERRADO: BTCUSD. Profit: $49400. Nuevo Balance: $149340","service":"alpha-trading-engine","timestamp":"2026-01-10 21:11:14"}
+{"level":"info","message":"📋 Auditoría ejecutada para 718213: AÚN NO","service":"alpha-trading-engine","timestamp":"2026-01-10 21:11:15"}
+{"level":"info","message":"Servidor iniciado correctamente en modo producción.","service":"alpha-trading-engine","timestamp":"2026-01-10 21:15:58"}
+{"level":"info","message":"📋 Auditoría ejecutada para 718213: AÚN NO","service":"alpha-trading-engine","timestamp":"2026-01-10 21:16:03"}
+{"level":"info","message":"📈 Trade ABIERTO: BUY BTCUSD (10000 lots) @ 90645.63 [Cuenta: 4acfa947-5a9f-49bb-884c-1c02792a3a5d]","service":"alpha-trading-engine","timestamp":"2026-01-10 21:18:26"}
+{"level":"info","message":"📋 Auditoría ejecutada para 718213: AÚN NO","service":"alpha-trading-engine","timestamp":"2026-01-10 21:18:27"}
+{"level":"info","message":"💵 Trade CERRADO: BTCUSD. Profit: $-57100. Nuevo Balance: $92240","service":"alpha-trading-engine","timestamp":"2026-01-10 21:18:33"}
+{"level":"info","message":"💀 Cuenta 718213 QUEMADA por Drawdown Diario (-$7760.00)","service":"alpha-trading-engine","timestamp":"2026-01-10 21:18:34"}
+{"level":"info","message":"📋 Auditoría ejecutada para 718213: SUSPENDIDO (Reglas de Riesgo)","service":"alpha-trading-engine","timestamp":"2026-01-10 21:18:34"}
+{"level":"info","message":"Servidor iniciado correctamente en modo producción.","service":"alpha-trading-engine","timestamp":"2026-01-10 21:22:17"}
+{"level":"info","message":"📋 Auditoría ejecutada para 718213: SUSPENDIDO (Reglas de Riesgo)","service":"alpha-trading-engine","timestamp":"2026-01-10 21:22:25"}
+{"level":"error","message":"❌ Error Place Trade: La cuenta no está activa (posiblemente quemada o suspendida)","service":"alpha-trading-engine","timestamp":"2026-01-10 21:22:44"}
+{"level":"info","message":"📋 Auditoría ejecutada para 718213: SUSPENDIDO (Reglas de Riesgo)","service":"alpha-trading-engine","timestamp":"2026-01-10 21:22:45"}
+{"level":"error","message":"❌ Error Place Trade: La cuenta no está activa (posiblemente quemada o suspendida)","service":"alpha-trading-engine","timestamp":"2026-01-10 21:22:48"}
+{"level":"info","message":"📋 Auditoría ejecutada para 718213: SUSPENDIDO (Reglas de Riesgo)","service":"alpha-trading-engine","timestamp":"2026-01-10 21:22:48"}
+{"level":"info","message":"✅ Login exitoso: mariocglh@alphafunding.com","service":"alpha-trading-engine","timestamp":"2026-01-10 21:23:39"}
+{"level":"info","message":"📋 Auditoría ejecutada para 718213: SUSPENDIDO (Reglas de Riesgo)","service":"alpha-trading-engine","timestamp":"2026-01-10 21:23:42"}
+{"level":"info","message":"Servidor iniciado correctamente en modo producción.","service":"alpha-trading-engine","timestamp":"2026-01-10 21:27:14"}
+{"level":"info","message":"📋 Auditoría ejecutada para 718213: SUSPENDIDO (Reglas de Riesgo)","service":"alpha-trading-engine","timestamp":"2026-01-10 21:27:19"}
+{"level":"info","message":"✅ Login exitoso: mariocglh@alphafunding.com","service":"alpha-trading-engine","timestamp":"2026-01-10 21:27:56"}
+{"level":"info","message":"📋 Auditoría ejecutada para 718213: SUSPENDIDO (Reglas de Riesgo)","service":"alpha-trading-engine","timestamp":"2026-01-10 21:28:01"}
+{"level":"info","message":"Servidor iniciado correctamente en modo producción.","service":"alpha-trading-engine","timestamp":"2026-01-10 21:35:22"}
+{"level":"info","message":"✅ Login exitoso: mariocglh@alphafunding.com","service":"alpha-trading-engine","timestamp":"2026-01-10 21:35:44"}
+{"level":"info","message":"📋 Auditoría ejecutada para 718213: SUSPENDIDO (Reglas de Riesgo)","service":"alpha-trading-engine","timestamp":"2026-01-10 21:35:53"}
+{"level":"info","message":"💰 Nueva cuenta comprada: 107753 (Standard 50k) por Usuario ID: 339e580a-6802-4f71-8081-86c7e780b41d","service":"alpha-trading-engine","timestamp":"2026-01-10 21:36:19"}
+{"level":"info","message":"📋 Auditoría ejecutada para 718213: SUSPENDIDO (Reglas de Riesgo)","service":"alpha-trading-engine","timestamp":"2026-01-10 21:36:21"}
+{"level":"info","message":"📋 Auditoría ejecutada para 107753: AÚN NO","service":"alpha-trading-engine","timestamp":"2026-01-10 21:36:23"}
+{"level":"info","message":"📋 Auditoría ejecutada para 718213: SUSPENDIDO (Reglas de Riesgo)","service":"alpha-trading-engine","timestamp":"2026-01-10 21:36:26"}
+{"level":"info","message":"Servidor iniciado correctamente en modo producción.","service":"alpha-trading-engine","timestamp":"2026-01-10 21:40:10"}
+{"level":"info","message":"📋 Auditoría ejecutada para 718213: SUSPENDIDO (Reglas de Riesgo)","service":"alpha-trading-engine","timestamp":"2026-01-10 21:40:16"}
+{"level":"info","message":"✅ Login exitoso: mariocglh@alphafunding.com","service":"auth-controller","timestamp":"2026-01-12 12:30:35"}
+{"level":"info","message":"📈 Trade ABIERTO: BUY BTCUSD"}
+{"level":"info","message":"📈 Trade ABIERTO: BUY BTCUSD"}
+{"level":"info","message":"💀 Cuenta 107753 QUEMADA (Total)"}
+{"level":"info","message":"📈 Trade ABIERTO: SELL BTCUSD"}
+{"level":"info","message":"📈 Trade ABIERTO: BUY BTCUSD"}
+{"level":"info","message":"📈 Trade ABIERTO: BUY BTCUSD"}
+{"level":"info","message":"📈 Trade ABIERTO: BUY BTCUSD"}
+{"level":"info","message":"📈 Trade ABIERTO: BUY BTCUSD"}
+{"level":"info","message":"📈 Trade ABIERTO: BUY BTCUSD"}
+{"level":"info","message":"💀 Cuenta 939555 QUEMADA (Total)"}
+{"level":"info","message":"📈 Trade ABIERTO: BUY BTCUSD"}
+{"level":"info","message":"📈 Trade ABIERTO: BUY BTCUSD"}
+{"level":"info","message":"💀 Cuenta 395741 QUEMADA (Total)"}
+{"level":"info","message":"📈 Trade ABIERTO: SELL BTCUSD"}
+{"level":"info","message":"📈 Trade ABIERTO: SELL BTCUSD"}
+{"level":"info","message":"💀 Cuenta 228174 QUEMADA (Total)"}
+{"level":"info","message":"📈 Trade ABIERTO: SELL BTCUSD"}
+{"level":"info","message":"📈 Trade ABIERTO: BUY BTCUSD"}
+{"level":"info","message":"📈 Trade ABIERTO: BUY BTCUSD"}
+{"level":"info","message":"📈 Trade ABIERTO: BUY BTCUSD"}
+{"level":"info","message":"✅ Login exitoso: mariocglh@alphafunding.com","service":"auth-controller","timestamp":"2026-01-12 15:37:59"}
+{"level":"info","message":"📈 Trade ABIERTO: BUY BTCUSD"}
+{"level":"warn","message":"⚠️ Scalping detectado en trade 7106332. Beneficio anulado."}
+{"level":"info","message":"📈 Trade ABIERTO: BUY BTCUSD"}
+{"level":"info","message":"📈 Trade ABIERTO: SELL BTCUSD"}
+{"level":"info","message":"📈 Trade ABIERTO: SELL BTCUSD"}
+{"level":"warn","message":"⚠️ Scalping detectado en trade 6965957. Beneficio anulado."}
+{"level":"info","message":"📈 Trade ABIERTO: SELL BTCUSD"}
+{"level":"warn","message":"⚠️ Scalping detectado en trade 4387993. Beneficio anulado."}
+{"level":"info","message":"📈 Trade ABIERTO: SELL BTCUSD"}
+{"level":"info","message":"📈 Trade ABIERTO: BUY BTCUSD"}
+{"level":"warn","message":"⚠️ Scalping detectado en trade 6654731. Beneficio anulado."}
+{"level":"info","message":"📈 Trade ABIERTO: BUY BTCUSD"}
+{"level":"info","message":"✅ Login exitoso: mariocglh@alphafunding.com","service":"auth-controller","timestamp":"2026-01-12 16:02:16"}

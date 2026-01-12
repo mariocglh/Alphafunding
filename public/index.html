@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AlphaFunding | Tu Prop Firm Global</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: { DEFAULT: '#3b82f6', dark: '#2563eb', glow: '#60a5fa' },
+                        dark: { bg: '#0b0f19', card: '#111827', border: '#1f2937' },
+                        success: '#22c55e',
+                        danger: '#ef4444'
+                    },
+                    fontFamily: { sans: ['Inter', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #0b0f19; color: white; font-family: 'Inter', sans-serif; }
+        .hero-glow { background: radial-gradient(circle at center, rgba(59, 130, 246, 0.15) 0%, rgba(11, 15, 25, 0) 70%); }
+        .glass-card { background: rgba(17, 24, 39, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .animate-fade-in { animation: fadeIn 0.5s ease-out; }
+        .slide-in-right { animation: slideInRight 0.4s ease-out forwards; }
+        .fade-out { animation: fadeOut 0.4s ease-out forwards; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideInRight { from { opacity: 0; transform: translateX(100%); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes fadeOut { to { opacity: 0; transform: translateX(100%); } }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div id="toastContainer" class="fixed top-5 right-5 z-[200] flex flex-col gap-3 pointer-events-none"></div>
+
+    <nav class="fixed w-full z-50 glass-card border-b border-dark-border">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-2 cursor-pointer" onclick="window.scrollTo(0,0)">
+                <i class="ph-fill ph-globe-hemisphere-west text-3xl text-brand"></i>
+                <span class="text-2xl font-bold tracking-tight">Alpha<span class="text-brand">Funding</span></span>
+            </div>
+            
+            <div class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-400">
+                <a href="#ventajas" class="hover:text-white transition">Mercados</a>
+                <a href="#planes" class="hover:text-white transition">Planes</a>
+                <a href="rules.html" class="hover:text-white transition">Reglas</a>
+            </div>
+
+            <div id="navButtons" class="flex items-center gap-4">
+                <div class="animate-pulse bg-gray-800 w-24 h-8 rounded"></div>
+            </div>
+        </div>
+    </nav>
+
+    <header class="relative pt-40 pb-20 px-6 overflow-hidden hero-glow">
+        <div class="max-w-4xl mx-auto text-center relative z-10">
+            <div class="inline-block px-4 py-1.5 rounded-full bg-brand/10 border border-brand/20 text-brand text-xs font-bold mb-6">
+                🌍 OPERA TODOS LOS MERCADOS
+            </div>
+            <h1 class="text-5xl md:text-7xl font-bold leading-tight mb-6">
+                Domina Forex, Cripto<br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand to-brand-glow">Índices y Acciones</span>
+            </h1>
+            <p class="text-xl text-gray-400 mb-10 max-w-2xl mx-auto">
+                Consigue hasta $200,000 de capital. Sin restricciones de estilo. Sin límites de tiempo. Tú operas, nosotros ponemos el dinero.
+            </p>
+            <div class="flex flex-col md:flex-row items-center justify-center gap-4">
+                <button onclick="handlePlanClick()" class="w-full md:w-auto bg-white text-dark-bg hover:bg-gray-100 px-8 py-4 rounded-xl font-bold text-lg transition shadow-lg shadow-white/10">
+                    Ver Cuentas
+                </button>
+                <a href="rules.html" class="w-full md:w-auto bg-dark-card border border-dark-border text-white hover:bg-dark-card/80 px-8 py-4 rounded-xl font-bold text-lg transition flex items-center gap-2 justify-center">
+                    <i class="ph-bold ph-book-open"></i> Reglas
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <section id="ventajas" class="py-20 bg-dark-bg">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-6 text-center">
+                <div class="p-6 glass-card rounded-2xl hover:border-brand/30 transition">
+                    <i class="ph-fill ph-currency-eur text-4xl text-blue-400 mb-4"></i>
+                    <h3 class="font-bold text-lg">Forex</h3>
+                    <p class="text-sm text-gray-500">Majors & Minors con spreads raw.</p>
+                </div>
+                <div class="p-6 glass-card rounded-2xl hover:border-brand/30 transition">
+                    <i class="ph-fill ph-bitcoin-logo text-4xl text-orange-500 mb-4"></i>
+                    <h3 class="font-bold text-lg">Cripto</h3>
+                    <p class="text-sm text-gray-500">Opera Bitcoin y ETH 24/7.</p>
+                </div>
+                <div class="p-6 glass-card rounded-2xl hover:border-brand/30 transition">
+                    <i class="ph-fill ph-chart-bar text-4xl text-green-400 mb-4"></i>
+                    <h3 class="font-bold text-lg">Índices</h3>
+                    <p class="text-sm text-gray-500">US30, NAS100 y DAX40.</p>
+                </div>
+                <div class="p-6 glass-card rounded-2xl hover:border-brand/30 transition">
+                    <i class="ph-fill ph-buildings text-4xl text-purple-400 mb-4"></i>
+                    <h3 class="font-bold text-lg">Acciones</h3>
+                    <p class="text-sm text-gray-500">Tesla, Apple, Nvidia y más.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="planes" class="py-20 relative border-t border-dark-border">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold mb-4">Elige tu Tamaño</h2>
+                <p class="text-gray-400">Un solo pago. Sin suscripciones mensuales.</p>
+            </div>
+
+            <div class="grid md:grid-cols-4 gap-6">
+                <div class="glass-card p-6 rounded-2xl border border-dark-border flex flex-col hover:border-brand/50 transition">
+                    <h3 class="text-lg font-medium text-gray-400 mb-2">Starter</h3>
+                    <div class="text-3xl font-bold mb-6">$10,000</div>
+                    <div class="text-2xl font-bold mb-4">$100</div>
+                    <button onclick="handlePlanClick()" class="block w-full py-3 rounded-lg border border-brand text-brand hover:bg-brand hover:text-white font-bold text-center transition">Seleccionar</button>
+                </div>
+
+                <div class="glass-card p-6 rounded-2xl border border-dark-border flex flex-col hover:border-brand/50 transition">
+                    <h3 class="text-lg font-medium text-gray-400 mb-2">Advanced</h3>
+                    <div class="text-3xl font-bold mb-6">$50,000</div>
+                    <div class="text-2xl font-bold mb-4">$300</div>
+                    <button onclick="handlePlanClick()" class="block w-full py-3 rounded-lg border border-brand text-brand hover:bg-brand hover:text-white font-bold text-center transition">Seleccionar</button>
+                </div>
+
+                <div class="glass-card p-6 rounded-2xl border-2 border-brand flex flex-col relative transform md:-translate-y-4 shadow-2xl shadow-brand/10 bg-brand/5">
+                    <div class="absolute top-0 right-0 bg-brand text-white text-xs font-bold px-3 py-1 rounded-bl-lg">POPULAR</div>
+                    <h3 class="text-lg font-medium text-brand mb-2">Professional</h3>
+                    <div class="text-3xl font-bold mb-6">$100,000</div>
+                    <div class="text-2xl font-bold mb-4">$500</div>
+                    <button onclick="handlePlanClick()" class="block w-full py-3 rounded-lg bg-brand text-white font-bold text-center hover:bg-brand-dark transition shadow-lg shadow-brand/20">Comprar Ahora</button>
+                </div>
+
+                <div class="glass-card p-6 rounded-2xl border border-dark-border flex flex-col hover:border-brand/50 transition">
+                    <h3 class="text-lg font-medium text-gray-400 mb-2">Expert</h3>
+                    <div class="text-3xl font-bold mb-6">$200,000</div>
+                    <div class="text-2xl font-bold mb-4">$900</div>
+                    <button onclick="handlePlanClick()" class="block w-full py-3 rounded-lg border border-brand text-brand hover:bg-brand hover:text-white font-bold text-center transition">Seleccionar</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-12 px-6 border-t border-dark-border text-center text-gray-500 text-xs bg-dark-card">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 mb-8 text-center md:text-left">
+            <div>
+                <div class="flex items-center justify-center md:justify-start gap-2 mb-4">
+                    <i class="ph-fill ph-globe-hemisphere-west text-xl text-brand"></i>
+                    <span class="font-bold text-white">AlphaFunding</span>
+                </div>
+                <p>La firma de fondeo líder para traders profesionales. Tu talento, nuestro capital.</p>
+            </div>
+            <div>
+                <h4 class="font-bold text-white mb-4 uppercase tracking-wider">Legal</h4>
+                <ul class="space-y-2">
+                    <li><a href="legal.html" class="hover:text-brand transition">Términos y Condiciones</a></li>
+                    <li><a href="legal.html" class="hover:text-brand transition">Política de Privacidad</a></li>
+                    <li><a href="legal.html" class="hover:text-brand transition">Descargo de Responsabilidad</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold text-white mb-4 uppercase tracking-wider">Soporte</h4>
+                <ul class="space-y-2">
+                    <li><a href="help.html" class="hover:text-brand transition">Centro de Ayuda (FAQ)</a></li>
+                    <li><a href="help.html" class="hover:text-brand transition">Contactar Soporte</a></li>
+                    <li><a href="rules.html" class="hover:text-brand transition">Reglas de Trading</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold text-white mb-4 uppercase tracking-wider">Síguenos</h4>
+                <div class="flex justify-center md:justify-start gap-4">
+                    <a href="#" class="w-8 h-8 rounded bg-dark-bg flex items-center justify-center hover:bg-brand hover:text-white transition"><i class="ph-fill ph-twitter-logo"></i></a>
+                    <a href="#" class="w-8 h-8 rounded bg-dark-bg flex items-center justify-center hover:bg-brand hover:text-white transition"><i class="ph-fill ph-instagram-logo"></i></a>
+                    <a href="#" class="w-8 h-8 rounded bg-dark-bg flex items-center justify-center hover:bg-brand hover:text-white transition"><i class="ph-fill ph-discord-logo"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="border-t border-dark-border pt-8 text-center">
+            &copy; 2026 AlphaFunding Global LLC. Todos los derechos reservados.
+        </div>
+    </footer>
+
+    <div id="authModal" class="hidden fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm px-4 fade-in">
+        <div class="glass-card w-full max-w-md rounded-2xl p-8 relative border border-dark-border shadow-2xl">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white transition">
+                <i class="ph-bold ph-x text-xl"></i>
+            </button>
+
+            <div class="flex gap-6 mb-8 border-b border-dark-border">
+                <button onclick="switchTab('login')" id="tabLogin" class="pb-2 text-brand border-b-2 border-brand font-bold transition w-1/2 text-center">Iniciar Sesión</button>
+                <button onclick="switchTab('register')" id="tabRegister" class="pb-2 text-gray-400 hover:text-white font-bold transition w-1/2 text-center">Registrarse</button>
+            </div>
+
+            <form id="formLogin" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-gray-400 mb-1 ml-1">EMAIL</label>
+                    <div class="relative">
+                        <i class="ph-bold ph-envelope absolute left-3 top-3 text-gray-500"></i>
+                        <input type="email" id="loginEmail" class="w-full bg-dark-bg border border-dark-border rounded-lg p-2.5 pl-10 text-sm focus:border-brand outline-none text-white transition placeholder-gray-700" placeholder="usuario@email.com">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-400 mb-1 ml-1">CONTRASEÑA</label>
+                    <div class="relative">
+                        <i class="ph-bold ph-lock-key absolute left-3 top-3 text-gray-500"></i>
+                        <input type="password" id="loginPass" class="w-full bg-dark-bg border border-dark-border rounded-lg p-2.5 pl-10 text-sm focus:border-brand outline-none text-white transition placeholder-gray-700" placeholder="••••••••">
+                    </div>
+                </div>
+                <button type="submit" class="w-full bg-brand hover:bg-brand-dark text-white font-bold py-3 rounded-lg transition mt-2 shadow-lg shadow-brand/20">Entrar</button>
+            </form>
+
+            <form id="formRegister" class="space-y-4 hidden">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 mb-1 ml-1">NOMBRE</label>
+                        <input type="text" id="regName" class="w-full bg-dark-bg border border-dark-border rounded-lg p-2.5 text-sm focus:border-brand outline-none text-white transition">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 mb-1 ml-1">APELLIDO</label>
+                        <input type="text" id="regLast" class="w-full bg-dark-bg border border-dark-border rounded-lg p-2.5 text-sm focus:border-brand outline-none text-white transition">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-400 mb-1 ml-1">EMAIL</label>
+                    <input type="email" id="regEmail" class="w-full bg-dark-bg border border-dark-border rounded-lg p-2.5 text-sm focus:border-brand outline-none text-white transition">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-400 mb-1 ml-1">CONTRASEÑA</label>
+                    <input type="password" id="regPass" class="w-full bg-dark-bg border border-dark-border rounded-lg p-2.5 text-sm focus:border-brand outline-none text-white transition">
+                </div>
+                <button type="submit" class="w-full bg-brand hover:bg-brand-dark text-white font-bold py-3 rounded-lg transition mt-2 shadow-lg shadow-brand/20">Crear Cuenta</button>
+            </form>
+
+            <div id="authMessage" class="mt-4 text-center text-xs font-bold h-4"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = '';
+        const modal = document.getElementById('authModal');
+        const formLogin = document.getElementById('formLogin');
+        const formRegister = document.getElementById('formRegister');
+        const msgDisplay = document.getElementById('authMessage');
+        const navContainer = document.getElementById('navButtons');
+
+        // 🔥 FUNCIÓN TOAST (NOTIFICACIÓN FLOTANTE)
+        function showToast(msg, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            const colors = type === 'success' ? 'bg-dark-card border-l-4 border-success' : 'bg-dark-card border-l-4 border-danger';
+            const icon = type === 'success' ? '<i class="ph-fill ph-check-circle text-success text-xl"></i>' : '<i class="ph-fill ph-warning-circle text-danger text-xl"></i>';
+            
+            toast.className = `flex items-center gap-3 p-4 rounded shadow-2xl pointer-events-auto border border-dark-border slide-in-right ${colors} text-white min-w-[300px]`;
+            toast.innerHTML = `${icon} <div class="text-sm font-medium">${msg}</div>`;
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.classList.add('fade-out');
+                setTimeout(() => toast.remove(), 400);
+            }, 3000);
+        }
+
+        // 1. LÓGICA DE UI (Login/Logout) + FOTO DE PERFIL
+        function updateUI() {
+            const token = localStorage.getItem('token');
+            const userId = localStorage.getItem('userId');
+            const userName = localStorage.getItem('userName') || 'Trader';
+
+            if (token && userId) {
+                const savedPhoto = localStorage.getItem('profilePhoto_' + userId) || 
+                                 `https://ui-avatars.com/api/?name=${userName}&background=3b82f6&color=fff`;
+
+                navContainer.innerHTML = `
+                    <div class="flex items-center gap-4 animate-fade-in pl-4 border-l border-dark-border">
+                        <div class="hidden md:block text-right">
+                            <div class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Hola,</div>
+                            <div class="text-sm font-bold text-white leading-none">${userName.split(' ')[0]}</div>
+                        </div>
+                        
+                        <a href="profile.html" class="relative group cursor-pointer" title="Ir a mi Perfil">
+                            <img src="${savedPhoto}" class="w-10 h-10 rounded-full border-2 border-transparent group-hover:border-brand transition object-cover shadow-lg bg-dark-card">
+                            <div class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-dark-bg rounded-full"></div>
+                        </a>
+
+                        <a href="dashboard.html" class="bg-brand hover:bg-brand-dark text-white px-5 py-2.5 rounded-lg font-bold text-sm transition shadow-[0_0_15px_rgba(59,130,246,0.4)] flex items-center gap-2">
+                            <i class="ph-bold ph-chart-line-up"></i> <span class="hidden lg:inline">Dashboard</span>
+                        </a>
+                        <button onclick="logout()" class="text-gray-500 hover:text-danger transition p-2" title="Cerrar Sesión">
+                            <i class="ph-bold ph-sign-out text-xl"></i>
+                        </button>
+                    </div>
+                `;
+            } else {
+                navContainer.innerHTML = `
+                    <button onclick="openModal('login')" class="text-sm font-medium text-white hover:text-brand transition flex items-center gap-2">
+                        <i class="ph ph-sign-in"></i> Área Clientes
+                    </button>
+                    <button onclick="openModal('register')" class="bg-brand hover:bg-brand-dark text-white px-5 py-2.5 rounded-lg font-bold text-sm transition shadow-[0_0_15px_rgba(59,130,246,0.4)]">
+                        Empezar Ahora
+                    </button>
+                `;
+            }
+        }
+
+        // 2. CLICK EN PLANES
+        function handlePlanClick() {
+            const token = localStorage.getItem('token');
+            if (token) {
+                window.location.href = 'dashboard.html?buyPlan=true'; 
+            } else {
+                openModal('register');
+            }
+        }
+
+        // 3. LOGOUT
+        function logout() {
+            if(confirm("¿Cerrar sesión en este dispositivo?")) {
+                localStorage.clear();
+                updateUI();
+                showToast("Sesión cerrada correctamente", "success");
+            }
+        }
+
+        // --- FUNCIONES MODAL ---
+        function openModal(mode) {
+            modal.classList.remove('hidden');
+            switchTab(mode);
+        }
+        function closeModal() {
+            modal.classList.add('hidden');
+            msgDisplay.innerText = '';
+        }
+        function switchTab(mode) {
+            msgDisplay.innerText = '';
+            if(mode === 'login') {
+                formLogin.classList.remove('hidden');
+                formRegister.classList.add('hidden');
+                document.getElementById('tabLogin').className = "pb-2 text-brand border-b-2 border-brand font-bold transition w-1/2 text-center";
+                document.getElementById('tabRegister').className = "pb-2 text-gray-400 hover:text-white font-bold transition w-1/2 text-center";
+            } else {
+                formLogin.classList.add('hidden');
+                formRegister.classList.remove('hidden');
+                document.getElementById('tabLogin').className = "pb-2 text-gray-400 hover:text-white font-bold transition w-1/2 text-center";
+                document.getElementById('tabRegister').className = "pb-2 text-brand border-b-2 border-brand font-bold transition w-1/2 text-center";
+            }
+        }
+
+        // --- LOGIN ---
+        formLogin.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            msgDisplay.className = "mt-4 text-center text-xs font-bold text-gray-400 animate-pulse";
+            msgDisplay.innerText = "Verificando credenciales...";
+
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPass').value;
+
+            try {
+                const res = await fetch(`${API_URL}/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                const data = await res.json();
+
+                if (res.ok) {
+                    showToast(`¡Bienvenido de nuevo, ${data.name}!`, "success");
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('userId', data.userId);
+                    localStorage.setItem('userName', data.name || 'Trader');
+                    
+                    updateUI(); 
+                    setTimeout(() => closeModal(), 1000);
+                } else {
+                    msgDisplay.className = "mt-4 text-center text-xs font-bold text-danger";
+                    msgDisplay.innerText = data.error || "Credenciales incorrectas";
+                    showToast(data.error || "Error de acceso", "error");
+                }
+            } catch (error) {
+                msgDisplay.innerText = "Error de conexión con el servidor.";
+                showToast("Error de conexión", "error");
+            }
+        });
+
+        // --- REGISTRO ---
+        formRegister.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            msgDisplay.className = "mt-4 text-center text-xs font-bold text-gray-400";
+            msgDisplay.innerText = "Creando cuenta...";
+
+            const firstName = document.getElementById('regName').value;
+            const lastName = document.getElementById('regLast').value;
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPass').value;
+
+            try {
+                const res = await fetch(`${API_URL}/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password, firstName, lastName })
+                });
+                const data = await res.json();
+
+                if (res.ok) {
+                    showToast("¡Cuenta creada! Inicia sesión ahora.", "success");
+                    setTimeout(() => switchTab('login'), 1500);
+                } else {
+                    msgDisplay.className = "mt-4 text-center text-xs font-bold text-danger";
+                    msgDisplay.innerText = data.error || "Error en registro";
+                    showToast(data.error || "Error al registrarse", "error");
+                }
+            } catch (error) { 
+                msgDisplay.innerText = "Error de conexión."; 
+                showToast("Error de conexión", "error");
+            }
+        });
+
+        // INICIAR
+        updateUI();
+
+    </script>
+</body>
+</html>

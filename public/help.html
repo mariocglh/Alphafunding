@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AlphaFunding | Soporte y Ayuda</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: { DEFAULT: '#3b82f6', dark: '#2563eb' },
+                        dark: { bg: '#0b0f19', card: '#111827', border: '#1f2937' }
+                    },
+                    fontFamily: { sans: ['Inter', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #0b0f19; color: #e2e8f0; font-family: 'Inter', sans-serif; }
+        .glass-panel { background: rgba(17, 24, 39, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .faq-item.active .faq-answer { max-height: 200px; opacity: 1; padding-top: 1rem; }
+        .faq-answer { max-height: 0; opacity: 0; overflow: hidden; transition: all 0.3s ease-in-out; }
+        .faq-item.active i { transform: rotate(180deg); }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <nav class="border-b border-dark-border bg-dark-bg/90 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-2">
+                <i class="ph-fill ph-globe-hemisphere-west text-3xl text-brand"></i>
+                <span class="font-bold text-xl tracking-tight text-white">Alpha<span class="text-brand">Funding</span></span>
+            </a>
+            <div class="flex gap-4">
+                <a href="index.html" class="text-gray-400 hover:text-white px-4 py-2 text-sm font-medium transition">Volver al Inicio</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="py-16 text-center">
+        <h1 class="text-4xl font-bold text-white mb-4">¿En qué podemos ayudarte?</h1>
+        <p class="text-gray-400 max-w-2xl mx-auto">Revisa nuestras preguntas frecuentes o contacta directamente con el equipo de soporte.</p>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-6 pb-20 space-y-16">
+
+        <section>
+            <h2 class="text-2xl font-bold text-white mb-8 flex items-center gap-2">
+                <i class="ph-fill ph-question text-brand"></i> Preguntas Frecuentes
+            </h2>
+            
+            <div class="space-y-4">
+                <div class="glass-panel p-6 rounded-xl cursor-pointer faq-item" onclick="toggleFaq(this)">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-bold text-white">¿Cuánto tiempo tengo para pasar el desafío?</h3>
+                        <i class="ph-bold ph-caret-down text-gray-400 transition-transform duration-300"></i>
+                    </div>
+                    <div class="faq-answer text-gray-400 text-sm">
+                        No hay límite de tiempo. Puedes tomarte los días, semanas o meses que necesites. Lo importante es no infringir las reglas de Drawdown y cumplir los días mínimos operados (5 días).
+                    </div>
+                </div>
+
+                <div class="glass-panel p-6 rounded-xl cursor-pointer faq-item" onclick="toggleFaq(this)">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-bold text-white">¿Puedo operar noticias (News Trading)?</h3>
+                        <i class="ph-bold ph-caret-down text-gray-400 transition-transform duration-300"></i>
+                    </div>
+                    <div class="faq-answer text-gray-400 text-sm">
+                        Sí, puedes operar noticias en la fase de evaluación. Sin embargo, en la fase LIVE (Fondeada), recomendamos precaución debido al deslizamiento (slippage). No hay restricciones directas, pero somos estrictos con la volatilidad artificial.
+                    </div>
+                </div>
+
+                <div class="glass-panel p-6 rounded-xl cursor-pointer faq-item" onclick="toggleFaq(this)">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-bold text-white">¿Cuándo recibo mi primer pago?</h3>
+                        <i class="ph-bold ph-caret-down text-gray-400 transition-transform duration-300"></i>
+                    </div>
+                    <div class="faq-answer text-gray-400 text-sm">
+                        El primer pago se puede solicitar 14 días después de realizar la primera operación en tu cuenta LIVE. Los pagos subsiguientes se pueden solicitar cada 14 días (Bi-semanal).
+                    </div>
+                </div>
+
+                <div class="glass-panel p-6 rounded-xl cursor-pointer faq-item" onclick="toggleFaq(this)">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-bold text-white">¿Qué plataformas de trading ofrecéis?</h3>
+                        <i class="ph-bold ph-caret-down text-gray-400 transition-transform duration-300"></i>
+                    </div>
+                    <div class="faq-answer text-gray-400 text-sm">
+                        Actualmente ofrecemos integración simulada a través de nuestra Terminal Web (basada en TradingView) para máxima velocidad y comodidad. Próximamente añadiremos cTrader y MT5.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="grid md:grid-cols-2 gap-12">
+            <div>
+                <h2 class="text-2xl font-bold text-white mb-4">Contacta con Soporte</h2>
+                <p class="text-gray-400 mb-8 text-sm">Nuestro equipo responde normalmente en menos de 24 horas laborables.</p>
+                
+                <div class="space-y-6">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-full bg-brand/10 flex items-center justify-center text-brand"><i class="ph-fill ph-envelope-simple text-xl"></i></div>
+                        <div>
+                            <div class="text-xs text-gray-500 font-bold uppercase">Email</div>
+                            <div class="text-white">soporte@alphafunding.pro</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-full bg-brand/10 flex items-center justify-center text-brand"><i class="ph-fill ph-discord-logo text-xl"></i></div>
+                        <div>
+                            <div class="text-xs text-gray-500 font-bold uppercase">Comunidad</div>
+                            <div class="text-white">Discord Oficial</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-full bg-brand/10 flex items-center justify-center text-brand"><i class="ph-fill ph-map-pin text-xl"></i></div>
+                        <div>
+                            <div class="text-xs text-gray-500 font-bold uppercase">Oficinas</div>
+                            <div class="text-white">Madrid, España (HQ)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-panel p-8 rounded-2xl">
+                <form onsubmit="sendSupport(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Tu Email</label>
+                        <input type="email" required class="w-full bg-dark-bg border border-dark-border rounded-lg p-3 text-white focus:border-brand outline-none transition" placeholder="ejemplo@email.com">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Asunto</label>
+                        <select class="w-full bg-dark-bg border border-dark-border rounded-lg p-3 text-white focus:border-brand outline-none transition">
+                            <option>Duda General</option>
+                            <option>Problema Técnico</option>
+                            <option>Facturación / Pagos</option>
+                            <option>Reportar Bug</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Mensaje</label>
+                        <textarea required rows="4" class="w-full bg-dark-bg border border-dark-border rounded-lg p-3 text-white focus:border-brand outline-none transition" placeholder="Describe tu problema..."></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-brand hover:bg-brand-dark text-white font-bold py-3 rounded-lg transition shadow-lg shadow-brand/20">
+                        Enviar Mensaje
+                    </button>
+                </form>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="border-t border-dark-border py-8 text-center text-gray-600 text-xs bg-dark-card">
+        <div class="max-w-7xl mx-auto px-6">
+            <p>&copy; 2026 AlphaFunding Global. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleFaq(element) {
+            // Cerrar otros (opcional, estilo acordeón estricto)
+            // document.querySelectorAll('.faq-item').forEach(item => {
+            //     if(item !== element) item.classList.remove('active');
+            // });
+            element.classList.toggle('active');
+        }
+
+        function sendSupport(e) {
+            e.preventDefault();
+            // Simulación de envío
+            const btn = e.target.querySelector('button');
+            const originalText = btn.innerText;
+            
+            btn.innerText = "Enviando...";
+            btn.classList.add('opacity-75');
+            
+            setTimeout(() => {
+                alert("✅ Mensaje enviado correctamente.\nEl equipo de soporte te contactará pronto.");
+                e.target.reset();
+                btn.innerText = originalText;
+                btn.classList.remove('opacity-75');
+            }, 1500);
+        }
+    </script>
+</body>
+</html>

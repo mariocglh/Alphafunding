@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AlphaFunding | Centro Legal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: { DEFAULT: '#3b82f6', dark: '#2563eb' },
+                        dark: { bg: '#0b0f19', card: '#111827', border: '#1f2937' }
+                    },
+                    fontFamily: { sans: ['Inter', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #0b0f19; color: #e2e8f0; font-family: 'Inter', sans-serif; }
+        .glass-card { background: rgba(17, 24, 39, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        /* Estilos para el texto legal */
+        .prose h2 { color: white; font-size: 1.5rem; font-weight: 700; margin-top: 2rem; margin-bottom: 1rem; }
+        .prose h3 { color: #9ca3af; font-size: 1.1rem; font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.5rem; }
+        .prose p { color: #9ca3af; margin-bottom: 1rem; line-height: 1.6; font-size: 0.95rem; }
+        .prose ul { list-style-type: disc; padding-left: 1.5rem; color: #9ca3af; margin-bottom: 1rem; }
+        .prose li { margin-bottom: 0.5rem; }
+        .active-tab { border-left: 3px solid #3b82f6; background: rgba(59, 130, 246, 0.1); color: white; }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <nav class="border-b border-dark-border bg-dark-bg/90 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-2">
+                <i class="ph-fill ph-globe-hemisphere-west text-3xl text-brand"></i>
+                <span class="font-bold text-xl tracking-tight text-white">Alpha<span class="text-brand">Funding</span></span>
+            </a>
+            <div class="flex gap-4">
+                <a href="index.html" class="text-gray-400 hover:text-white px-4 py-2 text-sm font-medium transition">Volver al Inicio</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="bg-dark-card border-b border-dark-border py-12">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <h1 class="text-4xl font-bold text-white mb-2">Centro Legal</h1>
+            <p class="text-gray-400 text-sm">Última actualización: 12 de Enero, 2026</p>
+        </div>
+    </header>
+
+    <main class="flex-1 max-w-7xl mx-auto px-6 py-12 w-full">
+        <div class="grid md:grid-cols-4 gap-8">
+            
+            <div class="md:col-span-1 space-y-2 sticky top-24 h-fit">
+                <button onclick="switchTab('terms')" id="btn-terms" class="w-full text-left px-4 py-3 rounded-r-lg text-sm font-medium text-gray-400 hover:text-white hover:bg-dark-border transition active-tab">
+                    Términos y Condiciones
+                </button>
+                <button onclick="switchTab('privacy')" id="btn-privacy" class="w-full text-left px-4 py-3 rounded-r-lg text-sm font-medium text-gray-400 hover:text-white hover:bg-dark-border transition">
+                    Política de Privacidad
+                </button>
+                <button onclick="switchTab('risk')" id="btn-risk" class="w-full text-left px-4 py-3 rounded-r-lg text-sm font-medium text-gray-400 hover:text-white hover:bg-dark-border transition">
+                    Descargo de Responsabilidad
+                </button>
+                <button onclick="switchTab('refund')" id="btn-refund" class="w-full text-left px-4 py-3 rounded-r-lg text-sm font-medium text-gray-400 hover:text-white hover:bg-dark-border transition">
+                    Política de Reembolso
+                </button>
+            </div>
+
+            <div class="md:col-span-3 glass-card p-8 rounded-2xl min-h-[600px] prose">
+                
+                <div id="content-terms" class="fade-in">
+                    <h2>1. Términos y Condiciones de Uso</h2>
+                    <p>Bienvenido a AlphaFunding Global ("la Empresa"). Al acceder a nuestro sitio web y utilizar nuestros servicios, usted acepta cumplir con los siguientes términos. Si no está de acuerdo, por favor no utilice nuestros servicios.</p>
+                    
+                    <h3>1.1 Naturaleza del Servicio</h3>
+                    <p>AlphaFunding provee servicios de evaluación para traders. Todas las cuentas proporcionadas, tanto en la fase de evaluación como en la fase "Live" o "Fondeada", son cuentas simuladas en un entorno demo con cotizaciones reales de mercado.</p>
+                    <p>La Empresa NO es un bróker, ni un asesor financiero. No captamos depósitos de clientes para inversión.</p>
+
+                    <h3>1.2 Prohibiciones de Trading</h3>
+                    <p>Está estrictamente prohibido:</p>
+                    <ul>
+                        <li>Uso de Arbitraje de Latencia o fallos de la plataforma.</li>
+                        <li>High Frequency Trading (HFT) o bots que saturen los servidores.</li>
+                        <li>Hedging entre múltiples cuentas (abrir Long en una y Short en otra).</li>
+                        <li>Gestión de cuentas por terceros (Account Management).</li>
+                    </ul>
+
+                    <h3>1.3 Pagos y Comisiones</h3>
+                    <p>Los traders que superen la evaluación y obtengan beneficios en la cuenta simulada tendrán derecho a solicitar una comisión (payout) basada en un acuerdo de servicios profesionales (contratista independiente).</p>
+                </div>
+
+                <div id="content-privacy" class="hidden fade-in">
+                    <h2>2. Política de Privacidad</h2>
+                    <p>En AlphaFunding nos tomamos muy en serio la seguridad de sus datos personales. Esta política describe cómo recopilamos, usamos y protegemos su información.</p>
+
+                    <h3>2.1 Datos que Recopilamos</h3>
+                    <ul>
+                        <li>Información de Identidad: Nombre, Apellidos, Fecha de Nacimiento (para KYC).</li>
+                        <li>Información de Contacto: Email, Dirección.</li>
+                        <li>Datos Técnicos: Dirección IP, tipo de navegador, datos de inicio de sesión.</li>
+                    </ul>
+
+                    <h3>2.2 Uso de la Información</h3>
+                    <p>Utilizamos sus datos para proveer el servicio de plataforma de trading, procesar pagos, cumplir con obligaciones legales (KYC/AML) y mejorar la seguridad de la cuenta.</p>
+
+                    <h3>2.3 Compartir Datos</h3>
+                    <p>No vendemos sus datos a terceros. Solo compartimos información estrictamente necesaria con proveedores de servicios esenciales (pasarelas de pago, proveedores de KYC).</p>
+                </div>
+
+                <div id="content-risk" class="hidden fade-in">
+                    <h2>3. Descargo de Responsabilidad (Risk Disclosure)</h2>
+                    
+                    <div class="bg-red-500/10 border border-red-500/20 p-4 rounded-lg mb-6">
+                        <p class="text-red-400 font-bold mb-0">ADVERTENCIA DE ALTO RIESGO:</p>
+                        <p class="text-red-200 text-sm mb-0">El trading de divisas (Forex) y CFDs conlleva un alto nivel de riesgo y puede no ser adecuado para todos los inversores.</p>
+                    </div>
+
+                    <h3>3.1 Simulación</h3>
+                    <p>Todas las operaciones en AlphaFunding se realizan en un entorno simulado. Los resultados pasados o hipotéticos no garantizan resultados futuros.</p>
+
+                    <h3>3.2 No Asesoramiento</h3>
+                    <p>El contenido de este sitio web es puramente educativo. AlphaFunding no proporciona consejos de inversión. Usted es responsable de sus propias decisiones financieras.</p>
+                </div>
+
+                <div id="content-refund" class="hidden fade-in">
+                    <h2>4. Política de Reembolso</h2>
+                    <p>Debido a la naturaleza de los productos digitales y servicios de evaluación inmediata:</p>
+                    
+                    <h3>4.1 Antes de Operar</h3>
+                    <p>Si usted ha comprado una evaluación y NO ha realizado ninguna operación (ni un solo trade), tiene derecho a solicitar un reembolso completo dentro de los 14 días posteriores a la compra.</p>
+
+                    <h3>4.2 Después de Operar</h3>
+                    <p>Una vez que se ejecuta la primera operación en la cuenta de trading, el servicio se considera "consumido" y no se otorgarán reembolsos bajo ninguna circunstancia, incluso si la cuenta se pierde (breached) inmediatamente.</p>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <footer class="border-t border-dark-border py-8 text-center text-gray-600 text-xs bg-dark-card">
+        <div class="max-w-7xl mx-auto px-6">
+            <p>&copy; 2026 AlphaFunding Global. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        function switchTab(tabId) {
+            // Ocultar todos los contenidos
+            ['terms', 'privacy', 'risk', 'refund'].forEach(id => {
+                document.getElementById('content-' + id).classList.add('hidden');
+                document.getElementById('btn-' + id).classList.remove('active-tab');
+            });
+
+            // Mostrar el seleccionado
+            document.getElementById('content-' + tabId).classList.remove('hidden');
+            document.getElementById('btn-' + tabId).classList.add('active-tab');
+            
+            // Scroll top suave en móvil
+            if(window.innerWidth < 768) {
+                document.getElementById('content-' + tabId).scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    </script>
+</body>
+</html>

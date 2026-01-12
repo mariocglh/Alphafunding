@@ -1,0 +1,10 @@
+{"level":"error","message":"❌ Token inválido o expirado para IP: ::1","service":"alpha-trading-engine","timestamp":"2026-01-10 15:29:50"}
+{"level":"error","message":"❌ Token inválido o expirado para IP: ::1","service":"alpha-trading-engine","timestamp":"2026-01-10 19:50:05"}
+{"level":"error","message":"❌ Token inválido o expirado para IP: ::1","service":"alpha-trading-engine","timestamp":"2026-01-10 19:50:11"}
+{"level":"error","message":"❌ Token inválido o expirado para IP: ::1","service":"alpha-trading-engine","timestamp":"2026-01-10 19:50:42"}
+{"level":"error","message":"❌ Token inválido o expirado para IP: ::1","service":"alpha-trading-engine","timestamp":"2026-01-10 19:52:26"}
+{"level":"error","message":"❌ Token inválido o expirado para IP: ::1","service":"alpha-trading-engine","timestamp":"2026-01-10 19:52:36"}
+{"level":"error","message":"❌ Error Close Trade: Esta operación ya está cerrada","service":"alpha-trading-engine","timestamp":"2026-01-10 20:03:53"}
+{"level":"error","message":"❌ Error Close Trade: Esta operación ya está cerrada","service":"alpha-trading-engine","timestamp":"2026-01-10 20:53:57"}
+{"level":"error","message":"❌ Error Place Trade: La cuenta no está activa (posiblemente quemada o suspendida)","service":"alpha-trading-engine","timestamp":"2026-01-10 21:22:44"}
+{"level":"error","message":"❌ Error Place Trade: La cuenta no está activa (posiblemente quemada o suspendida)","service":"alpha-trading-engine","timestamp":"2026-01-10 21:22:48"}

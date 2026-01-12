@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AlphaFunding | Terminal Profesional</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: { DEFAULT: '#3b82f6', dark: '#2563eb', glow: '#60a5fa' },
+                        dark: { bg: '#0b0f19', card: '#111827', border: '#1f2937', hover: '#1f2937' },
+                        danger: '#ef4444',
+                        success: '#22c55e',
+                        warning: '#f59e0b',
+                        gold: '#fbbf24'
+                    },
+                    fontFamily: { sans: ['Inter', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #0b0f19; color: #e2e8f0; font-family: 'Inter', sans-serif; }
+        .glass-panel { background: rgba(17, 24, 39, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0b0f19; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+        .progress-bar { transition: width 1s ease-in-out; }
+        
+        th { font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; font-size: 0.7rem; color: #94a3b8; }
+        td { font-size: 0.80rem; }
+        
+        /* Animaciones */
+        .fade-in { animation: fadeIn 0.3s ease-in-out; }
+        .slide-in-right { animation: slideInRight 0.4s ease-out forwards; }
+        .fade-out { animation: fadeOut 0.4s ease-out forwards; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideInRight { from { opacity: 0; transform: translateX(100%); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes fadeOut { to { opacity: 0; transform: translateX(100%); } }
+        
+        .shake { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both; }
+        @keyframes shake { 10%, 90% { transform: translate3d(-1px, 0, 0); } 20%, 80% { transform: translate3d(2px, 0, 0); } 30%, 50%, 70% { transform: translate3d(-4px, 0, 0); } 40%, 60% { transform: translate3d(4px, 0, 0); } }
+
+        .breach-overlay { background: radial-gradient(circle, rgba(220,38,38,0.2) 0%, rgba(11,15,25,0.95) 100%); backdrop-filter: blur(5px); }
+        .live-glow { box-shadow: 0 0 15px rgba(59, 130, 246, 0.3), inset 0 0 10px rgba(251, 191, 36, 0.1); border-color: #3b82f6; }
+        select option { background-color: #111827; color: white; padding: 10px; }
+    </style>
+</head>
+<body class="h-screen flex overflow-hidden antialiased">
+
+    <div id="toastContainer" class="fixed top-5 right-5 z-[200] flex flex-col gap-3 pointer-events-none"></div>
+
+    <div id="appModal" class="hidden fixed inset-0 z-[150] flex items-center justify-center bg-black/80 backdrop-blur-sm fade-in">
+        <div class="glass-panel w-full max-w-sm rounded-2xl p-6 border border-dark-border shadow-2xl transform transition-all scale-100">
+            <div class="text-center mb-6">
+                <div id="modalIcon" class="w-16 h-16 rounded-full bg-brand/10 text-brand flex items-center justify-center mx-auto mb-4 text-3xl">
+                    <i class="ph-fill ph-info"></i>
+                </div>
+                <h3 id="modalTitle" class="text-xl font-bold text-white mb-2">Confirmación</h3>
+                <p id="modalMessage" class="text-sm text-gray-400">¿Estás seguro de realizar esta acción?</p>
+            </div>
+            <div class="flex gap-3">
+                <button onclick="closeAppModal()" class="flex-1 py-3 rounded-xl border border-dark-border text-gray-400 hover:text-white hover:bg-dark-hover font-bold transition text-sm">Cancelar</button>
+                <button id="modalConfirmBtn" class="flex-1 py-3 rounded-xl bg-brand hover:bg-brand-dark text-white font-bold transition text-sm shadow-lg shadow-brand/20">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="gameOverModal" class="hidden fixed inset-0 z-50 flex items-center justify-center breach-overlay fade-in">
+        <div class="bg-dark-card border-2 border-danger p-8 rounded-2xl shadow-[0_0_50px_rgba(239,68,68,0.5)] max-w-md text-center transform scale-110">
+            <i class="ph-fill ph-skull text-6xl text-danger mb-4 animate-bounce"></i>
+            <h2 class="text-3xl font-bold text-white mb-2 uppercase tracking-widest">Cuenta Quemada</h2>
+            <p class="text-gray-400 mb-6">Has infringido las reglas de gestión de riesgo. Esta cuenta ha sido inhabilitada.</p>
+            <div class="bg-danger/10 p-4 rounded-lg border border-danger/20 mb-6">
+                <div class="text-danger font-mono text-sm font-bold">ESTADO: BREACHED (SUSPENDIDA)</div>
+            </div>
+            <div class="flex flex-col gap-3">
+                <button onclick="closeGameOver()" class="bg-white text-black px-6 py-3 rounded-lg font-bold hover:bg-gray-200 transition uppercase text-xs tracking-wide">
+                    Entendido, cambiar de cuenta
+                </button>
+                <button onclick="showSection('shop'); closeGameOver()" class="text-brand hover:text-white text-xs underline">
+                    Comprar nueva cuenta
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <aside class="w-64 bg-dark-card border-r border-dark-border flex flex-col justify-between hidden md:flex z-30">
+        <div>
+            <div class="h-16 flex items-center px-6 border-b border-dark-border">
+                <i class="ph-fill ph-globe-hemisphere-west text-2xl text-brand mr-2"></i>
+                <span class="font-bold text-lg tracking-tight">Alpha<span class="text-brand">Funding</span></span>
+            </div>
+            
+            <nav class="p-4 space-y-2 mt-2">
+                <a href="index.html" class="w-full flex items-center gap-3 px-4 py-2 text-gray-500 hover:text-white hover:bg-dark-hover rounded-lg font-medium transition text-xs mb-4 border border-dashed border-gray-700 group">
+                    <i class="ph-bold ph-arrow-u-up-left group-hover:-translate-x-1 transition-transform"></i> Volver a Inicio
+                </a>
+
+                <button onclick="showSection('terminal')" id="navTerminal" class="w-full flex items-center gap-3 px-4 py-3 bg-brand/10 text-brand rounded-lg font-medium transition text-sm border border-brand/20">
+                    <i class="ph-bold ph-chart-line-up"></i> Terminal
+                </button>
+                
+                <button onclick="showSection('management')" id="navManagement" class="w-full flex items-center gap-3 px-4 py-3 text-gray-400 hover:text-white hover:bg-dark-hover rounded-lg font-medium transition text-sm border border-transparent">
+                    <i class="ph-bold ph-squares-four"></i> Gestión de Cuentas
+                </button>
+
+                <button onclick="showSection('shop')" id="navShop" class="w-full flex items-center gap-3 px-4 py-3 text-gray-400 hover:text-white hover:bg-dark-hover rounded-lg font-medium transition text-sm border border-transparent">
+                    <i class="ph-bold ph-shopping-cart"></i> Tienda de Cuentas
+                </button>
+
+                <div class="pt-4 pb-2 px-4 text-[10px] font-bold text-gray-600 uppercase tracking-widest">Utilidades</div>
+                
+                <button onclick="window.location.href='rules.html'" class="w-full flex items-center gap-3 px-4 py-3 text-gray-400 hover:text-white hover:bg-dark-hover rounded-lg font-medium transition text-sm">
+                    <i class="ph-bold ph-scroll"></i> Reglas de Trading
+                </button>
+                <button onclick="alert('Próximamente')" class="w-full flex items-center gap-3 px-4 py-3 text-gray-400 hover:text-white hover:bg-dark-hover rounded-lg font-medium transition text-sm">
+                    <i class="ph-bold ph-receipt"></i> Facturación
+                </button>
+            </nav>
+        </div>
+
+        <div class="p-4 border-t border-dark-border">
+            <button onclick="logout()" class="flex items-center gap-3 w-full px-4 py-2 text-gray-400 hover:text-danger hover:bg-danger/10 rounded-lg transition font-medium text-sm">
+                <i class="ph-bold ph-sign-out"></i> Cerrar Sesión
+            </button>
+        </div>
+    </aside>
+
+    <main class="flex-1 flex flex-col h-screen overflow-hidden relative">
+        <header class="h-16 border-b border-dark-border flex items-center justify-between px-6 bg-dark-bg/90 backdrop-blur-md sticky top-0 z-20">
+            <h1 id="pageTitle" class="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
+                <i class="ph-fill ph-monitor text-brand"></i> Panel de Control
+            </h1>
+            <div class="flex items-center gap-4">
+                <div class="text-right">
+                    <div id="userNameDisplay" class="font-bold text-white text-sm leading-tight">Cargando...</div>
+                    <div class="text-[10px] text-gray-500 font-mono">ID: <span id="userIdDisplay">...</span></div>
+                </div>
+                <a href="profile.html" class="relative group cursor-pointer" title="Ir a mi Perfil">
+                    <img id="headerProfileImg" src="https://ui-avatars.com/api/?name=User&background=3b82f6&color=fff" class="w-9 h-9 rounded-full object-cover border-2 border-brand/30 shadow-[0_0_10px_rgba(59,130,246,0.3)] group-hover:border-brand transition">
+                </a>
+            </div>
+        </header>
+
+        <div class="flex-1 overflow-y-auto p-4 md:p-6 space-y-6 relative">
+
+            <div id="terminalView" class="fade-in space-y-6">
+                
+                <div id="accountStats" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div class="glass-panel p-6 rounded-xl animate-pulse h-24 flex items-center justify-center text-gray-500 text-xs">Cargando datos financieros...</div>
+                </div>
+
+                <div class="glass-panel p-5 rounded-xl border-t-2 border-brand shadow-lg">
+                    <div class="flex justify-between items-center mb-5">
+                        <h3 class="font-bold text-xs uppercase text-gray-400 flex items-center gap-2">
+                            <i class="ph-fill ph-target text-brand"></i> Estado del Desafío
+                        </h3>
+                        <span id="verdictBadge" class="px-3 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-gray-700 text-gray-300 border border-gray-600">Cargando...</span>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                        <div>
+                            <div class="flex justify-between text-[10px] mb-1.5 font-semibold text-gray-300">
+                                <span>META / BENEFICIO</span>
+                                <span id="profitProgressText" class="text-white">--</span>
+                            </div>
+                            <div class="w-full bg-dark-bg rounded-full h-2 overflow-hidden border border-dark-border">
+                                <div id="profitProgressBar" class="progress-bar bg-gradient-to-r from-green-500 to-green-400 h-2 rounded-full" style="width: 0%"></div>
+                            </div>
+                            <div class="text-[10px] text-gray-500 mt-1 flex justify-between" id="targetMoneyContainer">
+                                <span>Falta:</span>
+                                <span class="text-white font-mono">$<span id="targetMoney">--</span></span>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between text-[10px] mb-1.5 font-semibold text-gray-300">
+                                <span>PÉRDIDA TOTAL (10%)</span>
+                                <span id="ddProgressText" class="text-white">0% / 10%</span>
+                            </div>
+                            <div class="w-full bg-dark-bg rounded-full h-2 overflow-hidden border border-dark-border">
+                                <div id="ddProgressBar" class="progress-bar bg-gradient-to-r from-blue-600 to-blue-400 h-2 rounded-full" style="width: 0%"></div>
+                            </div>
+                            <div class="text-[10px] text-gray-500 mt-1 flex justify-between">
+                                <span>Margen Restante:</span>
+                                <span class="text-white font-mono">$<span id="maxLossMoney">--</span></span>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between text-[10px] mb-1.5 font-semibold text-gray-300">
+                                <span>PÉRDIDA DIARIA (5%)</span>
+                                <span id="dailyProgressText" class="text-white">0% / 5%</span>
+                            </div>
+                            <div class="w-full bg-dark-bg rounded-full h-2 overflow-hidden border border-dark-border">
+                                <div id="dailyProgressBar" class="progress-bar bg-gradient-to-r from-orange-500 to-yellow-400 h-2 rounded-full" style="width: 0%"></div>
+                            </div>
+                            <div class="text-[10px] text-gray-500 mt-1 flex justify-between">
+                                <span>Margen Hoy:</span>
+                                <span class="text-white font-mono">$<span id="dailyLossMoney">--</span></span>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between text-[10px] mb-1.5 font-semibold text-gray-300">
+                                <span>DÍAS OPERADOS</span>
+                                <span id="daysProgressText" class="text-white">0 / 5</span>
+                            </div>
+                            <div class="w-full bg-dark-bg rounded-full h-2 overflow-hidden border border-dark-border">
+                                <div id="daysProgressBar" class="progress-bar bg-purple-500 h-2 rounded-full" style="width: 0%"></div>
+                            </div>
+                            <div class="text-[10px] text-gray-500 mt-1 text-right" id="daysLabel">Consistencia Requerida</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 h-[550px]">
+                    
+                    <div class="lg:col-span-2 glass-panel rounded-xl overflow-hidden flex flex-col shadow-lg border border-gray-800">
+                        <div class="p-3 border-b border-dark-border flex justify-between items-center bg-dark-card">
+                            <div class="flex items-center gap-2 text-xs font-bold text-gray-400">
+                                <i class="ph-fill ph-chart-bar text-brand"></i> MERCADO EN VIVO
+                            </div>
+                            <select id="symbolSelector" class="bg-dark-bg border border-dark-border text-xs rounded px-2 py-1 focus:outline-none focus:border-brand text-white font-medium">
+                                <option value="BTCUSD">Bitcoin (BTC/USD)</option>
+                                <option value="ETHUSD">Ethereum (ETH/USD)</option>
+                                <option value="XAUUSD">Oro (XAU/USD)</option>
+                                <option value="EURUSD">Euro (EUR/USD)</option>
+                                <option value="AAPL">Apple (AAPL)</option>
+                                <option value="TSLA">Tesla (TSLA)</option>
+                                <option value="NVDA">Nvidia (NVDA)</option>
+                            </select>
+                        </div>
+                        <div class="flex-1 relative bg-[#0b0f19]" id="tradingview_container"></div>
+                    </div>
+
+                    <div id="executionPanel" class="glass-panel rounded-xl flex flex-col shadow-lg p-5 border border-gray-800 transition-all duration-300">
+                        <div class="border-b border-dark-border font-bold text-xs uppercase text-gray-400 pb-4 mb-4 flex justify-between">
+                            <span>Ejecución</span>
+                            <span class="text-brand">Instantánea ⚡</span>
+                        </div>
+                        
+                        <div class="flex-1 flex flex-col gap-5">
+                            <div class="relative z-20">
+                                <label class="text-[10px] font-bold uppercase text-gray-500 mb-1 block">Cuenta Activa</label>
+                                <select id="accountSelector" class="w-full bg-dark-bg border border-dark-border rounded-lg p-3 text-white text-sm focus:border-brand outline-none transition font-mono shadow-sm cursor-pointer"></select>
+                            </div>
+                            
+                            <div id="tradingControls" class="flex-1 flex flex-col gap-5 transition-opacity duration-300">
+                                <div class="bg-dark-bg p-4 rounded-lg border border-dark-border">
+                                    <label class="text-[10px] font-bold uppercase text-gray-500 mb-2 block flex justify-between">
+                                        <span>Volumen (Lotes)</span>
+                                        <span class="text-brand">1 Lote = 100k u.</span>
+                                    </label>
+                                    <div class="flex items-center gap-2">
+                                        <button onclick="adjustLots(-0.1)" class="w-8 h-8 rounded bg-dark-card hover:bg-dark-hover border border-dark-border text-gray-400 transition">-</button>
+                                        <input id="lotSize" type="number" value="1.0" step="0.1" min="0.01" class="flex-1 bg-transparent text-center text-xl font-bold text-white outline-none font-mono">
+                                        <button onclick="adjustLots(0.1)" class="w-8 h-8 rounded bg-dark-card hover:bg-dark-hover border border-dark-border text-gray-400 transition">+</button>
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-3 mt-auto">
+                                    <button onclick="tryTrade('SELL')" class="bg-danger/10 hover:bg-danger text-danger hover:text-white border border-danger/20 p-4 rounded-xl font-bold transition flex flex-col items-center gap-1 group shadow-lg shadow-red-900/10">
+                                        <span class="text-[10px] opacity-70 group-hover:text-white uppercase tracking-widest">Vender</span>
+                                        <span class="text-2xl leading-none">SELL</span>
+                                    </button>
+                                    <button onclick="tryTrade('BUY')" class="bg-success/10 hover:bg-success text-success hover:text-white border border-success/20 p-4 rounded-xl font-bold transition flex flex-col items-center gap-1 group shadow-lg shadow-green-900/10">
+                                        <span class="text-[10px] opacity-70 group-hover:text-white uppercase tracking-widest">Comprar</span>
+                                        <span class="text-2xl leading-none">BUY</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-panel rounded-xl overflow-hidden shadow-lg border-t-2 border-gray-700">
+                    <div class="p-4 border-b border-dark-border bg-dark-card flex justify-between items-center">
+                        <h3 class="font-bold text-xs uppercase text-gray-400 tracking-wider">Libro de Órdenes & Historial</h3>
+                        <div class="text-[10px] text-gray-500">Últimas 50 operaciones</div>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left whitespace-nowrap">
+                            <thead class="bg-dark-bg border-b border-dark-border text-gray-500">
+                                <tr>
+                                    <th class="p-4">Fecha / Hora</th>
+                                    <th class="p-4">Ticket</th>
+                                    <th class="p-4">Símbolo</th>
+                                    <th class="p-4">Tipo</th>
+                                    <th class="p-4">Volumen</th>
+                                    <th class="p-4">Entrada</th>
+                                    <th class="p-4">Salida</th>
+                                    <th class="p-4 text-center">% Rent.</th>
+                                    <th class="p-4">P/L ($)</th>
+                                    <th class="p-4 text-right">Acción/Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tradesTableBody" class="divide-y divide-dark-border text-gray-300 font-mono text-xs">
+                                </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div id="managementView" class="hidden fade-in pb-10">
+                <div class="flex flex-col md:flex-row justify-between items-end mb-8 border-b border-dark-border pb-6 gap-4">
+                    <div>
+                        <h2 class="text-3xl font-bold text-white">Gestión de Activos</h2>
+                        <p class="text-gray-400 text-sm mt-1">Administra, fusiona y limpia tus cuentas de trading.</p>
+                    </div>
+                    <div class="flex flex-col md:flex-row gap-4 items-center">
+                        
+                        <div class="flex gap-2 bg-dark-card p-1 rounded-lg border border-dark-border">
+                            <select id="filterStatus" onchange="applyFilters()" class="bg-transparent text-xs text-gray-300 p-2 outline-none cursor-pointer hover:text-white">
+                                <option value="ALL">🔍 Todos los Estados</option>
+                                <option value="LIVE">⚡ Live Real</option>
+                                <option value="ACTIVE">🔵 Activas (Examen)</option>
+                                <option value="PASSED">🏆 Aprobadas</option>
+                                <option value="BREACHED">💀 Quemadas</option>
+                            </select>
+                            <div class="w-px bg-dark-border my-1"></div>
+                            <select id="sortOrder" onchange="applyFilters()" class="bg-transparent text-xs text-gray-300 p-2 outline-none cursor-pointer hover:text-white">
+                                <option value="NEWEST">📅 Más Recientes</option>
+                                <option value="OLDEST">⏳ Más Antiguas</option>
+                                <option value="BALANCE_HIGH">💰 Mayor Saldo</option>
+                                <option value="BALANCE_LOW">🔻 Menor Saldo</option>
+                            </select>
+                            <button onclick="resetFilters()" class="px-3 text-xs text-gray-500 hover:text-white transition" title="Limpiar filtros"><i class="ph-bold ph-arrow-counter-clockwise"></i></button>
+                        </div>
+
+                        <div id="mergeActionPanel" class="hidden">
+                            <button id="mergeBtnText" onclick="executeMerge()" class="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white px-6 py-2.5 rounded-lg font-bold shadow-lg shadow-purple-500/20 transition flex items-center gap-2 animate-pulse text-xs uppercase tracking-wider">
+                                <i class="ph-bold ph-intersect"></i> FUSIONAR SELECCIONADAS
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="managementGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    </div>
+            </div>
+
+            <div id="shopView" class="hidden fade-in pb-10">
+                <div class="text-center mb-10 mt-6">
+                    <h2 class="text-3xl font-bold text-white mb-2">Selecciona tu Capital</h2>
+                    <p class="text-gray-400 text-sm">Sin suscripciones mensuales. Un solo pago.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 px-4">
+                    <div class="glass-panel p-6 rounded-2xl border border-dark-border hover:border-brand/50 transition group flex flex-col relative overflow-hidden">
+                        <div class="text-gray-500 text-xs font-bold uppercase mb-2 tracking-widest">Starter</div>
+                        <div class="text-3xl font-bold text-white mb-1">$10,000</div>
+                        <div class="text-brand font-mono text-sm mb-6 bg-brand/10 inline-block px-2 py-1 rounded w-fit">Precio: $100</div>
+                        <ul class="space-y-4 mb-8 text-xs text-gray-300 flex-1">
+                            <li class="flex items-center gap-2"><i class="ph-fill ph-check-circle text-brand"></i> Profit Target: 8%</li>
+                            <li class="flex items-center gap-2"><i class="ph-fill ph-warning-circle text-orange-400"></i> Max Loss: 10%</li>
+                            <li class="flex items-center gap-2"><i class="ph-fill ph-lightning text-yellow-400"></i> Leverage: 1:100</li>
+                        </ul>
+                        <button onclick="tryPurchase('Starter 10k')" class="w-full py-3 rounded-xl border border-brand text-brand font-bold hover:bg-brand hover:text-white transition">Comprar</button>
+                    </div>
+
+                    <div class="glass-panel p-6 rounded-2xl border border-dark-border hover:border-brand/50 transition group flex flex-col relative overflow-hidden">
+                        <div class="text-gray-500 text-xs font-bold uppercase mb-2 tracking-widest">Standard</div>
+                        <div class="text-3xl font-bold text-white mb-1">$50,000</div>
+                        <div class="text-brand font-mono text-sm mb-6 bg-brand/10 inline-block px-2 py-1 rounded w-fit">Precio: $300</div>
+                        <ul class="space-y-4 mb-8 text-xs text-gray-300 flex-1">
+                            <li class="flex items-center gap-2"><i class="ph-fill ph-check-circle text-brand"></i> Profit Target: 8%</li>
+                            <li class="flex items-center gap-2"><i class="ph-fill ph-warning-circle text-orange-400"></i> Max Loss: 10%</li>
+                            <li class="flex items-center gap-2"><i class="ph-fill ph-lightning text-yellow-400"></i> Leverage: 1:100</li>
+                        </ul>
+                        <button onclick="tryPurchase('Standard 50k')" class="w-full py-3 rounded-xl border border-brand text-brand font-bold hover:bg-brand hover:text-white transition">Comprar</button>
+                    </div>
+
+                    <div class="glass-panel p-6 rounded-2xl border-2 border-brand relative flex flex-col shadow-2xl shadow-brand/10 transform scale-105 z-10">
+                        <div class="absolute top-0 right-0 bg-brand text-white text-[10px] font-bold px-3 py-1 rounded-bl-lg">MÁS VENDIDO</div>
+                        <div class="text-brand text-xs font-bold uppercase mb-2 tracking-widest">Challenge</div>
+                        <div class="text-4xl font-bold text-white mb-1">$100,000</div>
+                        <div class="text-white font-mono text-sm mb-6 bg-white/10 inline-block px-2 py-1 rounded w-fit">Precio: $500</div>
+                        <ul class="space-y-4 mb-8 text-xs text-white flex-1">
+                            <li class="flex items-center gap-2"><i class="ph-fill ph-check-circle text-brand"></i> Profit Target: 8%</li>
+                            <li class="flex items-center gap-2"><i class="ph-fill ph-warning-circle text-orange-200"></i> Max Loss: 10%</li>
+                            <li class="flex items-center gap-2"><i class="ph-fill ph-lightning text-yellow-200"></i> Leverage: 1:100</li>
+                            <li class="flex items-center gap-2"><i class="ph-fill ph-crown text-yellow-400"></i> Soporte VIP</li>
+                        </ul>
+                        <button onclick="tryPurchase('Challenge 100k')" class="w-full py-4 rounded-xl bg-brand text-white font-bold hover:bg-brand-dark transition shadow-lg shadow-brand/30 uppercase tracking-wide">Comprar Ahora</button>
+                    </div>
+
+                    <div class="glass-panel p-6 rounded-2xl border border-dark-border hover:border-brand/50 transition group flex flex-col relative overflow-hidden">
+                        <div class="text-gray-500 text-xs font-bold uppercase mb-2 tracking-widest">Pro Trader</div>
+                        <div class="text-3xl font-bold text-white mb-1">$200,000</div>
+                        <div class="text-brand font-mono text-sm mb-6 bg-brand/10 inline-block px-2 py-1 rounded w-fit">Precio: $900</div>
+                        <ul class="space-y-4 mb-8 text-xs text-gray-300 flex-1">
+                            <li class="flex items-center gap-2"><i class="ph-fill ph-check-circle text-brand"></i> Profit Target: 8%</li>
+                            <li class="flex items-center gap-2"><i class="ph-fill ph-warning-circle text-orange-400"></i> Max Loss: 10%</li>
+                            <li class="flex items-center gap-2"><i class="ph-fill ph-lightning text-yellow-400"></i> Leverage: 1:100</li>
+                        </ul>
+                        <button onclick="tryPurchase('Pro 200k')" class="w-full py-3 rounded-xl border border-brand text-brand font-bold hover:bg-brand hover:text-white transition">Comprar</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+    <script>
+        const API_URL = '';
+        let currentAccountId = null;
+        let accountsData = []; // Datos crudos
+        let filteredAccounts = []; // Datos filtrados
+        let currentAccountStatus = 'ACTIVE';
+        let mergeSelection = []; // Para guardar IDs a fusionar (LISTA INFINITA)
+
+        // ------------------------------------------
+        // 🔥 1. SISTEMA DE TOASTS (Notificaciones)
+        // ------------------------------------------
+        function showToast(msg, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            const colors = type === 'success' ? 'bg-dark-card border-l-4 border-success' : 'bg-dark-card border-l-4 border-danger';
+            const icon = type === 'success' ? '<i class="ph-fill ph-check-circle text-success text-xl"></i>' : '<i class="ph-fill ph-warning-circle text-danger text-xl"></i>';
+            
+            toast.className = `flex items-center gap-3 p-4 rounded shadow-2xl pointer-events-auto border border-dark-border slide-in-right ${colors} text-white min-w-[300px] z-[210]`;
+            toast.innerHTML = `${icon} <div class="text-sm font-medium">${msg}</div>`;
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.classList.add('fade-out');
+                setTimeout(() => toast.remove(), 400);
+            }, 3000);
+        }
+
+        // ------------------------------------------
+        // 🔥 2. SISTEMA MODAL UNIVERSAL
+        // ------------------------------------------
+        const appModal = document.getElementById('appModal');
+        let modalCallback = null;
+
+        function showConfirm(title, message, onConfirm, type = 'info') {
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalMessage').innerText = message;
+            
+            // Icono dinámico
+            const iconContainer = document.getElementById('modalIcon');
+            if(type === 'buy') { iconContainer.innerHTML = '<i class="ph-fill ph-shopping-cart"></i>'; iconContainer.className = "w-16 h-16 rounded-full bg-brand/10 text-brand flex items-center justify-center mx-auto mb-4 text-3xl"; }
+            else if(type === 'danger') { iconContainer.innerHTML = '<i class="ph-fill ph-warning"></i>'; iconContainer.className = "w-16 h-16 rounded-full bg-danger/10 text-danger flex items-center justify-center mx-auto mb-4 text-3xl"; }
+            else if(type === 'success') { iconContainer.innerHTML = '<i class="ph-fill ph-trophy"></i>'; iconContainer.className = "w-16 h-16 rounded-full bg-success/10 text-success flex items-center justify-center mx-auto mb-4 text-3xl"; }
+            else { iconContainer.innerHTML = '<i class="ph-fill ph-info"></i>'; iconContainer.className = "w-16 h-16 rounded-full bg-brand/10 text-brand flex items-center justify-center mx-auto mb-4 text-3xl"; }
+
+            modalCallback = onConfirm;
+            appModal.classList.remove('hidden');
+        }
+
+        function closeAppModal() {
+            appModal.classList.add('hidden');
+            modalCallback = null;
+        }
+
+        document.getElementById('modalConfirmBtn').addEventListener('click', () => {
+            if(modalCallback) modalCallback();
+            closeAppModal();
+        });
+
+        // ------------------------------------------
+        // MODALES Y UI
+        // ------------------------------------------
+        function showGameOver() {
+            document.getElementById('gameOverModal').classList.remove('hidden');
+        }
+        function closeGameOver() {
+            document.getElementById('gameOverModal').classList.add('hidden');
+        }
+
+        // ------------------------------------------
+        // NAVEGACIÓN ENTRE SECCIONES
+        // ------------------------------------------
+        function showSection(sectionId) {
+            // Ocultar todas
+            document.getElementById('terminalView').classList.add('hidden');
+            document.getElementById('shopView').classList.add('hidden');
+            document.getElementById('managementView').classList.add('hidden');
+            
+            // Reset styles botones menú
+            const inactiveClass = "w-full flex items-center gap-3 px-4 py-3 text-gray-400 hover:text-white hover:bg-dark-hover rounded-lg font-medium transition text-sm border border-transparent";
+            document.getElementById('navTerminal').className = inactiveClass;
+            document.getElementById('navShop').className = inactiveClass;
+            document.getElementById('navManagement').className = inactiveClass;
+
+            // Mostrar seleccionada
+            document.getElementById(sectionId + 'View').classList.remove('hidden');
+            
+            // Active Style
+            const activeClass = "w-full flex items-center gap-3 px-4 py-3 bg-brand/10 text-brand rounded-lg font-medium transition text-sm border border-brand/20";
+            
+            if(sectionId === 'terminal') {
+                document.getElementById('navTerminal').className = activeClass;
+                document.getElementById('pageTitle').innerHTML = '<i class="ph-fill ph-monitor text-brand"></i> Terminal de Trading';
+            } else if(sectionId === 'shop') {
+                document.getElementById('navShop').className = activeClass;
+                document.getElementById('pageTitle').innerHTML = '<i class="ph-fill ph-shopping-cart text-brand"></i> Tienda de Cuentas';
+            } else if(sectionId === 'management') {
+                document.getElementById('navManagement').className = activeClass;
+                document.getElementById('pageTitle').innerHTML = '<i class="ph-fill ph-squares-four text-brand"></i> Gestión de Cuentas';
+                applyFilters(); // Renderizamos la grid al entrar
+            }
+        }
+
+        // ------------------------------------------
+        // INICIALIZACIÓN Y DATOS
+        // ------------------------------------------
+        async function initDashboard() {
+            const token = localStorage.getItem('token');
+            const userId = localStorage.getItem('userId');
+            if (!token) window.location.href = 'index.html';
+
+            try {
+                const res = await fetch(`${API_URL}/dashboard/${userId}`, { headers: { 'Authorization': `Bearer ${token}` } });
+                const data = await res.json();
+                
+                document.getElementById('userNameDisplay').innerText = data.player.name;
+                document.getElementById('userIdDisplay').innerText = userId.slice(0, 8);
+                
+                // 🔥 CARGAR FOTO PERFIL HEADER (CONEXIÓN CON PROFILE)
+                const savedPhoto = localStorage.getItem('profilePhoto_' + userId) || 
+                                 `https://ui-avatars.com/api/?name=${data.player.name}&background=3b82f6&color=fff`;
+                document.getElementById('headerProfileImg').src = savedPhoto;
+
+                // Filtramos las cuentas 'MERGED' para que no salgan
+                accountsData = data.accounts.filter(a => a.status !== 'MERGED');
+                filteredAccounts = [...accountsData]; // Copia inicial
+                
+                renderAccountsSelector();
+                
+                if (accountsData.length > 0) {
+                    if(!currentAccountId) selectAccount(accountsData[0].id);
+                    else selectAccount(currentAccountId);
+                } else {
+                    document.getElementById('accountStats').innerHTML = `<div class="col-span-4 text-center py-12 bg-dark-card rounded-xl border border-dashed border-gray-700"><p class="text-gray-400 mb-4">No tienes cuentas activas. ¡Empieza tu viaje ahora!</p><button onclick="showSection('shop')" class="bg-brand text-white px-8 py-3 rounded-xl font-bold shadow-lg shadow-brand/20 animate-bounce">Ir a la Tienda</button></div>`;
+                }
+            } catch (error) { console.error(error); }
+        }
+
+        // ------------------------------------------
+        // LÓGICA DE FILTRADO Y ORDENACIÓN 🔍
+        // ------------------------------------------
+        function applyFilters() {
+            const statusFilter = document.getElementById('filterStatus').value;
+            const sortOrder = document.getElementById('sortOrder').value;
+
+            // 1. Filtrar
+            filteredAccounts = accountsData.filter(acc => {
+                if(statusFilter === 'ALL') return true;
+                return acc.status === statusFilter;
+            });
+
+            // 2. Ordenar
+            filteredAccounts.sort((a, b) => {
+                if(sortOrder === 'BALANCE_HIGH') return b.balance - a.balance;
+                if(sortOrder === 'BALANCE_LOW') return a.balance - b.balance;
+                if(sortOrder === 'NEWEST') return b.id - a.id; 
+                if(sortOrder === 'OLDEST') return a.id - b.id;
+                return 0;
+            });
+
+            renderManagementPanel();
+        }
+
+        function resetFilters() {
+            document.getElementById('filterStatus').value = 'ALL';
+            document.getElementById('sortOrder').value = 'NEWEST';
+            applyFilters();
+        }
+
+        // --- GESTIÓN DE CUENTAS (RENDERIZADO) ---
+        function renderManagementPanel() {
+            const grid = document.getElementById('managementGrid');
+            
+            if(filteredAccounts.length === 0) {
+                grid.innerHTML = '<div class="col-span-3 text-center text-gray-500 py-10 italic">No se encontraron cuentas con estos filtros.</div>';
+                return;
+            }
+
+            grid.innerHTML = filteredAccounts.map(acc => {
+                let borderColor = 'border-gray-700';
+                let statusBadge = '<span class="px-2 py-1 bg-gray-700 rounded text-[10px] text-white">ACTIVA</span>';
+                let isLive = false;
+
+                if(acc.status === 'LIVE') { 
+                    borderColor = 'border-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.2)]';
+                    statusBadge = '<span class="px-2 py-1 bg-blue-600 rounded text-[10px] text-white font-bold animate-pulse">LIVE REAL</span>';
+                    isLive = true;
+                } else if (acc.status === 'BREACHED') {
+                    borderColor = 'border-red-500';
+                    statusBadge = '<span class="px-2 py-1 bg-red-600 rounded text-[10px] text-white font-bold">QUEMADA 💀</span>';
+                } else if (acc.status === 'PASSED') {
+                    borderColor = 'border-green-500';
+                    statusBadge = '<span class="px-2 py-1 bg-green-600 rounded text-[10px] text-white font-bold">APROBADA 🏆</span>';
+                } else if (acc.status === 'FUNDED') {
+                    statusBadge = '<span class="px-2 py-1 bg-gray-600 rounded text-[10px] text-white font-bold">ARCHIVADA</span>';
+                }
+
+                // Checkbox solo para LIVE
+                const isChecked = mergeSelection.includes(acc.id) ? 'checked' : '';
+                const checkHtml = isLive ? `<input type="checkbox" onchange="toggleMergeSelection('${acc.id}')" ${isChecked} class="w-5 h-5 rounded border-gray-600 bg-dark-bg text-brand focus:ring-brand cursor-pointer">` : '';
+
+                const historyId = `hist-${acc.id}`;
+                
+                return `
+                <div class="glass-panel p-6 rounded-xl border ${borderColor} flex flex-col gap-4 relative overflow-hidden group hover:bg-dark-card/80 transition">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <div class="text-[10px] text-gray-500 uppercase font-bold tracking-widest mb-1">${acc.plan}</div>
+                            <div class="text-2xl font-bold text-white">$${acc.balance.toLocaleString()}</div>
+                            <div class="text-xs text-gray-400 font-mono mt-1">Login: ${acc.login}</div>
+                        </div>
+                        <div class="flex flex-col items-end gap-2">
+                            ${statusBadge}
+                            ${checkHtml}
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2 text-xs bg-dark-bg p-3 rounded-lg border border-dark-border">
+                        <div class="text-gray-500">Equidad:</div><div class="text-right text-white font-mono">$${acc.equity.toLocaleString()}</div>
+                        <div class="text-gray-500">Profit:</div><div class="text-right ${acc.balance >= acc.initialBalance ? 'text-green-400' : 'text-red-400'} font-mono">$${(acc.balance - (acc.initialBalance || 0)).toFixed(2)}</div>
+                    </div>
+
+                    <div class="flex gap-2 mt-auto">
+                        <button onclick="toggleHistory('${historyId}')" class="flex-1 py-2 rounded-lg bg-gray-700 hover:bg-gray-600 text-xs font-bold text-white transition">VER HISTORIAL</button>
+                        ${acc.status === 'BREACHED' ? `<button onclick="deleteAccount('${acc.id}')" class="px-3 py-2 rounded-lg bg-red-900/50 hover:bg-red-600 text-red-200 hover:text-white transition" title="Eliminar cuenta"><i class="ph-bold ph-trash"></i></button>` : ''}
+                    </div>
+
+                    <div id="${historyId}" class="hidden mt-4 pt-4 border-t border-gray-700 max-h-40 overflow-y-auto">
+                        <table class="w-full text-left text-[10px] text-gray-400">
+                            <thead><tr><th>Símbolo</th><th>Tipo</th><th>P/L</th></tr></thead>
+                            <tbody>
+                                ${(acc.openTrades || []).length > 0 
+                                    ? (acc.openTrades || []).map(t => `<tr><td>${t.symbol}</td><td>${t.type}</td><td class="${t.profit >= 0 ? 'text-green-400' : 'text-red-400'}">$${t.profit || 'OPEN'}</td></tr>`).join('')
+                                    : '<tr><td colspan="3" class="text-center italic py-2">Sin operaciones abiertas</td></tr>'
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                `;
+            }).join('');
+        }
+
+        function toggleHistory(id) {
+            const el = document.getElementById(id);
+            el.classList.toggle('hidden');
+        }
+
+        function toggleMergeSelection(accId) {
+            if(mergeSelection.includes(accId)) {
+                mergeSelection = mergeSelection.filter(id => id !== accId);
+            } else {
+                mergeSelection.push(accId);
+            }
+
+            // 🔥 PERMITE MÁS DE 2 CUENTAS (LISTA INFINITA)
+            const btn = document.getElementById('mergeActionPanel');
+            const txt = document.getElementById('mergeBtnText');
+            if(mergeSelection.length >= 2) { 
+                btn.classList.remove('hidden');
+                txt.innerHTML = `<i class="ph-bold ph-intersect"></i> FUSIONAR (${mergeSelection.length}) CUENTAS`;
+            } else {
+                btn.classList.add('hidden');
+            }
+        }
+
+        // 🔥 MODIFICADO PARA USAR EL MODAL
+        async function executeMerge() {
+            showConfirm(
+                "Fusión de Cuentas",
+                `¿Seguro que quieres fusionar estas ${mergeSelection.length} cuentas? Los saldos se sumarán.`,
+                async () => {
+                    const token = localStorage.getItem('token');
+                    try {
+                        const res = await fetch(`${API_URL}/merge-accounts`, {
+                            method: 'POST',
+                            headers: {'Content-Type':'application/json','Authorization':`Bearer ${token}`},
+                            body: JSON.stringify({ accountIds: mergeSelection }) 
+                        });
+                        
+                        if(res.ok) {
+                            showToast("¡FUSIÓN COMPLETADA! 🧬");
+                            setTimeout(() => window.location.reload(), 1500);
+                        } else {
+                            const err = await res.json();
+                            showToast("Error: " + err.error, "error");
+                        }
+                    } catch(e) { showToast("Error de conexión", "error"); }
+                },
+                'info'
+            );
+        }
+
+        // 🔥 MODIFICADO PARA USAR EL MODAL
+        async function deleteAccount(accId) {
+            showConfirm(
+                "Eliminar Cuenta",
+                "⚠️ Esta acción borrará la cuenta quemada para siempre. ¿Estás seguro?",
+                async () => {
+                    const token = localStorage.getItem('token');
+                    try {
+                        const res = await fetch(`${API_URL}/delete-account`, {
+                            method: 'POST',
+                            headers: {'Content-Type':'application/json','Authorization':`Bearer ${token}`},
+                            body: JSON.stringify({ accountId: accId })
+                        });
+                        if(res.ok) {
+                            showToast("Cuenta eliminada correctamente.");
+                            window.location.reload();
+                        } else {
+                            showToast("Error al eliminar.", "error");
+                        }
+                    } catch(e) { showToast("Error de conexión", "error"); }
+                },
+                'danger'
+            );
+        }
+
+        // --- TERMINAL LOGIC ---
+        function renderAccountsSelector() {
+             const selector = document.getElementById('accountSelector');
+             // Usamos la lista completa para el selector, no la filtrada
+             selector.innerHTML = accountsData.map(acc => {
+                 let statusIcon = '🔵';
+                 let statusText = 'ACTIVA';
+                 
+                 if(acc.status === 'BREACHED') { statusIcon = '💀'; statusText = 'QUEMADA'; }
+                 else if(acc.status === 'PASSED') { statusIcon = '🏆'; statusText = 'APROBADA'; }
+                 else if(acc.status === 'LIVE') { statusIcon = '⚡'; statusText = 'LIVE REAL'; }
+                 else if(acc.status === 'FUNDED') { statusIcon = '🏁'; statusText = 'ARCHIVADA'; }
+
+                 return `<option value="${acc.id}">${statusIcon} [${statusText}] - Login: ${acc.login} | $${acc.balance.toFixed(0)}</option>`;
+             }).join('');
+             
+             if(currentAccountId && accountsData.some(a=>a.id===currentAccountId)) selector.value=currentAccountId;
+             selector.onchange = (e) => selectAccount(e.target.value);
+        }
+
+        async function selectAccount(accId) {
+            currentAccountId = accId;
+            const acc = accountsData.find(a => a.id === accId);
+            currentAccountStatus = acc.status;
+            
+            await fetch(`${API_URL}/check-risk`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ accountId: accId }) });
+            const evalRes = await fetch(`${API_URL}/evaluate-account`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ accountId: accId }) });
+            const ev = await evalRes.json();
+            
+            const controls = document.getElementById('tradingControls');
+            if (acc.status === 'BREACHED' || ev.verdict === 'SUSPENDIDO') {
+                showGameOver();
+                controls.classList.add('opacity-50', 'pointer-events-none'); 
+            } else {
+                closeGameOver();
+                controls.classList.remove('opacity-50', 'pointer-events-none'); 
+            }
+
+            let initial = acc.initialBalance;
+            if (!initial) { 
+                if (acc.plan.includes('200k')) initial = 200000;
+                else if (acc.plan.includes('100k')) initial = 100000;
+                else if (acc.plan.includes('50k')) initial = 50000;
+                else if (acc.plan.includes('10k')) initial = 10000;
+                else initial = 100000;
+            }
+            
+            // Ajuste visual si la fusión superó el plan base
+            if(acc.status === 'LIVE' && acc.balance > initial * 1.5) initial = acc.balance;
+
+            const isLive = acc.status === 'LIVE';
+            const profit = acc.balance - initial;
+
+            // 4. RENDERIZAR TARJETAS TERMINAL
+            if(isLive) {
+                document.getElementById('accountStats').innerHTML = `
+                    <div class="glass-panel p-5 rounded-xl border-l-2 border-brand live-glow relative overflow-hidden group">
+                        <div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition"><i class="ph-fill ph-wallet text-4xl text-brand"></i></div>
+                        <div class="text-gray-500 text-[10px] font-bold uppercase mb-1 tracking-widest">Balance Total</div>
+                        <div class="text-3xl font-bold text-white tracking-tight">$${acc.balance.toLocaleString()}</div>
+                    </div>
+                    
+                    <div class="glass-panel p-5 rounded-xl border-l-2 border-gold live-glow relative overflow-hidden group">
+                        <div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition"><i class="ph-fill ph-coins text-4xl text-gold"></i></div>
+                        <div class="text-gray-500 text-[10px] font-bold uppercase mb-1 tracking-widest">Beneficio Retirable</div>
+                        <div class="text-3xl font-bold ${profit >= 0 ? 'text-gold' : 'text-gray-400'} tracking-tight">
+                            ${profit > 0 ? '+' : ''}$${profit.toLocaleString()}
+                        </div>
+                    </div>
+
+                    <div class="glass-panel p-5 rounded-xl border-l-2 border-purple-500 relative overflow-hidden group">
+                        <div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition"><i class="ph-fill ph-chart-line-up text-4xl text-purple-500"></i></div>
+                        <div class="text-gray-500 text-[10px] font-bold uppercase mb-1 tracking-widest">Equidad</div>
+                        <div class="text-2xl font-bold text-white">$${acc.equity.toLocaleString()}</div>
+                    </div>
+
+                    <div class="glass-panel p-5 rounded-xl border-l-2 border-blue-500 relative overflow-hidden group bg-blue-500/10">
+                        <div class="absolute right-0 top-0 p-4 opacity-20 group-hover:opacity-30 transition"><i class="ph-fill ph-crown text-4xl text-blue-400"></i></div>
+                        <div class="text-blue-300 text-[10px] font-bold uppercase mb-1 tracking-widest">Estado</div>
+                        <div class="text-xl font-bold text-white flex items-center gap-2">
+                            TRADER PRO <i class="ph-fill ph-seal-check text-blue-400"></i>
+                        </div>
+                    </div>
+                `;
+            } else {
+                document.getElementById('accountStats').innerHTML = `
+                    <div class="glass-panel p-5 rounded-xl border-l-2 border-brand relative overflow-hidden group">
+                        <div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition"><i class="ph-fill ph-wallet text-4xl text-brand"></i></div>
+                        <div class="text-gray-500 text-[10px] font-bold uppercase mb-1 tracking-widest">Balance</div>
+                        <div class="text-2xl font-bold text-white">$${acc.balance.toFixed(2)}</div>
+                    </div>
+                    <div class="glass-panel p-5 rounded-xl border-l-2 border-purple-500 relative overflow-hidden group">
+                        <div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition"><i class="ph-fill ph-chart-line-up text-4xl text-purple-500"></i></div>
+                        <div class="text-gray-500 text-[10px] font-bold uppercase mb-1 tracking-widest">Equidad</div>
+                        <div class="text-2xl font-bold text-white">$${acc.balance.toFixed(2)}</div>
+                    </div>
+                    <div class="glass-panel p-5 rounded-xl border-l-2 border-orange-500 relative overflow-hidden group">
+                         <div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition"><i class="ph-fill ph-medal text-4xl text-orange-500"></i></div>
+                        <div class="text-gray-500 text-[10px] font-bold uppercase mb-1 tracking-widest">Plan & Apalancamiento</div>
+                        <div class="text-xl font-bold text-white truncate">${acc.plan} <span class="text-xs text-orange-400 bg-orange-500/10 px-2 py-0.5 rounded ml-1">1:100</span></div>
+                    </div>
+                    <div class="glass-panel p-5 rounded-xl border-l-2 ${acc.status === 'ACTIVE' ? 'border-success' : (acc.status === 'PASSED' ? 'border-brand' : 'border-danger')} relative overflow-hidden group">
+                        <div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition"><i class="ph-fill ph-activity text-4xl"></i></div>
+                        <div class="text-gray-500 text-[10px] font-bold uppercase mb-1 tracking-widest">Estado</div>
+                        <div class="text-xl font-bold text-white">${acc.status}</div>
+                    </div>
+                `;
+            }
+
+            // 5. CÁLCULOS BARRAS DE PROGRESO
+            const maxLoss = initial * 0.10;
+            const dailyMax = initial * 0.05;
+
+            // A. META
+            if (isLive) {
+                document.getElementById('profitProgressText').innerText = "SIN LÍMITE 🚀";
+                document.getElementById('profitProgressBar').style.width = "100%";
+                document.getElementById('profitProgressBar').className = "progress-bar bg-blue-500 h-2 rounded-full animate-pulse shadow-[0_0_10px_blue]"; 
+                document.getElementById('targetMoneyContainer').innerHTML = "<span class='text-blue-400 font-bold text-xs'>100% Tuyo</span>";
+            } else {
+                const profitTarget = initial * 0.08;
+                const profitPercentReal = (ev.profit / initial) * 100;
+                const profitBar = Math.max(0, Math.min(100, (ev.profit / profitTarget) * 100));
+                
+                document.getElementById('profitProgressText').innerText = `${profitPercentReal.toFixed(2)}% / 8%`;
+                document.getElementById('profitProgressBar').className = "progress-bar bg-gradient-to-r from-green-500 to-green-400 h-2 rounded-full";
+                document.getElementById('profitProgressBar').style.width = `${profitBar}%`;
+                document.getElementById('targetMoneyContainer').innerHTML = `<span>Falta:</span> <span class="text-white font-mono">$<span id="targetMoney">${(profitTarget - ev.profit).toFixed(2)}</span></span>`;
+            }
+
+            // B. DRAWDOWN TOTAL
+            const currentTotalLoss = initial - acc.equity;
+            let totalLossPercent = 0;
+            let totalBar = 0;
+            if (currentTotalLoss > 0) {
+                totalLossPercent = (currentTotalLoss / initial) * 100;
+                totalBar = (currentTotalLoss / maxLoss) * 100;
+            }
+            document.getElementById('ddProgressBar').style.width = `${Math.min(100, totalBar)}%`;
+            document.getElementById('ddProgressText').innerText = `-${totalLossPercent.toFixed(2)}% / 10%`;
+            document.getElementById('maxLossMoney').innerText = (maxLoss - currentTotalLoss).toFixed(2);
+
+            // C. DRAWDOWN DIARIO
+            const dailyStart = acc.dailyStartBalance || initial;
+            const currentDailyLoss = dailyStart - acc.equity;
+            let dailyLossPercent = 0;
+            let dailyBar = 0;
+            if (currentDailyLoss > 0) {
+                dailyLossPercent = (currentDailyLoss / initial) * 100;
+                dailyBar = (currentDailyLoss / dailyMax) * 100;
+            }
+            document.getElementById('dailyProgressBar').style.width = `${Math.min(100, dailyBar)}%`;
+            document.getElementById('dailyProgressText').innerText = `-${dailyLossPercent.toFixed(2)}% / 5%`;
+            document.getElementById('dailyLossMoney').innerText = (dailyMax - currentDailyLoss).toFixed(2);
+
+            // D. DÍAS
+            if (isLive) {
+                 document.getElementById('daysProgressText').innerText = "ILIMITADO";
+                 document.getElementById('daysProgressBar').style.width = "100%";
+                 document.getElementById('daysLabel').innerText = "Modo Profesional";
+            } else {
+                document.getElementById('daysProgressBar').style.width = `${(ev.validDays / 5) * 100}%`;
+                document.getElementById('daysProgressText').innerText = `${ev.validDays} / 5`;
+                document.getElementById('daysLabel').innerText = "Consistencia Requerida";
+            }
+
+            // 6. BADGES Y BOTÓN RECLAMAR
+            const badge = document.getElementById('verdictBadge');
+            const existingBtn = document.getElementById('claimButton');
+            if(existingBtn) existingBtn.remove();
+            
+            if (acc.status === 'PASSED' || ev.verdict === 'APROBADO') {
+                badge.innerText = "¡APROBADO!"; 
+                badge.className = "px-3 py-0.5 rounded-full text-[10px] font-bold bg-success text-white animate-pulse border border-green-500 shadow-[0_0_10px_green]";
+                
+                if(acc.status !== 'FUNDED') {
+                    document.getElementById('accountStats').insertAdjacentHTML('afterend', `
+                        <div id="claimButton" class="mt-4 bg-gradient-to-r from-yellow-600 to-yellow-400 p-1 rounded-xl shadow-lg shadow-yellow-500/20 animate-bounce cursor-pointer" onclick="claimFunded('${acc.id}')">
+                            <div class="bg-dark-bg/90 hover:bg-dark-bg/50 text-white font-bold py-4 rounded-lg transition flex items-center justify-center gap-3 uppercase tracking-widest border border-yellow-500">
+                                <i class="ph-fill ph-trophy text-2xl text-yellow-400"></i>
+                                Reclamar Cuenta Fondeada ($${initial.toLocaleString()})
+                            </div>
+                        </div>
+                    `);
+                }
+            } else if (acc.status === 'BREACHED' || ev.verdict === 'SUSPENDIDO') {
+                badge.innerText = "SUSPENDIDO (QUEMADA)"; 
+                badge.className = "px-3 py-0.5 rounded-full text-[10px] font-bold bg-danger text-white border border-red-500 shadow-[0_0_10px_red]";
+                document.getElementById('ddProgressBar').className = "progress-bar bg-danger h-2 rounded-full";
+                document.getElementById('dailyProgressBar').className = "progress-bar bg-danger h-2 rounded-full";
+            } else if (acc.status === 'LIVE') {
+                badge.innerText = "CUENTA REAL (LIVE)"; 
+                badge.className = "px-3 py-0.5 rounded-full text-[10px] font-bold bg-blue-600 text-white border border-blue-400 shadow-[0_0_10px_blue]";
+            } else {
+                badge.innerText = "EN PROGRESO"; 
+                badge.className = "px-3 py-0.5 rounded-full text-[10px] font-bold bg-gray-700 text-gray-300 border border-gray-600";
+            }
+
+            updateTrades(acc);
+        }
+
+        async function updateTrades(acc) {
+            const token = localStorage.getItem('token');
+            const res = await fetch(`${API_URL}/account-analysis/${acc.id}`, { headers: { 'Authorization': `Bearer ${token}` } });
+            const analysis = await res.json();
+            
+            const allTrades = [...(acc.openTrades || []), ...analysis.history];
+
+            let html = allTrades.map(t => {
+                const isClosed = t.status === 'CLOSED';
+                const profitClass = t.profit >= 0 ? 'text-success' : 'text-danger';
+                const typeClass = t.type === 'BUY' ? 'bg-blue-500/10 text-blue-400 border-blue-500/20' : 'bg-red-500/10 text-red-400 border-red-500/20';
+                const percent = ((t.profit / 100000) * 100).toFixed(2);
+                const percentClass = percent >= 0 ? 'text-success' : 'text-danger';
+                const dateObj = new Date(t.closeTime || t.openTime);
+                const dateStr = dateObj.toLocaleDateString() + ' ' + dateObj.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+
+                return `
+                <tr class="border-b border-dark-border text-xs hover:bg-dark-hover transition">
+                    <td class="p-4 text-gray-500">${dateStr}</td>
+                    <td class="p-4 font-mono text-gray-500">#${t.ticket || t.id.slice(0,6)}</td>
+                    <td class="p-4 font-bold text-white">${t.symbol}</td>
+                    <td class="p-4"><span class="px-2 py-1 rounded border ${typeClass} font-bold text-[10px]">${t.type}</span></td>
+                    <td class="p-4 text-gray-300">${t.lots}</td>
+                    <td class="p-4 text-gray-400">${t.openPrice}</td>
+                    <td class="p-4 text-gray-400">${t.closePrice || '...'}</td>
+                    <td class="p-4 text-center font-bold ${percentClass}">${percent > 0 ? '+' : ''}${percent}%</td>
+                    <td class="p-4 font-bold ${profitClass} text-sm">$${t.profit.toFixed(2)}</td>
+                    <td class="p-4 text-right">
+                        ${!isClosed 
+                            ? `<button onclick="closeTrade('${t.id}')" class="bg-brand text-white px-3 py-1.5 rounded text-[10px] font-bold hover:bg-brand-dark transition shadow-lg shadow-brand/20">CERRAR</button>` 
+                            : '<span class="text-gray-600 font-bold text-[10px] uppercase">FINALIZADO</span>'}
+                    </td>
+                </tr>
+                `;
+            }).join('');
+            
+            document.getElementById('tradesTableBody').innerHTML = html || '<tr><td colspan="10" class="p-8 text-center text-gray-500 italic">No hay operaciones registradas.</td></tr>';
+        }
+
+        // 🔥 MODIFICADO PARA USAR EL MODAL
+        function tryTrade(type) {
+            if(currentAccountStatus === 'BREACHED') { 
+                showToast("Cuenta bloqueada por infracción.", "error"); 
+                return;
+            }
+
+            const symbol = document.getElementById('symbolSelector').value;
+            const lots = document.getElementById('lotSize').value;
+            const token = localStorage.getItem('token');
+            if(!currentAccountId) return showToast("Selecciona una cuenta.", "error");
+            
+            showConfirm(
+                `Confirmar Orden ${type}`, 
+                `¿Abrir posición ${type} de ${lots} lotes en ${symbol}?`, 
+                async () => {
+                    try {
+                        const res = await fetch(`${API_URL}/place-trade`, { 
+                            method: 'POST', 
+                            headers: {'Content-Type':'application/json','Authorization':`Bearer ${token}`}, 
+                            body: JSON.stringify({accountId:currentAccountId, symbol, type, lots}) 
+                        });
+                        
+                        if(!res.ok) {
+                            const err = await res.json();
+                            showToast("Error: " + err.error, "error");
+                        } else {
+                            showToast(`Orden ${type} ejecutada con éxito`);
+                            initDashboard();
+                        }
+                    } catch(e) { showToast("Error al operar", "error"); }
+                },
+                'info'
+            );
+        }
+
+        // Mantenemos placeTrade como wrapper para compatibilidad
+        function placeTrade(type) { tryTrade(type); }
+
+        async function closeTrade(tradeId) {
+            const token = localStorage.getItem('token');
+            try { 
+                await fetch(`${API_URL}/close-trade`, { 
+                    method: 'POST', 
+                    headers: {'Content-Type':'application/json','Authorization':`Bearer ${token}`}, 
+                    body: JSON.stringify({tradeId}) 
+                }); 
+                showToast("Operación cerrada"); 
+                initDashboard(); 
+            } catch(e) { showToast("Error al cerrar", "error"); }
+        }
+
+        // 🔥 MODIFICADO PARA USAR EL MODAL
+        function confirmPurchase(planName) {
+            showConfirm(
+                "Confirmar Compra",
+                `¿Deseas adquirir el plan ${planName}? El pago es único.`,
+                async () => {
+                    const userId = localStorage.getItem('userId');
+                    try {
+                        const res = await fetch(`${API_URL}/create-account`, {
+                            method: 'POST', headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ userId, planName })
+                        });
+                        if(res.ok) {
+                            showToast("¡Cuenta comprada con éxito! 🚀");
+                            setTimeout(() => window.location.reload(), 1500);
+                        } else {
+                            showToast("Error en la compra.", "error");
+                        }
+                    } catch(e) { showToast("Error de conexión", "error"); }
+                },
+                'buy'
+            );
+        }
+
+        // 🔥 MODIFICADO PARA USAR EL MODAL
+        async function claimFunded(accountId) {
+             showConfirm("Reclamar Cuenta Real", "¿Estás listo para pasar a LIVE? Se archivará la evaluación.", async () => {
+                 const token = localStorage.getItem('token');
+                 await fetch(`${API_URL}/claim-funded`, { method: 'POST', headers: {'Content-Type':'application/json','Authorization':`Bearer ${token}`}, body: JSON.stringify({accountId}) });
+                 showToast("¡Felicidades! Cuenta Real entregada 🏆");
+                 initDashboard();
+             }, 'success');
+        }
+
+        function adjustLots(delta) {
+             const input = document.getElementById('lotSize');
+             let val = parseFloat(input.value) + delta;
+             if(val < 0.01) val = 0.01;
+             input.value = val.toFixed(1);
+        }
+
+        function logout() { 
+            showConfirm("Cerrar Sesión", "¿Seguro que quieres salir?", () => { 
+                localStorage.clear(); 
+                window.location.href='index.html'; 
+            }, 'danger'); 
+        }
+
+        function checkAutoBuy() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const planToBuy = urlParams.get('buyPlan');
+            if (planToBuy) {
+                showSection('shop');
+                window.history.replaceState({}, document.title, "dashboard.html");
+            }
+        }
+
+        function loadTradingView(symbol = 'BTCUSD') {
+            new TradingView.widget({
+                "width": "100%", "height": "100%", "symbol": "BINANCE:" + symbol.replace('USD','USDT'),
+                "interval": "D", "theme": "dark", "style": "1", "locale": "es", "toolbar_bg": "#f1f3f6", "enable_publishing": false,
+                "container_id": "tradingview_container", "backgroundColor": "rgba(11, 15, 25, 1)", "hide_side_toolbar": false
+            });
+        }
+
+        document.getElementById('symbolSelector').addEventListener('change', (e)=>loadTradingView(e.target.value));
+        
+        loadTradingView();
+        checkAutoBuy();
+        initDashboard();
+
+    </script>
+</body>
+</html>

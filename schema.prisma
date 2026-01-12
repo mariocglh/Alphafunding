@@ -1,0 +1,88 @@
+// schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")  // <--- ESTO FUNCIONARÁ AL BORRAR EL OTRO ARCHIVO
+}
+
+// 1. USUARIOS
+model User {
+  id           String           @id @default(uuid())
+  email        String           @unique
+  passwordHash String
+  firstName    String
+  lastName     String
+  role         String           @default("TRADER")
+  kycStatus    String           @default("PENDING")
+  createdAt    DateTime         @default(now())
+  accounts     TradingAccount[]
+}
+
+// 2. PLANES (Challenges)
+model Plan {
+  id              String           @id @default(uuid())
+  name            String
+  price           Float
+  initialBalance  Float
+  maxDrawdown     Float
+  dailyDrawdown   Float
+  profitTarget    Float
+  leverage        Int              @default(100)
+  minTradingDays  Int              @default(5)
+  payoutFrequency Int              @default(14)
+  accounts        TradingAccount[]
+}
+
+// 3. CUENTAS DE TRADING
+model TradingAccount {
+  id                String   @id @default(uuid())
+  login             Int      @unique
+  password          String
+  balance           Float
+  equity            Float
+  status            String   @default("ACTIVE")
+  dailyStartBalance Float    @default(0)
+  lastDailyReset    DateTime @default(now())
+  lastTradeDate     DateTime @default(now())
+  
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+  
+  planId String
+  plan   Plan   @relation(fields: [planId], references: [id])
+  
+  trades  Trade[]
+  history BalanceHistory[]
+}
+
+// 4. OPERACIONES (Trades)
+model Trade {
+  id         String         @id @default(uuid())
+  ticket     Int
+  symbol     String
+  type       String
+  lots       Float
+  openPrice  Float
+  closePrice Float?
+  openTime   DateTime       @default(now())
+  closeTime  DateTime?
+  profit     Float          @default(0)
+  status     String         @default("OPEN")
+  
+  accountId String
+  account   TradingAccount @relation(fields: [accountId], references: [id])
+}
+
+// 5. HISTORIAL (Equity Curve)
+model BalanceHistory {
+  id        String   @id @default(uuid())
+  balance   Float
+  time      DateTime @default(now())
+  
+  accountId String
+  account   TradingAccount @relation(fields: [accountId], references: [id])
+}
