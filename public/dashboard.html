@@ -34,6 +34,7 @@
         ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
         .progress-bar { transition: width 1s ease-in-out; }
         
+        /* Tablas profesionales */
         th { font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; font-size: 0.7rem; color: #94a3b8; }
         td { font-size: 0.80rem; }
         
@@ -46,19 +47,40 @@
         @keyframes slideInRight { from { opacity: 0; transform: translateX(100%); } to { opacity: 1; transform: translateX(0); } }
         @keyframes fadeOut { to { opacity: 0; transform: translateX(100%); } }
         
+        /* Animación de Temblor para Error */
         .shake { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both; }
         @keyframes shake { 10%, 90% { transform: translate3d(-1px, 0, 0); } 20%, 80% { transform: translate3d(2px, 0, 0); } 30%, 50%, 70% { transform: translate3d(-4px, 0, 0); } 40%, 60% { transform: translate3d(4px, 0, 0); } }
 
-        .breach-overlay { background: radial-gradient(circle, rgba(220,38,38,0.2) 0%, rgba(11,15,25,0.95) 100%); backdrop-filter: blur(5px); }
-        .live-glow { box-shadow: 0 0 15px rgba(59, 130, 246, 0.3), inset 0 0 10px rgba(251, 191, 36, 0.1); border-color: #3b82f6; }
-        select option { background-color: #111827; color: white; padding: 10px; }
+        /* Modal de Muerte */
+        .breach-overlay {
+            background: radial-gradient(circle, rgba(220,38,38,0.2) 0%, rgba(11,15,25,0.95) 100%);
+            backdrop-filter: blur(5px);
+        }
+
+        /* Efecto Glow LIVE */
+        .live-glow {
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.3), inset 0 0 10px rgba(251, 191, 36, 0.1);
+            border-color: #3b82f6;
+        }
+        
+        /* Select Personalizado */
+        select option {
+            background-color: #111827;
+            color: white;
+            padding: 10px;
+        }
+        
+        /* Responsive Sidebar Transitions */
+        .sidebar-transition { transition: transform 0.3s ease-in-out; }
     </style>
 </head>
-<body class="h-screen flex overflow-hidden antialiased">
+<body class="h-screen flex overflow-hidden antialiased bg-dark-bg">
 
-    <div id="toastContainer" class="fixed top-5 right-5 z-[200] flex flex-col gap-3 pointer-events-none"></div>
+    <div id="toastContainer" class="fixed top-5 right-5 z-[200] flex flex-col gap-3 pointer-events-none w-full max-w-xs px-4 md:px-0"></div>
 
-    <div id="appModal" class="hidden fixed inset-0 z-[150] flex items-center justify-center bg-black/80 backdrop-blur-sm fade-in">
+    <div id="mobileBackdrop" onclick="toggleSidebar()" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-30 hidden lg:hidden fade-in"></div>
+
+    <div id="appModal" class="hidden fixed inset-0 z-[150] flex items-center justify-center bg-black/80 backdrop-blur-sm fade-in px-4">
         <div class="glass-panel w-full max-w-sm rounded-2xl p-6 border border-dark-border shadow-2xl transform transition-all scale-100">
             <div class="text-center mb-6">
                 <div id="modalIcon" class="w-16 h-16 rounded-full bg-brand/10 text-brand flex items-center justify-center mx-auto mb-4 text-3xl">
@@ -74,8 +96,8 @@
         </div>
     </div>
 
-    <div id="gameOverModal" class="hidden fixed inset-0 z-50 flex items-center justify-center breach-overlay fade-in">
-        <div class="bg-dark-card border-2 border-danger p-8 rounded-2xl shadow-[0_0_50px_rgba(239,68,68,0.5)] max-w-md text-center transform scale-110">
+    <div id="gameOverModal" class="hidden fixed inset-0 z-50 flex items-center justify-center breach-overlay fade-in px-4">
+        <div class="bg-dark-card border-2 border-danger p-8 rounded-2xl shadow-[0_0_50px_rgba(239,68,68,0.5)] max-w-md w-full text-center transform scale-100 md:scale-110">
             <i class="ph-fill ph-skull text-6xl text-danger mb-4 animate-bounce"></i>
             <h2 class="text-3xl font-bold text-white mb-2 uppercase tracking-widest">Cuenta Quemada</h2>
             <p class="text-gray-400 mb-6">Has infringido las reglas de gestión de riesgo. Esta cuenta ha sido inhabilitada.</p>
@@ -93,11 +115,14 @@
         </div>
     </div>
 
-    <aside class="w-64 bg-dark-card border-r border-dark-border flex flex-col justify-between hidden md:flex z-30">
+    <aside id="mainSidebar" class="fixed inset-y-0 left-0 w-64 bg-dark-card border-r border-dark-border flex flex-col justify-between z-40 transform -translate-x-full lg:translate-x-0 lg:static sidebar-transition shadow-2xl lg:shadow-none">
         <div>
-            <div class="h-16 flex items-center px-6 border-b border-dark-border">
-                <i class="ph-fill ph-globe-hemisphere-west text-2xl text-brand mr-2"></i>
-                <span class="font-bold text-lg tracking-tight">Alpha<span class="text-brand">Funding</span></span>
+            <div class="h-16 flex items-center px-6 border-b border-dark-border justify-between lg:justify-start">
+                <div class="flex items-center">
+                    <i class="ph-fill ph-globe-hemisphere-west text-2xl text-brand mr-2"></i>
+                    <span class="font-bold text-lg tracking-tight">Alpha<span class="text-brand">Funding</span></span>
+                </div>
+                <button onclick="toggleSidebar()" class="lg:hidden text-gray-400 hover:text-white"><i class="ph-bold ph-x text-xl"></i></button>
             </div>
             
             <nav class="p-4 space-y-2 mt-2">
@@ -105,15 +130,15 @@
                     <i class="ph-bold ph-arrow-u-up-left group-hover:-translate-x-1 transition-transform"></i> Volver a Inicio
                 </a>
 
-                <button onclick="showSection('terminal')" id="navTerminal" class="w-full flex items-center gap-3 px-4 py-3 bg-brand/10 text-brand rounded-lg font-medium transition text-sm border border-brand/20">
+                <button onclick="showSection('terminal'); closeSidebarMobile()" id="navTerminal" class="w-full flex items-center gap-3 px-4 py-3 bg-brand/10 text-brand rounded-lg font-medium transition text-sm border border-brand/20">
                     <i class="ph-bold ph-chart-line-up"></i> Terminal
                 </button>
                 
-                <button onclick="showSection('management')" id="navManagement" class="w-full flex items-center gap-3 px-4 py-3 text-gray-400 hover:text-white hover:bg-dark-hover rounded-lg font-medium transition text-sm border border-transparent">
+                <button onclick="showSection('management'); closeSidebarMobile()" id="navManagement" class="w-full flex items-center gap-3 px-4 py-3 text-gray-400 hover:text-white hover:bg-dark-hover rounded-lg font-medium transition text-sm border border-transparent">
                     <i class="ph-bold ph-squares-four"></i> Gestión de Cuentas
                 </button>
 
-                <button onclick="showSection('shop')" id="navShop" class="w-full flex items-center gap-3 px-4 py-3 text-gray-400 hover:text-white hover:bg-dark-hover rounded-lg font-medium transition text-sm border border-transparent">
+                <button onclick="showSection('shop'); closeSidebarMobile()" id="navShop" class="w-full flex items-center gap-3 px-4 py-3 text-gray-400 hover:text-white hover:bg-dark-hover rounded-lg font-medium transition text-sm border border-transparent">
                     <i class="ph-bold ph-shopping-cart"></i> Tienda de Cuentas
                 </button>
 
@@ -135,13 +160,19 @@
         </div>
     </aside>
 
-    <main class="flex-1 flex flex-col h-screen overflow-hidden relative">
-        <header class="h-16 border-b border-dark-border flex items-center justify-between px-6 bg-dark-bg/90 backdrop-blur-md sticky top-0 z-20">
-            <h1 id="pageTitle" class="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
-                <i class="ph-fill ph-monitor text-brand"></i> Panel de Control
-            </h1>
-            <div class="flex items-center gap-4">
-                <div class="text-right">
+    <main class="flex-1 flex flex-col h-screen overflow-hidden relative w-full">
+        <header class="h-16 border-b border-dark-border flex items-center justify-between px-4 lg:px-6 bg-dark-bg/90 backdrop-blur-md sticky top-0 z-20">
+            <div class="flex items-center gap-3">
+                <button onclick="toggleSidebar()" class="lg:hidden p-2 text-gray-400 hover:text-white rounded-lg hover:bg-dark-hover">
+                    <i class="ph-bold ph-list text-2xl"></i>
+                </button>
+                <h1 id="pageTitle" class="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
+                    <i class="ph-fill ph-monitor text-brand"></i> Panel de Control
+                </h1>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <div class="text-right hidden sm:block">
                     <div id="userNameDisplay" class="font-bold text-white text-sm leading-tight">Cargando...</div>
                     <div class="text-[10px] text-gray-500 font-mono">ID: <span id="userIdDisplay">...</span></div>
                 </div>
@@ -151,11 +182,11 @@
             </div>
         </header>
 
-        <div class="flex-1 overflow-y-auto p-4 md:p-6 space-y-6 relative">
+        <div class="flex-1 overflow-y-auto p-4 lg:p-6 space-y-6 relative scroll-smooth">
 
             <div id="terminalView" class="fade-in space-y-6">
                 
-                <div id="accountStats" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div id="accountStats" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
                     <div class="glass-panel p-6 rounded-xl animate-pulse h-24 flex items-center justify-center text-gray-500 text-xs">Cargando datos financieros...</div>
                 </div>
 
@@ -167,7 +198,7 @@
                         <span id="verdictBadge" class="px-3 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-gray-700 text-gray-300 border border-gray-600">Cargando...</span>
                     </div>
                     
-                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
                         <div>
                             <div class="flex justify-between text-[10px] mb-1.5 font-semibold text-gray-300">
                                 <span>META / BENEFICIO</span>
@@ -223,14 +254,14 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 h-[550px]">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 h-auto lg:h-[550px]">
                     
-                    <div class="lg:col-span-2 glass-panel rounded-xl overflow-hidden flex flex-col shadow-lg border border-gray-800">
+                    <div class="lg:col-span-2 glass-panel rounded-xl overflow-hidden flex flex-col shadow-lg border border-gray-800 h-[400px] lg:h-[550px]">
                         <div class="p-3 border-b border-dark-border flex justify-between items-center bg-dark-card">
                             <div class="flex items-center gap-2 text-xs font-bold text-gray-400">
-                                <i class="ph-fill ph-chart-bar text-brand"></i> MERCADO EN VIVO
+                                <i class="ph-fill ph-chart-bar text-brand"></i> MERCADO
                             </div>
-                            <select id="symbolSelector" class="bg-dark-bg border border-dark-border text-xs rounded px-2 py-1 focus:outline-none focus:border-brand text-white font-medium">
+                            <select id="symbolSelector" class="bg-dark-bg border border-dark-border text-xs rounded px-2 py-1 focus:outline-none focus:border-brand text-white font-medium max-w-[120px] sm:max-w-none">
                                 <option value="BTCUSD">Bitcoin (BTC/USD)</option>
                                 <option value="ETHUSD">Ethereum (ETH/USD)</option>
                                 <option value="XAUUSD">Oro (XAU/USD)</option>
@@ -243,7 +274,7 @@
                         <div class="flex-1 relative bg-[#0b0f19]" id="tradingview_container"></div>
                     </div>
 
-                    <div id="executionPanel" class="glass-panel rounded-xl flex flex-col shadow-lg p-5 border border-gray-800 transition-all duration-300">
+                    <div id="executionPanel" class="glass-panel rounded-xl flex flex-col shadow-lg p-5 border border-gray-800 lg:h-[550px]">
                         <div class="border-b border-dark-border font-bold text-xs uppercase text-gray-400 pb-4 mb-4 flex justify-between">
                             <span>Ejecución</span>
                             <span class="text-brand">Instantánea ⚡</span>
@@ -262,9 +293,9 @@
                                         <span class="text-brand">1 Lote = 100k u.</span>
                                     </label>
                                     <div class="flex items-center gap-2">
-                                        <button onclick="adjustLots(-0.1)" class="w-8 h-8 rounded bg-dark-card hover:bg-dark-hover border border-dark-border text-gray-400 transition">-</button>
+                                        <button onclick="adjustLots(-0.1)" class="w-10 h-10 rounded bg-dark-card hover:bg-dark-hover border border-dark-border text-gray-400 transition font-bold text-lg">-</button>
                                         <input id="lotSize" type="number" value="1.0" step="0.1" min="0.01" class="flex-1 bg-transparent text-center text-xl font-bold text-white outline-none font-mono">
-                                        <button onclick="adjustLots(0.1)" class="w-8 h-8 rounded bg-dark-card hover:bg-dark-hover border border-dark-border text-gray-400 transition">+</button>
+                                        <button onclick="adjustLots(0.1)" class="w-10 h-10 rounded bg-dark-card hover:bg-dark-hover border border-dark-border text-gray-400 transition font-bold text-lg">+</button>
                                     </div>
                                 </div>
 
@@ -317,10 +348,10 @@
                         <h2 class="text-3xl font-bold text-white">Gestión de Activos</h2>
                         <p class="text-gray-400 text-sm mt-1">Administra, fusiona y limpia tus cuentas de trading.</p>
                     </div>
-                    <div class="flex flex-col md:flex-row gap-4 items-center">
+                    <div class="flex flex-col md:flex-row gap-4 items-center w-full md:w-auto">
                         
-                        <div class="flex gap-2 bg-dark-card p-1 rounded-lg border border-dark-border">
-                            <select id="filterStatus" onchange="applyFilters()" class="bg-transparent text-xs text-gray-300 p-2 outline-none cursor-pointer hover:text-white">
+                        <div class="flex gap-2 bg-dark-card p-1 rounded-lg border border-dark-border w-full md:w-auto overflow-x-auto">
+                            <select id="filterStatus" onchange="applyFilters()" class="bg-transparent text-xs text-gray-300 p-2 outline-none cursor-pointer hover:text-white flex-1 md:flex-none">
                                 <option value="ALL">🔍 Todos los Estados</option>
                                 <option value="LIVE">⚡ Live Real</option>
                                 <option value="ACTIVE">🔵 Activas (Examen)</option>
@@ -328,7 +359,7 @@
                                 <option value="BREACHED">💀 Quemadas</option>
                             </select>
                             <div class="w-px bg-dark-border my-1"></div>
-                            <select id="sortOrder" onchange="applyFilters()" class="bg-transparent text-xs text-gray-300 p-2 outline-none cursor-pointer hover:text-white">
+                            <select id="sortOrder" onchange="applyFilters()" class="bg-transparent text-xs text-gray-300 p-2 outline-none cursor-pointer hover:text-white flex-1 md:flex-none">
                                 <option value="NEWEST">📅 Más Recientes</option>
                                 <option value="OLDEST">⏳ Más Antiguas</option>
                                 <option value="BALANCE_HIGH">💰 Mayor Saldo</option>
@@ -337,8 +368,8 @@
                             <button onclick="resetFilters()" class="px-3 text-xs text-gray-500 hover:text-white transition" title="Limpiar filtros"><i class="ph-bold ph-arrow-counter-clockwise"></i></button>
                         </div>
 
-                        <div id="mergeActionPanel" class="hidden">
-                            <button id="mergeBtnText" onclick="executeMerge()" class="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white px-6 py-2.5 rounded-lg font-bold shadow-lg shadow-purple-500/20 transition flex items-center gap-2 animate-pulse text-xs uppercase tracking-wider">
+                        <div id="mergeActionPanel" class="hidden w-full md:w-auto">
+                            <button id="mergeBtnText" onclick="executeMerge()" class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white px-6 py-2.5 rounded-lg font-bold shadow-lg shadow-purple-500/20 transition flex items-center justify-center gap-2 animate-pulse text-xs uppercase tracking-wider">
                                 <i class="ph-bold ph-intersect"></i> FUSIONAR SELECCIONADAS
                             </button>
                         </div>
@@ -355,7 +386,7 @@
                     <p class="text-gray-400 text-sm">Sin suscripciones mensuales. Un solo pago.</p>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 px-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 px-0 md:px-4">
                     <div class="glass-panel p-6 rounded-2xl border border-dark-border hover:border-brand/50 transition group flex flex-col relative overflow-hidden">
                         <div class="text-gray-500 text-xs font-bold uppercase mb-2 tracking-widest">Starter</div>
                         <div class="text-3xl font-bold text-white mb-1">$10,000</div>
@@ -380,7 +411,7 @@
                         <button onclick="tryPurchase('Standard 50k')" class="w-full py-3 rounded-xl border border-brand text-brand font-bold hover:bg-brand hover:text-white transition">Comprar</button>
                     </div>
 
-                    <div class="glass-panel p-6 rounded-2xl border-2 border-brand relative flex flex-col shadow-2xl shadow-brand/10 transform scale-105 z-10">
+                    <div class="glass-panel p-6 rounded-2xl border-2 border-brand relative flex flex-col shadow-2xl shadow-brand/10 transform scale-100 md:scale-105 z-10">
                         <div class="absolute top-0 right-0 bg-brand text-white text-[10px] font-bold px-3 py-1 rounded-bl-lg">MÁS VENDIDO</div>
                         <div class="text-brand text-xs font-bold uppercase mb-2 tracking-widest">Challenge</div>
                         <div class="text-4xl font-bold text-white mb-1">$100,000</div>
@@ -419,6 +450,23 @@
         let filteredAccounts = []; // Datos filtrados
         let currentAccountStatus = 'ACTIVE';
         let mergeSelection = []; // Para guardar IDs a fusionar (LISTA INFINITA)
+
+        // --- SISTEMA UI MÓVIL ---
+        function toggleSidebar() {
+            const sidebar = document.getElementById('mainSidebar');
+            const backdrop = document.getElementById('mobileBackdrop');
+            if(sidebar.classList.contains('-translate-x-full')) {
+                sidebar.classList.remove('-translate-x-full');
+                backdrop.classList.remove('hidden');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+                backdrop.classList.add('hidden');
+            }
+        }
+        function closeSidebarMobile() {
+            document.getElementById('mainSidebar').classList.add('-translate-x-full');
+            document.getElementById('mobileBackdrop').classList.add('hidden');
+        }
 
         // ------------------------------------------
         // 🔥 1. SISTEMA DE TOASTS (Notificaciones)
@@ -512,6 +560,9 @@
                 document.getElementById('pageTitle').innerHTML = '<i class="ph-fill ph-squares-four text-brand"></i> Gestión de Cuentas';
                 applyFilters(); // Renderizamos la grid al entrar
             }
+
+            // Cerrar menú móvil al navegar
+            closeSidebarMobile();
         }
 
         // ------------------------------------------
@@ -1021,8 +1072,8 @@
             } catch(e) { showToast("Error al cerrar", "error"); }
         }
 
-        // 🔥 MODIFICADO PARA USAR EL MODAL
-        function confirmPurchase(planName) {
+        // 🔥 CORREGIDO: tryPurchase en lugar de confirmPurchase
+        function tryPurchase(planName) {
             showConfirm(
                 "Confirmar Compra",
                 `¿Deseas adquirir el plan ${planName}? El pago es único.`,
