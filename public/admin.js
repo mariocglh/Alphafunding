@@ -12,7 +12,7 @@ async function loadAdminData() {
 
         if (!token) {
             console.error("❌ No hay token, redirigiendo...");
-            window.location.href = 'index.html';
+           //window.location.href = 'index.html';
             return;
         }
 
@@ -28,8 +28,8 @@ async function loadAdminData() {
         if (!response.ok) {
             if (response.status === 401 || response.status === 403) {
                 alert("⛔ Sesión expirada o sin permisos. Inicia sesión de nuevo.");
-                localStorage.removeItem('token');
-                window.location.href = 'index.html';
+               // localStorage.removeItem('token');
+               // window.location.href = 'index.html';
                 return;
             }
             throw new Error(`Error del servidor: ${response.status}`);
