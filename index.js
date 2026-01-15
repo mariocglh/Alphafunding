@@ -1,6 +1,26 @@
 /**
  * 🚀 ALPHAFUNDING PRO - MAIN ENTRY POINT
  */
+
+
+
+
+// --- CÓDIGO DE DIAGNÓSTICO (BORRAR LUEGO) ---
+const fs = require('fs');
+const path = require('path');
+console.log("🔍 INSPECCIÓN FORENSE DE LA CARPETA ROUTES:");
+try {
+    const rutaCarpeta = path.join(__dirname, 'routes');
+    if (fs.existsSync(rutaCarpeta)) {
+        const archivos = fs.readdirSync(rutaCarpeta);
+        console.log("📂 Archivos encontrados en el servidor:", archivos);
+    } else {
+        console.log("❌ LA CARPETA ROUTES NO EXISTE EN EL SERVIDOR");
+    }
+} catch (e) {
+    console.log("❌ Error leyendo carpeta:", e);
+}
+// ---------------------------------------------
 const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
