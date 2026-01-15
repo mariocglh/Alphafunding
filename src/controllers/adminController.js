@@ -1,23 +1,17 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
-exports.getAllData = async (req, res) => {
+// Definimos la función primero
+const getAllData = async (req, res) => {
     try {
-        // Obtenemos TODOS los usuarios y sus cuentas
         const users = await prisma.user.findMany({
-            include: {
-                accounts: true
-            },
-            orderBy: {
-                createdAt: 'desc' // Los más nuevos primero
-            }
+            include: { accounts: true },
+            orderBy: { createdAt: 'desc' }
         });
 
-        // Calculamos estadísticas globales
         const totalUsers = users.length;
         const totalAccounts = users.reduce((acc, user) => acc + user.accounts.length, 0);
         
-        // Enviamos todo al frontend
         res.json({
             stats: { totalUsers, totalAccounts },
             users: users
@@ -28,3 +22,6 @@ exports.getAllData = async (req, res) => {
         res.status(500).json({ error: 'Error obteniendo datos globales' });
     }
 };
+
+// 🔥 EXPORTACIÓN SEGURA
+module.exports = { getAllData };
