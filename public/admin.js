@@ -40,7 +40,6 @@ async function loadAdminData() {
 
 function renderAdminDashboard(data) {
     // 1. PINTAR CONTADORES
-    // Usamos '0' como fallback si viene null
     document.getElementById('totalUsers').textContent = data.stats?.totalUsers || 0;
     document.getElementById('totalAccounts').textContent = data.stats?.totalAccounts || 0;
     
@@ -73,6 +72,7 @@ function renderAdminDashboard(data) {
         const tr = document.createElement('tr');
         tr.className = 'border-b border-gray-800 hover:bg-gray-800/50 transition-colors';
         
+        // 🔥 AÑADIDO: onclick="banUser(...)" al botón
         tr.innerHTML = `
             <td class="p-4">
                 <div class="flex items-center gap-3">
@@ -92,11 +92,40 @@ function renderAdminDashboard(data) {
                 $${saldoTotal.toLocaleString()}
             </td>
             <td class="p-4">
-                <button class="text-xs bg-red-900/30 text-red-400 border border-red-900 px-3 py-1 rounded hover:bg-red-900/60 transition">
-                    Banear
+                <button onclick="banUser('${user.id}')" class="text-xs bg-red-900/30 text-red-400 border border-red-900 px-3 py-1 rounded hover:bg-red-900/60 transition cursor-pointer">
+                    💀 BANEAR
                 </button>
             </td>
         `;
         tbody.appendChild(tr);
     });
+}
+
+// 🔥 NUEVA FUNCIÓN: Lógica para borrar al usuario
+async function banUser(userId) {
+    if (!confirm("⚠️ ¿Seguro que quieres eliminar a este usuario y sus cuentas? Esta acción es irreversible.")) {
+        return;
+    }
+
+    const token = localStorage.getItem('token');
+    
+    try {
+        const response = await fetch(`/api/admin/ban/${userId}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (response.ok) {
+            alert("✅ Usuario eliminado correctamente.");
+            loadAdminData(); // Recargamos la tabla para que desaparezca
+        } else {
+            alert("❌ Error al eliminar. Revisa logs.");
+            console.error("Error baneando:", await response.text());
+        }
+    } catch (error) {
+        console.error("Error de red:", error);
+        alert("Error de conexión");
+    }
 }

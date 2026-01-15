@@ -33,8 +33,13 @@ console.log("🔧 ESTADO DE LA RUTA ADMIN:");
 console.log("- Auth es función?:", typeof finalAuth === 'function' ? '✅ SÍ' : '❌ NO');
 console.log("- IsAdmin es función?:", typeof isAdmin === 'function' ? '✅ SÍ' : '❌ NO');
 console.log("- Controller es función?:", typeof adminController.getAllData === 'function' ? '✅ SÍ' : '❌ NO');
+// Verificamos si existe la función de banear (para evitar sustos)
+console.log("- Ban Function es función?:", typeof adminController.banUser === 'function' ? '✅ SÍ' : '❌ NO (Revisa adminController)');
 
-// LA RUTA
+// LA RUTA PRINCIPAL
 router.get('/god-mode', finalAuth, isAdmin, adminController.getAllData);
+
+// 🔥 NUEVA RUTA: PARA ELIMINAR USUARIOS (BANEAR)
+router.delete('/ban/:id', finalAuth, isAdmin, adminController.banUser);
 
 module.exports = router;
