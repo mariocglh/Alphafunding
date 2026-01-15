@@ -6,7 +6,7 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const helmet = require('helmet');
 const prisma = require('./src/config/db');
-const adminRoutes = require('./routes/adminRoutes');
+const adminRoutes = require('./routes/adminRoutesFinal');
 // --- RUTAS MODULARES ---
 const authRoutes = require('./src/routes/authRoutes');
 const tradeRoutes = require('./src/routes/tradeRoutes');
