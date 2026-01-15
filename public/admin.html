@@ -25,19 +25,23 @@
 
     <main class="p-6 max-w-7xl mx-auto">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div class="admin-card border-red-500/30">
-                <div class="text-gray-400 text-xs uppercase font-bold">Usuarios Totales</div>
-                <div class="text-4xl font-bold mt-2" id="totalUsers">0</div>
-            </div>
-            <div class="admin-card border-blue-500/30">
-                <div class="text-gray-400 text-xs uppercase font-bold">Cuentas Creadas</div>
-                <div class="text-4xl font-bold mt-2" id="totalAccounts">0</div>
-            </div>
-            <div class="admin-card border-green-500/30">
-                <div class="text-gray-400 text-xs uppercase font-bold">Ingresos Estimados</div>
-                <div class="text-4xl font-bold mt-2 text-green-400">$<span id="revenue">0</span></div>
-            </div>
-        </div>
+    
+    <div class="bg-gray-900 p-6 rounded-lg border border-gray-800 shadow-lg">
+        <h3 class="text-gray-400 text-xs font-bold uppercase tracking-wider mb-2">Usuarios Totales</h3>
+        <p id="totalUsers" class="text-3xl font-bold text-white">0</p>
+    </div>
+
+    <div class="bg-gray-900 p-6 rounded-lg border border-gray-800 shadow-lg">
+        <h3 class="text-gray-400 text-xs font-bold uppercase tracking-wider mb-2">Cuentas Creadas</h3>
+        <p id="totalAccounts" class="text-3xl font-bold text-white">0</p>
+    </div>
+
+    <div class="bg-gray-900 p-6 rounded-lg border border-gray-800 shadow-lg">
+        <h3 class="text-gray-400 text-xs font-bold uppercase tracking-wider mb-2">Ingresos Estimados</h3>
+        <p id="totalRevenue" class="text-3xl font-bold text-green-500">$0</p>
+    </div>
+
+</div>
 
         <div class="bg-[#0b0f19] border border-gray-800 rounded-xl overflow-hidden shadow-2xl">
             <div class="p-4 border-b border-gray-800 flex justify-between items-center">
