@@ -2,37 +2,23 @@
  * 🚀 ALPHAFUNDING PRO - MAIN ENTRY POINT
  */
 
-
-
-
-// --- CÓDIGO DE DIAGNÓSTICO (BORRAR LUEGO) ---
-const fs = require('fs');
-const path = require('path');
-console.log("🔍 INSPECCIÓN FORENSE DE LA CARPETA ROUTES:");
-try {
-    const rutaCarpeta = path.join(__dirname, 'routes');
-    if (fs.existsSync(rutaCarpeta)) {
-        const archivos = fs.readdirSync(rutaCarpeta);
-        console.log("📂 Archivos encontrados en el servidor:", archivos);
-    } else {
-        console.log("❌ LA CARPETA ROUTES NO EXISTE EN EL SERVIDOR");
-    }
-} catch (e) {
-    console.log("❌ Error leyendo carpeta:", e);
-}
-// ---------------------------------------------
 const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const helmet = require('helmet');
+const path = require('path'); // Importado una sola vez aquí arriba
 const prisma = require('./src/config/db');
-const adminRoutes = require('./routes/god_mode');
+
 // --- RUTAS MODULARES ---
+// Nota: Usamos ./src/routes/ porque tu index.js está en la raíz
 const authRoutes = require('./src/routes/authRoutes');
 const tradeRoutes = require('./src/routes/tradeRoutes');
 const accountRoutes = require('./src/routes/accountRoutes');
-const userRoutes = require('./src/routes/userRoutes'); // 🔥 1. IMPORTAR RUTAS DE USUARIO
-const path = require('path');
+const userRoutes = require('./src/routes/userRoutes');
+
+// 🔥 RUTA ADMIN (GOD MODE)
+// Asegúrate de que el archivo en la carpeta se llame 'super_admin.js'
+const adminRoutes = require('./src/routes/super_admin'); 
 
 dotenv.config();
 const app = express();
@@ -48,8 +34,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', authRoutes);
 app.use('/', tradeRoutes);
 app.use('/', accountRoutes);
-app.use('/users', userRoutes); // 🔥 2. ACTIVAR RUTA CON PREFIJO /users
-app.use('/api/admin', adminRoutes);
+app.use('/users', userRoutes); 
+app.use('/api/admin', adminRoutes); // Conectamos el panel de admin
 
 // SEMBRADO DE PLANES (Simple y directo)
 async function initPlans() {
@@ -73,5 +59,6 @@ initPlans().then(() => {
         console.log(`✅ ALPHAFUNDING PRO CORRIENDO EN PUERTO ${PORT}`);
         console.log(`📂 Modo Modular: 100% ACTIVO`);
         console.log(`👤 Sistema de Usuarios: ONLINE`);
+        console.log(`👑 Admin God Mode: PREPARADO`);
     });
 });
