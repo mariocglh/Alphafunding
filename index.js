@@ -6,7 +6,7 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const helmet = require('helmet');
 const prisma = require('./src/config/db');
-
+const adminRoutes = require('./routes/adminRoutes');
 // --- RUTAS MODULARES ---
 const authRoutes = require('./src/routes/authRoutes');
 const tradeRoutes = require('./src/routes/tradeRoutes');
@@ -29,6 +29,7 @@ app.use('/', authRoutes);
 app.use('/', tradeRoutes);
 app.use('/', accountRoutes);
 app.use('/users', userRoutes); // 🔥 2. ACTIVAR RUTA CON PREFIJO /users
+app.use('/api/admin', adminRoutes);
 
 // SEMBRADO DE PLANES (Simple y directo)
 async function initPlans() {

@@ -1,0 +1,11 @@
+/* admin.css */
+body { background-color: #050505; }
+.admin-card {
+    background: rgba(20, 20, 30, 0.6);
+    border: 1px solid;
+    padding: 20px;
+    border-radius: 12px;
+}
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #000; }
+::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
