@@ -47,20 +47,24 @@
                 <button onclick="loadAdminData()" class="text-xs bg-gray-800 hover:bg-gray-700 px-3 py-1 rounded transition">Refrescar</button>
             </div>
             <div class="overflow-x-auto">
-                <table class="w-full text-left text-sm">
-                    <thead class="bg-gray-900 text-gray-500 uppercase text-xs">
-                        <tr>
-                            <th class="p-4">Usuario</th>
-                            <th class="p-4">Email</th>
-                            <th class="p-4 text-center">Cuentas</th>
-                            <th class="p-4 text-center">Saldo Total</th>
-                            <th class="p-4 text-right">Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody id="usersTable" class="divide-y divide-gray-800">
-                        </tbody>
-                </table>
-            </div>
+    <table class="w-full text-left border-collapse">
+        <thead>
+            <tr class="text-gray-400 border-b border-gray-700 text-xs uppercase">
+                <th class="p-4">Usuario</th>
+                <th class="p-4">Email</th>
+                <th class="p-4">Cuentas</th>
+                <th class="p-4">Saldo Total</th>
+                <th class="p-4">Acciones</th>
+            </tr>
+        </thead>
+        
+        <tbody id="userTableBody" class="divide-y divide-gray-800 text-gray-300 text-sm">
+            <tr>
+                <td colspan="5" class="p-4 text-center">Cargando datos...</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
         </div>
     </main>
 
