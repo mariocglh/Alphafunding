@@ -135,9 +135,9 @@ async function initDashboard() {
         document.getElementById('userIdDisplay').innerText = userId.slice(0, 8);
         
         // 🔥 CARGAR FOTO PERFIL HEADER (CONEXIÓN CON PROFILE)
-        const savedPhoto = localStorage.getItem('profilePhoto_' + userId) || 
-                            `https://ui-avatars.com/api/?name=${data.player.name}&background=3b82f6&color=fff`;
-        document.getElementById('headerProfileImg').src = savedPhoto;
+        // 🔥 CARGAR FOTO PERFIL HEADER 
+        const inicial = data.player.name.charAt(0).toUpperCase();
+        document.getElementById('headerProfileImg').src = `https://ui-avatars.com/api/?name=${inicial}&background=3b82f6&color=ffffff&bold=true&size=128`;
 
         // Filtramos las cuentas 'MERGED' para que no salgan
         accountsData = data.accounts.filter(a => a.status !== 'MERGED');
@@ -717,8 +717,15 @@ function loadTradingView(symbol = "BINANCE:BTCUSD") {
 }
 
 // Listeners e Inicializadores
-document.getElementById('symbolSelector').addEventListener('change', (e) => loadTradingView(e.target.value));
+// Esperamos a que la página termine de cargar y la ruedita se pare
+window.addEventListener('load', () => {
+    // 1. Activamos los botones y paneles
+    document.getElementById('symbolSelector').addEventListener('change', (e) => loadTradingView(e.target.value));
+    checkAutoBuy();
+    initDashboard();
 
-loadTradingView(); // Genera el gráfico la primera vez
-checkAutoBuy();
-initDashboard(); // Inicia tu panel
+    // 2. Retrasamos el gráfico una fracción de segundo para no bloquear el navegador
+    setTimeout(() => {
+        loadTradingView();
+    }, 100);
+});
