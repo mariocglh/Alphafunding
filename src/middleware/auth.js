@@ -20,7 +20,7 @@ const logger = winston.createLogger({
     ],
 });
 
-const SECRET_KEY = process.env.JWT_SECRET || "mi_clave_secreta_super_segura_alphafunding_2026";
+const SECRET_KEY = process.env.JWT_SECRET || "mi_clave_secreta_super_segura_tradezenith_2026";
 
 // 👮 AUTENTICACIÓN JWT (CON FIX DE ID 🛠️)
 function authenticateToken(req, res, next) {
