@@ -683,13 +683,27 @@ function checkAutoBuy() {
     }
 }
 
-function loadTradingView(symbol = 'BTCUSD') {
-    new TradingView.widget({
-        "width": "100%", "height": "100%", "symbol": "BINANCE:" + symbol.replace('USD','USDT'),
-        "interval": "D", "theme": "dark", "style": "1", "locale": "es", "toolbar_bg": "#f1f3f6", "enable_publishing": false,
-        "container_id": "tradingview_container", "backgroundColor": "rgba(11, 15, 25, 1)", "hide_side_toolbar": false
-    });
-}
+new TradingView.widget({
+    "autosize": true,           // Hace que se adapte al 100% de la caja
+    "symbol": "BINANCE:BTCUSD", // El símbolo por defecto
+    "interval": "15",           // Velas de 15 minutos
+    "timezone": "Etc/UTC",
+    "theme": "dark",            // FORZAR MODO OSCURO
+    "style": "1",               // Estilo de velas japonesas
+    "locale": "es",             // Idioma español
+    "enable_publishing": false,
+    "backgroundColor": "#0b0f19", // TU COLOR DE FONDO EXACTO
+    "gridColor": "#1f2937",     // Líneas de cuadrícula súper sutiles
+    "hide_top_toolbar": false,  // Dejamos la de arriba para cambiar temporalidades
+    "hide_side_toolbar": true,  // OCULTAMOS la lateral (vital para móvil)
+    "allow_symbol_change": false, // Evitamos que la gente rompa la UI buscando otros símbolos
+    "save_image": false,
+    "container_id": "tradingview_container",
+    "disabled_features": [
+        "header_symbol_search", // Ocultamos la barra de búsqueda nativa (tú ya tienes tu propio selector)
+        "header_compare"        // Ocultamos el botón de comparar (ocupa espacio)
+    ]
+});
 
 document.getElementById('symbolSelector').addEventListener('change', (e)=>loadTradingView(e.target.value));
 
