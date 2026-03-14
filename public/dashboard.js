@@ -118,42 +118,40 @@ async function initDashboard() {
     if (!token) window.location.href = 'index.html';
 
     try {
-        const res = await fetch(`${API_URL}/dashboard/${userId}`, { headers: { 'Authorization': `Bearer ${token}` } });
+        const res = await fetch(`${API_URL}/dashboard/${userId}`, { 
+            headers: { 'Authorization': `Bearer ${token}` } 
+        });
+        
+        if (!res.ok) throw new Error("Error en servidor");
         const data = await res.json();
         
-        // PROTECCIÓN CONTRA NOMBRE VACÍO (Evita que el JS haga crash y limpia espacios invisibles)
-        let playerName = 'Trader';
-        if (data.player && data.player.name && data.player.name.trim() !== '') {
-            playerName = data.player.name.trim();
-        }
-        
+        const playerName = (data.player && data.player.name) ? data.player.name : 'Trader';
+        const inicial = playerName.charAt(0).toUpperCase();
+
         document.getElementById('userNameDisplay').innerText = playerName;
         document.getElementById('userIdDisplay').innerText = userId.slice(0, 8);
         
-        // FOTO PERFIL HEADER PROTEGIDA
-        const inicial = playerName.charAt(0).toUpperCase();
-        const avatarUrl = `https://ui-avatars.com/api/?name=${inicial}&background=3b82f6&color=ffffff&bold=true&size=128`;
-        
-        document.getElementById('headerProfileImg').src = avatarUrl;
-        
-        // Guardamos la foto y el nombre limpio para que el index.html también lo lea igual
-        localStorage.setItem('profilePhoto_' + userId, avatarUrl);
-        localStorage.setItem('userName', playerName);
+        // --- ARREGLO FOTO: Círculo con Inicial Manual ---
+        const headerImg = document.getElementById('headerProfileImg');
+        // Reemplazamos el <img> por un <div> con la inicial si la imagen falla
+        headerImg.parentElement.innerHTML = `
+            <div class="w-10 h-10 rounded-full border-2 border-brand bg-brand/10 flex items-center justify-center text-brand font-bold text-lg shadow-lg">
+                ${inicial}
+            </div>
+        `;
 
         accountsData = data.accounts.filter(a => a.status !== 'MERGED');
         filteredAccounts = [...accountsData]; 
-        
         renderAccountsSelector();
         
         if (accountsData.length > 0) {
-            if(!currentAccountId) selectAccount(accountsData[0].id);
-            else selectAccount(currentAccountId);
+            selectAccount(currentAccountId || accountsData[0].id);
         } else {
-            document.getElementById('accountStats').innerHTML = `<div class="col-span-4 text-center py-12 bg-dark-card rounded-xl border border-dashed border-gray-700"><p class="text-gray-400 mb-4">No tienes cuentas activas. ¡Empieza tu viaje ahora!</p><button onclick="showSection('shop')" class="bg-brand text-white px-8 py-3 rounded-xl font-bold shadow-lg shadow-brand/20 animate-bounce">Ir a la Tienda</button></div>`;
+            document.getElementById('accountStats').innerHTML = `<div class="col-span-4 text-center py-12 bg-dark-card rounded-xl border border-dashed border-gray-700"><p class="text-gray-400 mb-4">No tienes cuentas. ¡Empieza ya!</p><button onclick="showSection('shop')" class="bg-brand text-white px-8 py-3 rounded-xl font-bold">Ir a la Tienda</button></div>`;
         }
     } catch (error) { 
-        console.error(error); 
-        showToast("Error cargando el dashboard", "error");
+        console.error(error);
+        showToast("Error de conexión", "error");
     }
 }
 

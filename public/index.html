@@ -23,7 +23,7 @@
         }
     </script>
     <style>
-        body { background-color: #0b0f19; color: white; font-family: 'Inter', sans-serif; }
+        body { background-color: #0b0f19; color: white; font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
         .hero-glow { background: radial-gradient(circle at center, rgba(59, 130, 246, 0.15) 0%, rgba(11, 15, 25, 0) 70%); }
         .glass-card { background: rgba(17, 24, 39, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.05); }
         .animate-fade-in { animation: fadeIn 0.5s ease-out; }
@@ -36,10 +36,6 @@
     </style>
 </head>
 <body class="antialiased">
-
-    <div id="toastContainer" class="fixed top-5 right-5 z-[200] flex flex-col gap-3 pointer-events-none"></div>
-
-    <body class="antialiased">
 
     <div id="toastContainer" class="fixed top-5 right-5 z-[200] flex flex-col gap-3 pointer-events-none"></div>
 
@@ -62,16 +58,16 @@
         </div>
     </nav>
 
-    <header class="relative pt-40 pb-20 px-4 md:px-6 overflow-hidden hero-glow">
+    <header class="relative pt-48 pb-24 px-4 md:px-6 overflow-hidden hero-glow">
         <div class="max-w-5xl mx-auto text-center relative z-10">
             <div class="inline-block px-4 py-1.5 rounded-full bg-brand/10 border border-brand/20 text-brand text-xs font-bold mb-6">
                 🌍 OPERA TODOS LOS MERCADOS
             </div>
-            <h1 class="text-5xl md:text-7xl lg:text-8xl font-bold leading-tight mb-6 tracking-tight">
+            <h1 class="text-5xl md:text-7xl lg:text-8xl font-bold leading-tight mb-6 tracking-tight animate-fade-in">
                 Domina Forex, Cripto<br>
                 <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand to-brand-glow">Índices y Acciones</span>
             </h1>
-            <p class="text-lg md:text-xl text-gray-400 mb-10 max-w-2xl mx-auto">
+            <p class="text-lg md:text-xl text-gray-400 mb-10 max-w-2xl mx-auto leading-relaxed">
                 Consigue hasta $200,000 de capital. Sin restricciones de estilo. Sin límites de tiempo. Tú operas, nosotros ponemos el dinero.
             </p>
             <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -84,8 +80,6 @@
             </div>
         </div>
     </header>
-    <header class="relative pt-40 pb-20 px-6 overflow-hidden hero-glow">
-
 
     <section id="ventajas" class="py-20 bg-dark-bg">
         <div class="max-w-7xl mx-auto px-6">
@@ -256,50 +250,37 @@
         const msgDisplay = document.getElementById('authMessage');
         const navContainer = document.getElementById('navButtons');
 
-        // 🔥 FUNCIÓN TOAST (NOTIFICACIÓN FLOTANTE)
         function showToast(msg, type = 'success') {
             const container = document.getElementById('toastContainer');
             const toast = document.createElement('div');
             const colors = type === 'success' ? 'bg-dark-card border-l-4 border-success' : 'bg-dark-card border-l-4 border-danger';
             const icon = type === 'success' ? '<i class="ph-fill ph-check-circle text-success text-xl"></i>' : '<i class="ph-fill ph-warning-circle text-danger text-xl"></i>';
-            
             toast.className = `flex items-center gap-3 p-4 rounded shadow-2xl pointer-events-auto border border-dark-border slide-in-right ${colors} text-white min-w-[300px]`;
             toast.innerHTML = `${icon} <div class="text-sm font-medium">${msg}</div>`;
             container.appendChild(toast);
-            
-            setTimeout(() => {
-                toast.classList.add('fade-out');
-                setTimeout(() => toast.remove(), 400);
-            }, 3000);
+            setTimeout(() => { toast.classList.add('fade-out'); setTimeout(() => toast.remove(), 400); }, 3000);
         }
 
-        // 1. LÓGICA DE UI (Login/Logout) + FOTO DE PERFIL
-        // 1. LÓGICA DE UI (Login/Logout) + FOTO DE PERFIL
-        // 1. LÓGICA DE UI (Login/Logout) + FOTO DE PERFIL
-// 1. LÓGICA DE UI (Login/Logout) + FOTO DE PERFIL
-        // 1. LÓGICA DE UI (Login/Logout) + FOTO DE PERFIL
         function updateUI() {
             const token = localStorage.getItem('token');
             const userId = localStorage.getItem('userId');
             const userName = localStorage.getItem('userName') || 'Trader';
 
             if (token && userId) {
-                // 🔥 Aseguramos la letra inicial por si falla el LocalStorage
-                const inicial = (userName.trim() !== '') ? userName.trim().charAt(0).toUpperCase() : 'T';
-                const defaultPhoto = `https://ui-avatars.com/api/?name=${inicial}&background=3b82f6&color=ffffff&bold=true&size=128`;
-                
-                // Intentamos coger la foto que guardó el Dashboard, si no, usamos la por defecto
-                const savedPhoto = localStorage.getItem('profilePhoto_' + userId) || defaultPhoto;
+                // Limpieza de nombre y avatar inteligente
+                const nombreLimpio = userName.trim() !== '' ? userName.trim() : 'Trader';
+                const inicial = nombreLimpio.charAt(0).toUpperCase();
+                const avatarUrl = `https://ui-avatars.com/api/?name=${inicial}&background=3b82f6&color=ffffff&bold=true&size=128`;
 
                 navContainer.innerHTML = `
                     <div class="flex items-center gap-4 animate-fade-in pl-4 border-l border-dark-border">
                         <div class="hidden md:block text-right">
                             <div class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">HOLA,</div>
-                            <div class="text-sm font-bold text-white leading-none">${userName.split(' ')[0]}</div>
+                            <div class="text-sm font-bold text-white leading-none">${nombreLimpio.split(' ')[0]}</div>
                         </div>
                         
                         <a href="profile.html" class="hidden sm:block relative group cursor-pointer" title="Ir a mi Perfil">
-                            <img src="${savedPhoto}" class="w-10 h-10 rounded-full border-2 border-transparent group-hover:border-brand transition object-cover shadow-lg bg-dark-card">
+                            <img src="${avatarUrl}" class="w-10 h-10 rounded-full border-2 border-transparent group-hover:border-brand transition object-cover shadow-lg bg-dark-card">
                             <div class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-dark-bg rounded-full"></div>
                         </a>
 
@@ -322,17 +303,12 @@
                 `;
             }
         }
-        // 2. CLICK EN PLANES
+
         function handlePlanClick() {
-            const token = localStorage.getItem('token');
-            if (token) {
-                window.location.href = 'dashboard.html?buyPlan=true'; 
-            } else {
-                openModal('register');
-            }
+            if (localStorage.getItem('token')) window.location.href = 'dashboard.html?buyPlan=true'; 
+            else openModal('register');
         }
 
-        // 3. LOGOUT
         function logout() {
             if(confirm("¿Cerrar sesión en este dispositivo?")) {
                 localStorage.clear();
@@ -341,38 +317,27 @@
             }
         }
 
-        // --- FUNCIONES MODAL ---
-        function openModal(mode) {
-            modal.classList.remove('hidden');
-            switchTab(mode);
-        }
-        function closeModal() {
-            modal.classList.add('hidden');
-            msgDisplay.innerText = '';
-        }
+        function openModal(mode) { modal.classList.remove('hidden'); switchTab(mode); }
+        function closeModal() { modal.classList.add('hidden'); msgDisplay.innerText = ''; }
+        
         function switchTab(mode) {
             msgDisplay.innerText = '';
             if(mode === 'login') {
-                formLogin.classList.remove('hidden');
-                formRegister.classList.add('hidden');
-                document.getElementById('tabLogin').className = "pb-2 text-brand border-b-2 border-brand font-bold transition w-1/2 text-center";
-                document.getElementById('tabRegister').className = "pb-2 text-gray-400 hover:text-white font-bold transition w-1/2 text-center";
+                formLogin.classList.remove('hidden'); formRegister.classList.add('hidden');
+                document.getElementById('tabLogin').className = "pb-3 text-brand border-b-2 border-brand font-bold transition flex-1 text-center text-sm";
+                document.getElementById('tabRegister').className = "pb-3 text-gray-400 hover:text-white font-bold transition flex-1 text-center text-sm";
             } else {
-                formLogin.classList.add('hidden');
-                formRegister.classList.remove('hidden');
-                document.getElementById('tabLogin').className = "pb-2 text-gray-400 hover:text-white font-bold transition w-1/2 text-center";
-                document.getElementById('tabRegister').className = "pb-2 text-brand border-b-2 border-brand font-bold transition w-1/2 text-center";
+                formLogin.classList.add('hidden'); formRegister.classList.remove('hidden');
+                document.getElementById('tabLogin').className = "pb-3 text-gray-400 hover:text-white font-bold transition flex-1 text-center text-sm";
+                document.getElementById('tabRegister').className = "pb-3 text-brand border-b-2 border-brand font-bold transition flex-1 text-center text-sm";
             }
         }
 
-        // --- LOGIN ---
         formLogin.addEventListener('submit', async (e) => {
             e.preventDefault();
-            msgDisplay.className = "mt-4 text-center text-xs font-bold text-gray-400 animate-pulse";
-            msgDisplay.innerText = "Verificando credenciales...";
-
             const email = document.getElementById('loginEmail').value;
             const password = document.getElementById('loginPass').value;
+            msgDisplay.innerText = "Verificando...";
 
             try {
                 const res = await fetch(`${API_URL}/login`, {
@@ -381,32 +346,23 @@
                     body: JSON.stringify({ email, password })
                 });
                 const data = await res.json();
-
                 if (res.ok) {
                     showToast(`¡Bienvenido de nuevo, ${data.name}!`, "success");
                     localStorage.setItem('token', data.token);
                     localStorage.setItem('userId', data.userId);
                     localStorage.setItem('userName', data.name || 'Trader');
-                    
                     updateUI(); 
                     setTimeout(() => closeModal(), 1000);
                 } else {
-                    msgDisplay.className = "mt-4 text-center text-xs font-bold text-danger";
-                    msgDisplay.innerText = data.error || "Credenciales incorrectas";
                     showToast(data.error || "Error de acceso", "error");
                 }
             } catch (error) {
-                msgDisplay.innerText = "Error de conexión con el servidor.";
                 showToast("Error de conexión", "error");
             }
         });
 
-        // --- REGISTRO ---
         formRegister.addEventListener('submit', async (e) => {
             e.preventDefault();
-            msgDisplay.className = "mt-4 text-center text-xs font-bold text-gray-400";
-            msgDisplay.innerText = "Creando cuenta...";
-
             const firstName = document.getElementById('regName').value;
             const lastName = document.getElementById('regLast').value;
             const email = document.getElementById('regEmail').value;
@@ -419,24 +375,18 @@
                     body: JSON.stringify({ email, password, firstName, lastName })
                 });
                 const data = await res.json();
-
                 if (res.ok) {
-                    showToast("¡Cuenta creada! Inicia sesión ahora.", "success");
+                    showToast("¡Cuenta creada! Inicia sesión.", "success");
                     setTimeout(() => switchTab('login'), 1500);
                 } else {
-                    msgDisplay.className = "mt-4 text-center text-xs font-bold text-danger";
-                    msgDisplay.innerText = data.error || "Error en registro";
-                    showToast(data.error || "Error al registrarse", "error");
+                    showToast(data.error || "Error en registro", "error");
                 }
             } catch (error) { 
-                msgDisplay.innerText = "Error de conexión."; 
                 showToast("Error de conexión", "error");
             }
         });
 
-        // INICIAR
         updateUI();
-
     </script>
 </body>
 </html>
