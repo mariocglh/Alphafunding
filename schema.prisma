@@ -6,7 +6,8 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")  // <--- ESTO FUNCIONARÁ AL BORRAR EL OTRO ARCHIVO
+  url      = env("DATABASE_URL") 
+  directUrl = env("DIRECT_URL") // <--- ESTO FUNCIONARÁ AL BORRAR EL OTRO ARCHIVO
 }
 
 // 1. USUARIOS
