@@ -519,6 +519,7 @@ async function selectAccount(accId) {
     updateTrades(acc);
 }
 
+// --- CORRECCIÓN DE LA TABLA DE TRADES (Línea 527 aprox de tu imagen) ---
 async function updateTrades(acc) {
     const token = localStorage.getItem('token');
     const res = await fetch(`${API_URL}/account-analysis/${acc.id}`, { headers: { 'Authorization': `Bearer ${token}` } });
@@ -530,8 +531,12 @@ async function updateTrades(acc) {
         const isClosed = t.status === 'CLOSED';
         const profitClass = t.profit >= 0 ? 'text-success' : 'text-danger';
         const typeClass = t.type === 'BUY' ? 'bg-blue-500/10 text-blue-400 border-blue-500/20' : 'bg-red-500/10 text-red-400 border-red-500/20';
-        const percent = ((t.profit / 100000) * 100).toFixed(2);
-        const percent = ((t.profit / acc.initialBalance) * 100).toFixed(2); 'text-success' : 'text-danger';
+        
+        // CORRECCIÓN: Usamos el capital inicial de la cuenta para el % real
+        const capitalReferencia = acc.initialBalance || 100000;
+        const percentValue = ((t.profit / capitalReferencia) * 100).toFixed(2);
+        const percentClass = percentValue >= 0 ? 'text-success' : 'text-danger';
+        
         const dateObj = new Date(t.closeTime || t.openTime);
         const dateStr = dateObj.toLocaleDateString() + ' ' + dateObj.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
 
@@ -544,18 +549,69 @@ async function updateTrades(acc) {
             <td class="p-4 text-gray-300">${t.lots}</td>
             <td class="p-4 text-gray-400">${t.openPrice}</td>
             <td class="p-4 text-gray-400">${t.closePrice || '...'}</td>
-            <td class="p-4 text-center font-bold ${percentClass}">${percent > 0 ? '+' : ''}${percent}%</td>
+            <td class="p-4 text-center font-bold ${percentClass}">${percentValue > 0 ? '+' : ''}${percentValue}%</td>
             <td class="p-4 font-bold ${profitClass} text-sm">$${t.profit.toFixed(2)}</td>
             <td class="p-4 text-right">
                 ${!isClosed 
                     ? `<button onclick="closeTrade('${t.id}')" class="bg-brand text-white px-3 py-1.5 rounded text-[10px] font-bold hover:bg-brand-dark transition shadow-lg shadow-brand/20">CERRAR</button>` 
                     : '<span class="text-gray-600 font-bold text-[10px] uppercase">FINALIZADO</span>'}
             </td>
-        </tr>
-        `;
+        </tr>`;
     }).join('');
     
     document.getElementById('tradesTableBody').innerHTML = html || '<tr><td colspan="10" class="p-8 text-center text-gray-500 italic">No hay operaciones registradas.</td></tr>';
+}
+
+// --- CORRECCIÓN DE LA GESTIÓN DE CUENTAS (Eliminada la función duplicada) ---
+function renderManagementPanel() {
+    const grid = document.getElementById('managementGrid');
+    
+    if(filteredAccounts.length === 0) {
+        grid.innerHTML = '<div class="col-span-3 text-center text-gray-500 py-10 italic">No se encontraron cuentas.</div>';
+        return;
+    }
+
+    grid.innerHTML = filteredAccounts.map(acc => {
+        let borderColor = 'border-gray-700';
+        let statusBadge = '<span class="px-2 py-1 bg-gray-700 rounded text-[10px] text-white">ACTIVA</span>';
+        
+        if(acc.status === 'LIVE') { 
+            borderColor = 'border-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.2)]';
+            statusBadge = '<span class="px-2 py-1 bg-blue-600 rounded text-[10px] text-white font-bold animate-pulse">LIVE REAL</span>';
+        } else if (acc.status === 'BREACHED') {
+            borderColor = 'border-red-500';
+            statusBadge = '<span class="px-2 py-1 bg-red-600 rounded text-[10px] text-white font-bold">QUEMADA 💀</span>';
+        }
+
+        // Checkbox de fusión (Solo para LIVE según tu servidor)
+        const isChecked = mergeSelection.includes(acc.id) ? 'checked' : '';
+        const checkHtml = acc.status === 'LIVE' ? `<input type="checkbox" onchange="toggleMergeSelection('${acc.id}')" ${isChecked} class="w-5 h-5 rounded border-gray-600 bg-dark-bg text-brand focus:ring-brand cursor-pointer z-50">` : '';
+
+        return `
+        <div class="glass-panel p-6 rounded-xl border ${borderColor} flex flex-col gap-4 relative group hover:bg-dark-card/80 transition">
+            <div class="flex justify-between items-start">
+                <div>
+                    <div class="text-[10px] text-gray-500 uppercase font-bold tracking-widest mb-1">${acc.plan}</div>
+                    <div class="text-2xl font-bold text-white">$${acc.balance.toLocaleString()}</div>
+                    <div class="text-xs text-gray-400 font-mono mt-1">Login: ${acc.login}</div>
+                </div>
+                <div class="flex flex-col items-end gap-2">
+                    ${statusBadge}
+                    ${checkHtml}
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-2 text-xs bg-dark-bg p-3 rounded-lg border border-dark-border">
+                <div class="text-gray-500">Equidad:</div><div class="text-right text-white font-mono">$${acc.equity.toLocaleString()}</div>
+                <div class="text-gray-500">Profit:</div><div class="text-right ${acc.balance >= acc.initialBalance ? 'text-green-400' : 'text-red-400'} font-mono">$${(acc.balance - (acc.initialBalance || 0)).toFixed(2)}</div>
+            </div>
+            <div class="flex gap-2 mt-auto">
+                <button onclick="toggleHistory('hist-${acc.id}')" class="flex-1 py-2 rounded-lg bg-gray-700 hover:bg-gray-600 text-xs font-bold text-white transition">VER HISTORIAL</button>
+            </div>
+            <div id="hist-${acc.id}" class="hidden mt-4 pt-4 border-t border-gray-700 max-h-40 overflow-y-auto">
+                 <p class="text-[10px] text-gray-500 italic">Cargando...</p>
+            </div>
+        </div>`;
+    }).join('');
 }
 
 function tryTrade(type) {
