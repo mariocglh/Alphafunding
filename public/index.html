@@ -39,6 +39,10 @@
 
     <div id="toastContainer" class="fixed top-5 right-5 z-[200] flex flex-col gap-3 pointer-events-none"></div>
 
+    <body class="antialiased">
+
+    <div id="toastContainer" class="fixed top-5 right-5 z-[200] flex flex-col gap-3 pointer-events-none"></div>
+
     <nav class="fixed w-full z-50 glass-card border-b border-dark-border">
         <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
             <div class="flex items-center gap-2 cursor-pointer" onclick="window.scrollTo(0,0)">
@@ -57,6 +61,7 @@
             </div>
         </div>
     </nav>
+    <header class="relative pt-40 pb-20 px-6 overflow-hidden hero-glow">
 
     <header class="relative pt-40 pb-20 px-6 overflow-hidden hero-glow">
         <div class="max-w-4xl mx-auto text-center relative z-10">
@@ -188,54 +193,54 @@
     </footer>
 
     <div id="authModal" class="hidden fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm px-4 fade-in">
-        <div class="glass-card w-full max-w-md rounded-2xl p-5 md:p-8 relative border border-dark-border shadow-2xl mx-4"></div>
+        <div class="glass-card w-full max-w-md rounded-2xl p-6 relative border border-dark-border shadow-2xl">
             <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white transition">
                 <i class="ph-bold ph-x text-xl"></i>
             </button>
 
-            <div class="flex gap-6 mb-8 border-b border-dark-border">
-                <button onclick="switchTab('login')" id="tabLogin" class="pb-2 text-brand border-b-2 border-brand font-bold transition w-1/2 text-center">Iniciar Sesión</button>
-                <button onclick="switchTab('register')" id="tabRegister" class="pb-2 text-gray-400 hover:text-white font-bold transition w-1/2 text-center">Registrarse</button>
+            <div class="flex mb-6 border-b border-dark-border">
+                <button onclick="switchTab('login')" id="tabLogin" class="pb-3 text-brand border-b-2 border-brand font-bold transition flex-1 text-center text-sm">Iniciar Sesión</button>
+                <button onclick="switchTab('register')" id="tabRegister" class="pb-3 text-gray-400 hover:text-white font-bold transition flex-1 text-center text-sm">Registrarse</button>
             </div>
 
             <form id="formLogin" class="space-y-4">
                 <div>
-                    <label class="block text-xs font-bold text-gray-400 mb-1 ml-1">EMAIL</label>
+                    <label class="block text-[10px] lg:text-xs font-bold text-gray-400 mb-1 ml-1">EMAIL</label>
                     <div class="relative">
-                        <i class="ph-bold ph-envelope absolute left-3 top-3 text-gray-500"></i>
-                        <input type="email" id="loginEmail" class="w-full bg-dark-bg border border-dark-border rounded-lg p-2.5 pl-10 text-sm focus:border-brand outline-none text-white transition placeholder-gray-700" placeholder="usuario@email.com">
+                        <i class="ph-bold ph-envelope absolute left-3 top-3.5 text-gray-500"></i>
+                        <input type="email" id="loginEmail" class="w-full bg-dark-bg border border-dark-border rounded-lg p-3 pl-10 text-sm focus:border-brand outline-none text-white transition placeholder-gray-700" placeholder="usuario@email.com">
                     </div>
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-gray-400 mb-1 ml-1">CONTRASEÑA</label>
+                    <label class="block text-[10px] lg:text-xs font-bold text-gray-400 mb-1 ml-1">CONTRASEÑA</label>
                     <div class="relative">
-                        <i class="ph-bold ph-lock-key absolute left-3 top-3 text-gray-500"></i>
-                        <input type="password" id="loginPass" class="w-full bg-dark-bg border border-dark-border rounded-lg p-2.5 pl-10 text-sm focus:border-brand outline-none text-white transition placeholder-gray-700" placeholder="••••••••">
+                        <i class="ph-bold ph-lock-key absolute left-3 top-3.5 text-gray-500"></i>
+                        <input type="password" id="loginPass" class="w-full bg-dark-bg border border-dark-border rounded-lg p-3 pl-10 text-sm focus:border-brand outline-none text-white transition placeholder-gray-700" placeholder="••••••••">
                     </div>
                 </div>
-                <button type="submit" class="w-full bg-brand hover:bg-brand-dark text-white font-bold py-3 rounded-lg transition mt-2 shadow-lg shadow-brand/20">Entrar</button>
+                <button type="submit" class="w-full bg-brand hover:bg-brand-dark text-white font-bold py-3.5 rounded-lg transition mt-4 shadow-lg shadow-brand/20 text-sm uppercase tracking-wide">Entrar</button>
             </form>
 
             <form id="formRegister" class="space-y-4 hidden">
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-xs font-bold text-gray-400 mb-1 ml-1">NOMBRE</label>
-                        <input type="text" id="regName" class="w-full bg-dark-bg border border-dark-border rounded-lg p-2.5 text-sm focus:border-brand outline-none text-white transition">
+                        <label class="block text-[10px] lg:text-xs font-bold text-gray-400 mb-1 ml-1">NOMBRE</label>
+                        <input type="text" id="regName" class="w-full bg-dark-bg border border-dark-border rounded-lg p-3 text-sm focus:border-brand outline-none text-white transition">
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-gray-400 mb-1 ml-1">APELLIDO</label>
-                        <input type="text" id="regLast" class="w-full bg-dark-bg border border-dark-border rounded-lg p-2.5 text-sm focus:border-brand outline-none text-white transition">
+                        <label class="block text-[10px] lg:text-xs font-bold text-gray-400 mb-1 ml-1">APELLIDO</label>
+                        <input type="text" id="regLast" class="w-full bg-dark-bg border border-dark-border rounded-lg p-3 text-sm focus:border-brand outline-none text-white transition">
                     </div>
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-gray-400 mb-1 ml-1">EMAIL</label>
-                    <input type="email" id="regEmail" class="w-full bg-dark-bg border border-dark-border rounded-lg p-2.5 text-sm focus:border-brand outline-none text-white transition">
+                    <label class="block text-[10px] lg:text-xs font-bold text-gray-400 mb-1 ml-1">EMAIL</label>
+                    <input type="email" id="regEmail" class="w-full bg-dark-bg border border-dark-border rounded-lg p-3 text-sm focus:border-brand outline-none text-white transition">
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-gray-400 mb-1 ml-1">CONTRASEÑA</label>
-                    <input type="password" id="regPass" class="w-full bg-dark-bg border border-dark-border rounded-lg p-2.5 text-sm focus:border-brand outline-none text-white transition">
+                    <label class="block text-[10px] lg:text-xs font-bold text-gray-400 mb-1 ml-1">CONTRASEÑA</label>
+                    <input type="password" id="regPass" class="w-full bg-dark-bg border border-dark-border rounded-lg p-3 text-sm focus:border-brand outline-none text-white transition">
                 </div>
-                <button type="submit" class="w-full bg-brand hover:bg-brand-dark text-white font-bold py-3 rounded-lg transition mt-2 shadow-lg shadow-brand/20">Crear Cuenta</button>
+                <button type="submit" class="w-full bg-brand hover:bg-brand-dark text-white font-bold py-3.5 rounded-lg transition mt-4 shadow-lg shadow-brand/20 text-sm uppercase tracking-wide">Crear Cuenta</button>
             </form>
 
             <div id="authMessage" class="mt-4 text-center text-xs font-bold h-4"></div>
@@ -268,6 +273,7 @@
         }
 
         // 1. LÓGICA DE UI (Login/Logout) + FOTO DE PERFIL
+        // 1. LÓGICA DE UI (Login/Logout) + FOTO DE PERFIL
         function updateUI() {
             const token = localStorage.getItem('token');
             const userId = localStorage.getItem('userId');
@@ -278,32 +284,35 @@
                                  `https://ui-avatars.com/api/?name=${userName}&background=3b82f6&color=fff`;
 
                 navContainer.innerHTML = `
-                    <div class="flex items-center gap-4 animate-fade-in pl-4 border-l border-dark-border">
+                    <div class="flex items-center gap-3 md:gap-4 animate-fade-in pl-2 md:pl-4 border-l border-dark-border">
                         <div class="hidden md:block text-right">
                             <div class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Hola,</div>
                             <div class="text-sm font-bold text-white leading-none">${userName.split(' ')[0]}</div>
                         </div>
                         
-                        <a href="profile.html" class="relative group cursor-pointer" title="Ir a mi Perfil">
-                            <img src="${savedPhoto}" class="w-10 h-10 rounded-full border-2 border-transparent group-hover:border-brand transition object-cover shadow-lg bg-dark-card">
+                        <a href="dashboard.html" class="bg-brand hover:bg-brand-dark text-white px-3 md:px-5 py-2 md:py-2.5 rounded-lg font-bold text-xs md:text-sm transition flex items-center gap-2">
+                            <i class="ph-bold ph-chart-line-up text-base"></i> <span class="hidden sm:inline">Dashboard</span>
+                        </a>
+                        
+                        <a href="profile.html" class="hidden sm:block relative group cursor-pointer">
+                            <img src="${savedPhoto}" class="w-9 h-9 md:w-10 md:h-10 rounded-full border-2 border-transparent group-hover:border-brand transition object-cover bg-dark-card">
                             <div class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-dark-bg rounded-full"></div>
                         </a>
 
-                        <a href="dashboard.html" class="bg-brand hover:bg-brand-dark text-white px-5 py-2.5 rounded-lg font-bold text-sm transition shadow-[0_0_15px_rgba(59,130,246,0.4)] flex items-center gap-2">
-                            <i class="ph-bold ph-chart-line-up"></i> <span class="hidden lg:inline">Dashboard</span>
-                        </a>
-                        <button onclick="logout()" class="text-gray-500 hover:text-danger transition p-2" title="Cerrar Sesión">
-                            <i class="ph-bold ph-sign-out text-xl"></i>
+                        <button onclick="logout()" class="text-gray-500 hover:text-danger transition p-1">
+                            <i class="ph-bold ph-sign-out text-xl md:text-2xl"></i>
                         </button>
                     </div>
                 `;
             } else {
                 navContainer.innerHTML = `
-                    <button onclick="openModal('login')" class="text-sm font-medium text-white hover:text-brand transition flex items-center gap-2">
-                        <i class="ph ph-sign-in"></i> Área Clientes
+                    <button onclick="openModal('login')" class="text-xs md:text-sm font-medium text-white hover:text-brand transition flex items-center gap-1">
+                        <i class="ph-bold ph-sign-in text-lg sm:hidden"></i> 
+                        <span class="hidden sm:inline">Área Clientes</span>
                     </button>
-                    <button onclick="openModal('register')" class="bg-brand hover:bg-brand-dark text-white px-5 py-2.5 rounded-lg font-bold text-sm transition shadow-[0_0_15px_rgba(59,130,246,0.4)]">
-                        Empezar Ahora
+                    <button onclick="openModal('register')" class="bg-brand hover:bg-brand-dark text-white px-3 md:px-5 py-2 md:py-2.5 rounded-lg font-bold text-xs md:text-sm transition ml-1 md:ml-0">
+                        <span class="hidden sm:inline">Empezar Ahora</span>
+                        <span class="inline sm:hidden">Entrar</span>
                     </button>
                 `;
             }
