@@ -277,15 +277,19 @@
         // 1. LÓGICA DE UI (Login/Logout) + FOTO DE PERFIL
         // 1. LÓGICA DE UI (Login/Logout) + FOTO DE PERFIL
 // 1. LÓGICA DE UI (Login/Logout) + FOTO DE PERFIL
+        // 1. LÓGICA DE UI (Login/Logout) + FOTO DE PERFIL
         function updateUI() {
             const token = localStorage.getItem('token');
             const userId = localStorage.getItem('userId');
             const userName = localStorage.getItem('userName') || 'Trader';
 
             if (token && userId) {
-                // Extraemos la primera letra limpia a la fuerza para el avatar
-                const inicial = userName.charAt(0).toUpperCase();
-                const avatarUrl = `https://ui-avatars.com/api/?name=${inicial}&background=3b82f6&color=ffffff&bold=true&size=128`;
+                // 🔥 Aseguramos la letra inicial por si falla el LocalStorage
+                const inicial = (userName.trim() !== '') ? userName.trim().charAt(0).toUpperCase() : 'T';
+                const defaultPhoto = `https://ui-avatars.com/api/?name=${inicial}&background=3b82f6&color=ffffff&bold=true&size=128`;
+                
+                // Intentamos coger la foto que guardó el Dashboard, si no, usamos la por defecto
+                const savedPhoto = localStorage.getItem('profilePhoto_' + userId) || defaultPhoto;
 
                 navContainer.innerHTML = `
                     <div class="flex items-center gap-4 animate-fade-in pl-4 border-l border-dark-border">
@@ -295,7 +299,7 @@
                         </div>
                         
                         <a href="profile.html" class="hidden sm:block relative group cursor-pointer" title="Ir a mi Perfil">
-                            <img src="${avatarUrl}" class="w-10 h-10 rounded-full border-2 border-transparent group-hover:border-brand transition object-cover shadow-lg bg-dark-card">
+                            <img src="${savedPhoto}" class="w-10 h-10 rounded-full border-2 border-transparent group-hover:border-brand transition object-cover shadow-lg bg-dark-card">
                             <div class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-dark-bg rounded-full"></div>
                         </a>
 

@@ -121,15 +121,24 @@ async function initDashboard() {
         const res = await fetch(`${API_URL}/dashboard/${userId}`, { headers: { 'Authorization': `Bearer ${token}` } });
         const data = await res.json();
         
-        // PROTECCIÓN CONTRA NOMBRE VACÍO (Evita que el JS haga crash)
-        const playerName = (data.player && data.player.name) ? data.player.name : 'Trader';
+        // PROTECCIÓN CONTRA NOMBRE VACÍO (Evita que el JS haga crash y limpia espacios invisibles)
+        let playerName = 'Trader';
+        if (data.player && data.player.name && data.player.name.trim() !== '') {
+            playerName = data.player.name.trim();
+        }
         
         document.getElementById('userNameDisplay').innerText = playerName;
         document.getElementById('userIdDisplay').innerText = userId.slice(0, 8);
         
         // FOTO PERFIL HEADER PROTEGIDA
         const inicial = playerName.charAt(0).toUpperCase();
-        document.getElementById('headerProfileImg').src = `https://ui-avatars.com/api/?name=${inicial}&background=3b82f6&color=ffffff&bold=true&size=128`;
+        const avatarUrl = `https://ui-avatars.com/api/?name=${inicial}&background=3b82f6&color=ffffff&bold=true&size=128`;
+        
+        document.getElementById('headerProfileImg').src = avatarUrl;
+        
+        // Guardamos la foto y el nombre limpio para que el index.html también lo lea igual
+        localStorage.setItem('profilePhoto_' + userId, avatarUrl);
+        localStorage.setItem('userName', playerName);
 
         accountsData = data.accounts.filter(a => a.status !== 'MERGED');
         filteredAccounts = [...accountsData]; 
