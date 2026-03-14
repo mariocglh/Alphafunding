@@ -274,50 +274,47 @@
 
         // 1. LÓGICA DE UI (Login/Logout) + FOTO DE PERFIL
         // 1. LÓGICA DE UI (Login/Logout) + FOTO DE PERFIL
-        function updateUI() {
-            const token = localStorage.getItem('token');
-            const userId = localStorage.getItem('userId');
-            const userName = localStorage.getItem('userName') || 'Trader';
+        // 1. LÓGICA DE UI (Login/Logout) + FOTO DE PERFIL
+function updateUI() {
+    const token = localStorage.getItem('token');
+    const userId = localStorage.getItem('userId');
+    const userName = localStorage.getItem('userName') || 'Trader';
 
-            if (token && userId) {
-                const savedPhoto = localStorage.getItem('profilePhoto_' + userId) || 
-                                 `https://ui-avatars.com/api/?name=${userName}&background=3b82f6&color=fff`;
+    if (token && userId) {
+        const savedPhoto = localStorage.getItem('profilePhoto_' + userId) || 
+                         `https://ui-avatars.com/api/?name=${userName}&background=3b82f6&color=fff`;
 
-                navContainer.innerHTML = `
-                    <div class="flex items-center gap-3 md:gap-4 animate-fade-in pl-2 md:pl-4 border-l border-dark-border">
-                        <div class="hidden md:block text-right">
-                            <div class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Hola,</div>
-                            <div class="text-sm font-bold text-white leading-none">${userName.split(' ')[0]}</div>
-                        </div>
-                        
-                        <a href="dashboard.html" class="bg-brand hover:bg-brand-dark text-white px-3 md:px-5 py-2 md:py-2.5 rounded-lg font-bold text-xs md:text-sm transition flex items-center gap-2">
-                            <i class="ph-bold ph-chart-line-up text-base"></i> <span class="hidden sm:inline">Dashboard</span>
-                        </a>
-                        
-                        <a href="profile.html" class="hidden sm:block relative group cursor-pointer">
-                            <img src="${savedPhoto}" class="w-9 h-9 md:w-10 md:h-10 rounded-full border-2 border-transparent group-hover:border-brand transition object-cover bg-dark-card">
-                            <div class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-dark-bg rounded-full"></div>
-                        </a>
+        navContainer.innerHTML = `
+            <div class="flex items-center gap-4 animate-fade-in pl-4 border-l border-dark-border">
+                <div class="hidden md:block text-right">
+                    <div class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Hola,</div>
+                    <div class="text-sm font-bold text-white leading-none">${userName.split(' ')[0]}</div>
+                </div>
+                
+                <a href="profile.html" class="relative group cursor-pointer" title="Ir a mi Perfil">
+                    <img src="${savedPhoto}" class="w-10 h-10 rounded-full border-2 border-transparent group-hover:border-brand transition object-cover shadow-lg bg-dark-card">
+                    <div class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-dark-bg rounded-full"></div>
+                </a>
 
-                        <button onclick="logout()" class="text-gray-500 hover:text-danger transition p-1">
-                            <i class="ph-bold ph-sign-out text-xl md:text-2xl"></i>
-                        </button>
-                    </div>
-                `;
-            } else {
-                navContainer.innerHTML = `
-                    <button onclick="openModal('login')" class="text-xs md:text-sm font-medium text-white hover:text-brand transition flex items-center gap-1">
-                        <i class="ph-bold ph-sign-in text-lg sm:hidden"></i> 
-                        <span class="hidden sm:inline">Área Clientes</span>
-                    </button>
-                    <button onclick="openModal('register')" class="bg-brand hover:bg-brand-dark text-white px-3 md:px-5 py-2 md:py-2.5 rounded-lg font-bold text-xs md:text-sm transition ml-1 md:ml-0">
-                        <span class="hidden sm:inline">Empezar Ahora</span>
-                        <span class="inline sm:hidden">Entrar</span>
-                    </button>
-                `;
-            }
-        }
-
+                <a href="dashboard.html" class="bg-brand hover:bg-brand-dark text-white px-5 py-2.5 rounded-lg font-bold text-sm transition shadow-[0_0_15px_rgba(59,130,246,0.4)] flex items-center gap-2">
+                    <i class="ph-bold ph-chart-line-up"></i> <span class="hidden lg:inline">Dashboard</span>
+                </a>
+                <button onclick="logout()" class="text-gray-500 hover:text-danger transition p-2" title="Cerrar Sesión">
+                    <i class="ph-bold ph-sign-out text-xl"></i>
+                </button>
+            </div>
+        `;
+    } else {
+        navContainer.innerHTML = `
+            <button onclick="openModal('login')" class="text-sm font-medium text-white hover:text-brand transition flex items-center gap-2">
+                <i class="ph ph-sign-in"></i> <span class="hidden sm:inline">Área Clientes</span>
+            </button>
+            <button onclick="openModal('register')" class="bg-brand hover:bg-brand-dark text-white px-5 py-2.5 rounded-lg font-bold text-sm transition shadow-[0_0_15px_rgba(59,130,246,0.4)] ml-2 sm:ml-0">
+                Empezar Ahora
+            </button>
+        `;
+    }
+}
         // 2. CLICK EN PLANES
         function handlePlanClick() {
             const token = localStorage.getItem('token');

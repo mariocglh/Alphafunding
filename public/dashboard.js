@@ -683,30 +683,42 @@ function checkAutoBuy() {
     }
 }
 
-new TradingView.widget({
-    "autosize": true,           // Hace que se adapte al 100% de la caja
-    "symbol": "BINANCE:BTCUSD", // El símbolo por defecto
-    "interval": "15",           // Velas de 15 minutos
-    "timezone": "Etc/UTC",
-    "theme": "dark",            // FORZAR MODO OSCURO
-    "style": "1",               // Estilo de velas japonesas
-    "locale": "es",             // Idioma español
-    "enable_publishing": false,
-    "backgroundColor": "#0b0f19", // TU COLOR DE FONDO EXACTO
-    "gridColor": "#1f2937",     // Líneas de cuadrícula súper sutiles
-    "hide_top_toolbar": false,  // Dejamos la de arriba para cambiar temporalidades
-    "hide_side_toolbar": true,  // OCULTAMOS la lateral (vital para móvil)
-    "allow_symbol_change": false, // Evitamos que la gente rompa la UI buscando otros símbolos
-    "save_image": false,
-    "container_id": "tradingview_container",
-    "disabled_features": [
-        "header_symbol_search", // Ocultamos la barra de búsqueda nativa (tú ya tienes tu propio selector)
-        "header_compare"        // Ocultamos el botón de comparar (ocupa espacio)
-    ]
-});
+// 🔥 FUNCIÓN AÑADIDA PARA QUE FUNCIONE EL GRÁFICO
+function loadTradingView(symbol = "BINANCE:BTCUSD") {
+    // Lógica para ponerle el prefijo correcto según el mercado
+    let finalSymbol = symbol;
+    if (!symbol.includes(':')) {
+        if (['BTCUSD', 'ETHUSD'].includes(symbol)) finalSymbol = 'BINANCE:' + symbol;
+        else if (['XAUUSD', 'EURUSD'].includes(symbol)) finalSymbol = 'OANDA:' + symbol;
+        else finalSymbol = 'NASDAQ:' + symbol; 
+    }
 
-document.getElementById('symbolSelector').addEventListener('change', (e)=>loadTradingView(e.target.value));
+    new TradingView.widget({
+        "autosize": true,
+        "symbol": finalSymbol,
+        "interval": "15",
+        "timezone": "Etc/UTC",
+        "theme": "dark",
+        "style": "1",
+        "locale": "es",
+        "enable_publishing": false,
+        "backgroundColor": "#0b0f19",
+        "gridColor": "#1f2937",
+        "hide_top_toolbar": false,
+        "hide_side_toolbar": true,
+        "allow_symbol_change": false,
+        "save_image": false,
+        "container_id": "tradingview_container",
+        "disabled_features": [
+            "header_symbol_search",
+            "header_compare"
+        ]
+    });
+}
 
-loadTradingView();
+// Listeners e Inicializadores
+document.getElementById('symbolSelector').addEventListener('change', (e) => loadTradingView(e.target.value));
+
+loadTradingView(); // Genera el gráfico la primera vez
 checkAutoBuy();
-initDashboard();
+initDashboard(); // Inicia tu panel
