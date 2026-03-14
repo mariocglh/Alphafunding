@@ -690,16 +690,21 @@ function loadTradingView(symbol = "BINANCE:BTCUSD") {
     });
 }
 
-// 🔥 INICIALIZACIÓN DIRECTA (Carga las cuentas al instante)
+// 🔥 INICIALIZACIÓN DIRECTA (Carga tus cuentas al instante)
 document.getElementById('symbolSelector').addEventListener('change', (e) => loadTradingView(e.target.value));
-
-// Arrancamos tu tienda y tus cuentas YA MISMO para que no fallen
 checkAutoBuy();
 initDashboard();
 
-// 🔥 EL TRUCO CONTRA LA RUEDA INFINITA:
-// Le damos al navegador 2 segundos de respiro para que declare la página "completada" 
-// y detenga la ruedita de carga. Pasado ese tiempo, metemos el gráfico.
-setTimeout(() => {
-    loadTradingView();
-}, 2000);
+// 🔥 EL TRUCO DEFINITIVO CONTRA LA RUEDA INFINITA:
+// Esperamos a que la web cargue al 100% y la ruedita se pare.
+// Solo entonces, inyectamos el script de TradingView "a escondidas".
+window.addEventListener('load', () => {
+    const script = document.createElement('script');
+    script.src = "https://s3.tradingview.com/tv.js";
+    script.async = true;
+    script.onload = () => {
+        // Cuando el script se descarga en secreto, dibujamos el gráfico
+        loadTradingView();
+    };
+    document.body.appendChild(script);
+});
