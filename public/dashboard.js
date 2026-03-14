@@ -690,22 +690,22 @@ function loadTradingView(symbol = "BINANCE:BTCUSD") {
     });
 }
 
-// 🔥 INICIALIZACIÓN LIMPIA Y SEGURA (Sin "cargando infinito")
-
+// 🔥 1. CARGA INMEDIATA (Tus cuentas y botones cargan al instante, cero esperas)
 document.getElementById('symbolSelector').addEventListener('change', (e) => loadTradingView(e.target.value));
-
-
-
 checkAutoBuy();
-
 initDashboard();
 
-
-
-// Retrasamos el gráfico medio segundo para no congelar la carga inicial
-
-setTimeout(() => {
-
+// 🔥 2. EL ASESINO DE LA RUEDA (TradingView)
+// La regla de oro: No cargamos el gráfico hasta que el navegador confirme que la rueda SE HA PARADO.
+if (document.readyState === 'complete') {
+    // Si por lo que sea la página ya había cargado rapidísimo, lo metemos.
     loadTradingView();
-
-}, 500);
+} else {
+    // Si la página sigue cargando, esperamos al evento 'load' (que es cuando el navegador para la rueda)
+    window.addEventListener('load', () => {
+        // Le damos un respiro minúsculo de 10ms tras parar la rueda para inyectar Binance
+        setTimeout(() => {
+            loadTradingView();
+        }, 10); 
+    });
+}
