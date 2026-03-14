@@ -262,48 +262,45 @@
         }
 
         function updateUI() {
-            const token = localStorage.getItem('token');
-            const userId = localStorage.getItem('userId');
-            const userName = localStorage.getItem('userName') || 'Trader';
+    const token = localStorage.getItem('token');
+    const userId = localStorage.getItem('userId');
+    const userName = localStorage.getItem('userName') || 'Trader';
+    const inicial = userName.trim().charAt(0).toUpperCase();
 
-            if (token && userId) {
-                // Limpieza de nombre y avatar inteligente
-                const nombreLimpio = userName.trim() !== '' ? userName.trim() : 'Trader';
-                const inicial = nombreLimpio.charAt(0).toUpperCase();
-                const avatarUrl = `https://ui-avatars.com/api/?name=${inicial}&background=3b82f6&color=ffffff&bold=true&size=128`;
-
-                navContainer.innerHTML = `
-                    <div class="flex items-center gap-4 animate-fade-in pl-4 border-l border-dark-border">
-                        <div class="hidden md:block text-right">
-                            <div class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">HOLA,</div>
-                            <div class="text-sm font-bold text-white leading-none">${nombreLimpio.split(' ')[0]}</div>
-                        </div>
-                        
-                        <a href="profile.html" class="hidden sm:block relative group cursor-pointer" title="Ir a mi Perfil">
-                            <img src="${avatarUrl}" class="w-10 h-10 rounded-full border-2 border-transparent group-hover:border-brand transition object-cover shadow-lg bg-dark-card">
-                            <div class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-dark-bg rounded-full"></div>
-                        </a>
-
-                        <a href="dashboard.html" class="bg-brand hover:bg-brand-dark text-white px-5 py-2.5 rounded-lg font-bold text-sm transition shadow-[0_0_15px_rgba(59,130,246,0.4)] flex items-center gap-2">
-                            <i class="ph-bold ph-chart-line-up"></i> <span class="hidden lg:inline">Dashboard</span>
-                        </a>
-                        <button onclick="logout()" class="text-gray-500 hover:text-danger transition p-2" title="Cerrar Sesión">
-                            <i class="ph-bold ph-sign-out text-xl"></i>
-                        </button>
+    if (token && userId) {
+        navContainer.innerHTML = `
+            <div class="flex items-center gap-4 animate-fade-in pl-4 border-l border-dark-border">
+                <div class="hidden md:block text-right">
+                    <div class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">HOLA,</div>
+                    <div class="text-sm font-bold text-white leading-none">${userName.split(' ')[0]}</div>
+                </div>
+                
+                <a href="profile.html" class="relative group cursor-pointer" title="Ir a mi Perfil">
+                    <div class="w-10 h-10 rounded-full border-2 border-brand bg-brand/20 flex items-center justify-center text-brand font-bold shadow-lg group-hover:border-white transition">
+                        ${inicial}
+                        <div class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-dark-bg rounded-full"></div>
                     </div>
-                `;
-            } else {
-                navContainer.innerHTML = `
-                    <button onclick="openModal('login')" class="text-sm font-medium text-white hover:text-brand transition flex items-center gap-2">
-                        <i class="ph ph-sign-in"></i> <span class="hidden sm:inline">Área Clientes</span>
-                    </button>
-                    <button onclick="openModal('register')" class="bg-brand hover:bg-brand-dark text-white px-5 py-2.5 rounded-lg font-bold text-sm transition shadow-[0_0_15px_rgba(59,130,246,0.4)] ml-2 sm:ml-0">
-                        Empezar Ahora
-                    </button>
-                `;
-            }
-        }
+                </a>
 
+                <a href="dashboard.html" class="bg-brand hover:bg-brand-dark text-white px-5 py-2.5 rounded-lg font-bold text-sm transition shadow-[0_0_15px_rgba(59,130,246,0.4)] flex items-center gap-2">
+                    <i class="ph-bold ph-chart-line-up"></i> <span class="hidden lg:inline">Dashboard</span>
+                </a>
+                <button onclick="logout()" class="text-gray-500 hover:text-danger transition p-2" title="Cerrar Sesión">
+                    <i class="ph-bold ph-sign-out text-xl"></i>
+                </button>
+            </div>
+        `;
+    } else {
+        navContainer.innerHTML = `
+            <button onclick="openModal('login')" class="text-sm font-medium text-white hover:text-brand transition flex items-center gap-2">
+                <i class="ph ph-sign-in"></i> <span class="hidden sm:inline">Área Clientes</span>
+            </button>
+            <button onclick="openModal('register')" class="bg-brand hover:bg-brand-dark text-white px-5 py-2.5 rounded-lg font-bold text-sm transition shadow-[0_0_15px_rgba(59,130,246,0.4)] ml-2 sm:ml-0">
+                Empezar Ahora
+            </button>
+        `;
+    }
+}
         function handlePlanClick() {
             if (localStorage.getItem('token')) window.location.href = 'dashboard.html?buyPlan=true'; 
             else openModal('register');
