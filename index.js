@@ -1,5 +1,5 @@
 /**
- * 🚀 TRADEZENITH PRO - MAIN ENTRY POINT
+ * 🚀 ETHERNAL CAPITALS PRO - MAIN ENTRY POINT
  */
 
 const express = require('express');
@@ -56,7 +56,7 @@ async function initPlans() {
 // ARRANQUE
 initPlans().then(() => {
     app.listen(PORT, () => {
-        console.log(`✅ TRADEZENITH PRO CORRIENDO EN PUERTO ${PORT}`);
+        console.log(`✅ ETHERNAL CAPITALS PRO CORRIENDO EN PUERTO ${PORT}`);
         console.log(`📂 Modo Modular: 100% ACTIVO`);
         console.log(`👤 Sistema de Usuarios: ONLINE`);
         console.log(`👑 Admin God Mode: PREPARADO`);
