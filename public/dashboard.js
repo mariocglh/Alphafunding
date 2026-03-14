@@ -690,13 +690,16 @@ function loadTradingView(symbol = "BINANCE:BTCUSD") {
     });
 }
 
-// 🔥 INICIALIZACIÓN LIMPIA Y SEGURA (Sin "cargando infinito")
+// 🔥 INICIALIZACIÓN DIRECTA (Carga las cuentas al instante)
 document.getElementById('symbolSelector').addEventListener('change', (e) => loadTradingView(e.target.value));
 
+// Arrancamos tu tienda y tus cuentas YA MISMO para que no fallen
 checkAutoBuy();
 initDashboard();
 
-// Retrasamos el gráfico medio segundo para no congelar la carga inicial
+// 🔥 EL TRUCO CONTRA LA RUEDA INFINITA:
+// Le damos al navegador 2 segundos de respiro para que declare la página "completada" 
+// y detenga la ruedita de carga. Pasado ese tiempo, metemos el gráfico.
 setTimeout(() => {
     loadTradingView();
-}, 500);
+}, 2000);
