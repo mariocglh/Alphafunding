@@ -691,23 +691,12 @@ function loadTradingView(symbol = "BINANCE:BTCUSD") {
 }
 
 // 🔥 INICIALIZACIÓN LIMPIA Y SEGURA (Sin "cargando infinito")
-// 🔥 INICIALIZACIÓN BLINDADA (CON PARADA DE RUEDITA)
-window.addEventListener('load', () => {
-    // 1. Activamos los botones
-    document.getElementById('symbolSelector').addEventListener('change', (e) => loadTradingView(e.target.value));
-    
-    // 2. Comprobamos si venimos a comprar
-    checkAutoBuy();
-    
-    // 3. Arrancamos tu código de cuentas
-    initDashboard();
+document.getElementById('symbolSelector').addEventListener('change', (e) => loadTradingView(e.target.value));
 
-    // 4. Retrasamos TradingView un segundo para asegurar que la ruedita muere
-    setTimeout(() => {
-        try {
-            loadTradingView();
-        } catch(e) {
-            console.log("Error cargando el gráfico", e);
-        }
-    }, 1000);
-});
+checkAutoBuy();
+initDashboard();
+
+// Retrasamos el gráfico medio segundo para no congelar la carga inicial
+setTimeout(() => {
+    loadTradingView();
+}, 500);
