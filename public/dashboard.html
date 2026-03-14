@@ -271,32 +271,33 @@
 
                 
 
-                <div class="glass-panel rounded-xl overflow-hidden shadow-lg border-t-2 border-gray-700">
-                    <div class="p-4 border-b border-dark-border bg-dark-card flex justify-between items-center">
-                        <h3 class="font-bold text-xs uppercase text-gray-400 tracking-wider">Libro de Órdenes & Historial</h3>
-                        <div class="text-[10px] text-gray-500">Últimas 50 operaciones</div>
-                    </div>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left whitespace-nowrap">
-                            <thead class="bg-dark-bg border-b border-dark-border text-gray-500">
-                                <tr>
-                                    <th class="p-4">Fecha / Hora</th>
-                                    <th class="p-4">Ticket</th>
-                                    <th class="p-4">Símbolo</th>
-                                    <th class="p-4">Tipo</th>
-                                    <th class="p-4">Volumen</th>
-                                    <th class="p-4">Entrada</th>
-                                    <th class="p-4">Salida</th>
-                                    <th class="p-4 text-center">% Rent.</th>
-                                    <th class="p-4">P/L ($)</th>
-                                    <th class="p-4 text-right">Acción/Estado</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tradesTableBody" class="divide-y divide-dark-border text-gray-300 font-mono text-xs">
-                                </tbody>
-                        </table>
-                    </div>
-                </div>
+                <div class="glass-panel rounded-xl overflow-hidden shadow-lg border-t-2 border-gray-700 mt-4 lg:mt-6 w-full max-w-full">
+    <div class="p-3 lg:p-4 border-b border-dark-border bg-dark-card flex justify-between items-center">
+        <h3 class="font-bold text-[10px] lg:text-xs uppercase text-gray-400 tracking-wider">Libro de Órdenes & Historial</h3>
+        <div class="text-[9px] lg:text-[10px] text-gray-500">Últimas 50 operaciones</div>
+    </div>
+    
+    <div class="w-full overflow-x-auto relative scrollbar-hide">
+        <table class="w-full text-left whitespace-nowrap min-w-[700px] lg:min-w-full">
+            <thead class="bg-dark-bg border-b border-dark-border text-gray-500 text-[10px] lg:text-xs">
+                <tr>
+                    <th class="p-3 lg:p-4">Fecha / Hora</th>
+                    <th class="p-3 lg:p-4">Ticket</th>
+                    <th class="p-3 lg:p-4">Símbolo</th>
+                    <th class="p-3 lg:p-4">Tipo</th>
+                    <th class="p-3 lg:p-4">Volumen</th>
+                    <th class="p-3 lg:p-4">Entrada</th>
+                    <th class="p-3 lg:p-4">Salida</th>
+                    <th class="p-3 lg:p-4 text-center">% Rent.</th>
+                    <th class="p-3 lg:p-4">P/L ($)</th>
+                    <th class="p-3 lg:p-4 text-right">Acción/Estado</th>
+                </tr>
+            </thead>
+            <tbody id="tradesTableBody" class="divide-y divide-dark-border text-gray-300 font-mono text-[10px] lg:text-xs">
+            </tbody>
+        </table>
+    </div>
+</div>
             </div>
 
             <div id="managementView" class="hidden fade-in pb-10">
