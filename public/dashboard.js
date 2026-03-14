@@ -531,7 +531,7 @@ async function updateTrades(acc) {
         const profitClass = t.profit >= 0 ? 'text-success' : 'text-danger';
         const typeClass = t.type === 'BUY' ? 'bg-blue-500/10 text-blue-400 border-blue-500/20' : 'bg-red-500/10 text-red-400 border-red-500/20';
         const percent = ((t.profit / 100000) * 100).toFixed(2);
-        const percentClass = percent >= 0 ? 'text-success' : 'text-danger';
+        const percent = ((t.profit / acc.initialBalance) * 100).toFixed(2); 'text-success' : 'text-danger';
         const dateObj = new Date(t.closeTime || t.openTime);
         const dateStr = dateObj.toLocaleDateString() + ' ' + dateObj.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
 
