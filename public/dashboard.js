@@ -1,9 +1,9 @@
 const API_URL = '';
 let currentAccountId = null;
-let accountsData = []; // Datos crudos
-let filteredAccounts = []; // Datos filtrados
+let accountsData = []; 
+let filteredAccounts = []; 
 let currentAccountStatus = 'ACTIVE';
-let mergeSelection = []; // Para guardar IDs a fusionar (LISTA INFINITA)
+let mergeSelection = []; 
 
 // --- SISTEMA UI MÓVIL ---
 function toggleSidebar() {
@@ -22,9 +22,7 @@ function closeSidebarMobile() {
     document.getElementById('mobileBackdrop').classList.add('hidden');
 }
 
-// ------------------------------------------
-// 🔥 1. SISTEMA DE TOASTS (Notificaciones)
-// ------------------------------------------
+// 🔥 1. SISTEMA DE TOASTS
 function showToast(msg, type = 'success') {
     const container = document.getElementById('toastContainer');
     const toast = document.createElement('div');
@@ -41,9 +39,7 @@ function showToast(msg, type = 'success') {
     }, 3000);
 }
 
-// ------------------------------------------
 // 🔥 2. SISTEMA MODAL UNIVERSAL
-// ------------------------------------------
 const appModal = document.getElementById('appModal');
 let modalCallback = null;
 
@@ -51,7 +47,6 @@ function showConfirm(title, message, onConfirm, type = 'info') {
     document.getElementById('modalTitle').innerText = title;
     document.getElementById('modalMessage').innerText = message;
     
-    // Icono dinámico
     const iconContainer = document.getElementById('modalIcon');
     if(type === 'buy') { iconContainer.innerHTML = '<i class="ph-fill ph-shopping-cart"></i>'; iconContainer.className = "w-16 h-16 rounded-full bg-brand/10 text-brand flex items-center justify-center mx-auto mb-4 text-3xl"; }
     else if(type === 'danger') { iconContainer.innerHTML = '<i class="ph-fill ph-warning"></i>'; iconContainer.className = "w-16 h-16 rounded-full bg-danger/10 text-danger flex items-center justify-center mx-auto mb-4 text-3xl"; }
@@ -86,21 +81,17 @@ function closeGameOver() {
 // NAVEGACIÓN ENTRE SECCIONES
 // ------------------------------------------
 function showSection(sectionId) {
-    // Ocultar todas
     document.getElementById('terminalView').classList.add('hidden');
     document.getElementById('shopView').classList.add('hidden');
     document.getElementById('managementView').classList.add('hidden');
     
-    // Reset styles botones menú
     const inactiveClass = "w-full flex items-center gap-3 px-4 py-3 text-gray-400 hover:text-white hover:bg-dark-hover rounded-lg font-medium transition text-sm border border-transparent";
     document.getElementById('navTerminal').className = inactiveClass;
     document.getElementById('navShop').className = inactiveClass;
     document.getElementById('navManagement').className = inactiveClass;
 
-    // Mostrar seleccionada
     document.getElementById(sectionId + 'View').classList.remove('hidden');
     
-    // Active Style
     const activeClass = "w-full flex items-center gap-3 px-4 py-3 bg-brand/10 text-brand rounded-lg font-medium transition text-sm border border-brand/20";
     
     if(sectionId === 'terminal') {
@@ -112,10 +103,9 @@ function showSection(sectionId) {
     } else if(sectionId === 'management') {
         document.getElementById('navManagement').className = activeClass;
         document.getElementById('pageTitle').innerHTML = '<i class="ph-fill ph-squares-four text-brand"></i> Gestión de Cuentas';
-        applyFilters(); // Renderizamos la grid al entrar
+        applyFilters(); 
     }
 
-    // Cerrar menú móvil al navegar
     closeSidebarMobile();
 }
 
@@ -131,17 +121,18 @@ async function initDashboard() {
         const res = await fetch(`${API_URL}/dashboard/${userId}`, { headers: { 'Authorization': `Bearer ${token}` } });
         const data = await res.json();
         
-        document.getElementById('userNameDisplay').innerText = data.player.name;
+        // PROTECCIÓN CONTRA NOMBRE VACÍO (Evita que el JS haga crash)
+        const playerName = (data.player && data.player.name) ? data.player.name : 'Trader';
+        
+        document.getElementById('userNameDisplay').innerText = playerName;
         document.getElementById('userIdDisplay').innerText = userId.slice(0, 8);
         
-        // 🔥 CARGAR FOTO PERFIL HEADER (CONEXIÓN CON PROFILE)
-        // 🔥 CARGAR FOTO PERFIL HEADER 
-        const inicial = data.player.name.charAt(0).toUpperCase();
+        // FOTO PERFIL HEADER PROTEGIDA
+        const inicial = playerName.charAt(0).toUpperCase();
         document.getElementById('headerProfileImg').src = `https://ui-avatars.com/api/?name=${inicial}&background=3b82f6&color=ffffff&bold=true&size=128`;
 
-        // Filtramos las cuentas 'MERGED' para que no salgan
         accountsData = data.accounts.filter(a => a.status !== 'MERGED');
-        filteredAccounts = [...accountsData]; // Copia inicial
+        filteredAccounts = [...accountsData]; 
         
         renderAccountsSelector();
         
@@ -151,7 +142,10 @@ async function initDashboard() {
         } else {
             document.getElementById('accountStats').innerHTML = `<div class="col-span-4 text-center py-12 bg-dark-card rounded-xl border border-dashed border-gray-700"><p class="text-gray-400 mb-4">No tienes cuentas activas. ¡Empieza tu viaje ahora!</p><button onclick="showSection('shop')" class="bg-brand text-white px-8 py-3 rounded-xl font-bold shadow-lg shadow-brand/20 animate-bounce">Ir a la Tienda</button></div>`;
         }
-    } catch (error) { console.error(error); }
+    } catch (error) { 
+        console.error(error); 
+        showToast("Error cargando el dashboard", "error");
+    }
 }
 
 // ------------------------------------------
@@ -161,13 +155,11 @@ function applyFilters() {
     const statusFilter = document.getElementById('filterStatus').value;
     const sortOrder = document.getElementById('sortOrder').value;
 
-    // 1. Filtrar
     filteredAccounts = accountsData.filter(acc => {
         if(statusFilter === 'ALL') return true;
         return acc.status === statusFilter;
     });
 
-    // 2. Ordenar
     filteredAccounts.sort((a, b) => {
         if(sortOrder === 'BALANCE_HIGH') return b.balance - a.balance;
         if(sortOrder === 'BALANCE_LOW') return a.balance - b.balance;
@@ -213,7 +205,6 @@ function renderManagementPanel() {
             statusBadge = '<span class="px-2 py-1 bg-gray-600 rounded text-[10px] text-white font-bold">ARCHIVADA</span>';
         }
 
-        // Checkbox solo para LIVE
         const isChecked = mergeSelection.includes(acc.id) ? 'checked' : '';
         const checkHtml = isLive ? `<input type="checkbox" onchange="toggleMergeSelection('${acc.id}')" ${isChecked} class="w-5 h-5 rounded border-gray-600 bg-dark-bg text-brand focus:ring-brand cursor-pointer">` : '';
 
@@ -271,7 +262,6 @@ function toggleMergeSelection(accId) {
         mergeSelection.push(accId);
     }
 
-    // 🔥 PERMITE MÁS DE 2 CUENTAS (LISTA INFINITA)
     const btn = document.getElementById('mergeActionPanel');
     const txt = document.getElementById('mergeBtnText');
     if(mergeSelection.length >= 2) { 
@@ -282,7 +272,6 @@ function toggleMergeSelection(accId) {
     }
 }
 
-// 🔥 MODIFICADO PARA USAR EL MODAL
 async function executeMerge() {
     showConfirm(
         "Fusión de Cuentas",
@@ -309,7 +298,6 @@ async function executeMerge() {
     );
 }
 
-// 🔥 MODIFICADO PARA USAR EL MODAL
 async function deleteAccount(accId) {
     showConfirm(
         "Eliminar Cuenta",
@@ -337,7 +325,6 @@ async function deleteAccount(accId) {
 // --- TERMINAL LOGIC ---
 function renderAccountsSelector() {
         const selector = document.getElementById('accountSelector');
-        // Usamos la lista completa para el selector, no la filtrada
         selector.innerHTML = accountsData.map(acc => {
             let statusIcon = '🔵';
             let statusText = 'ACTIVA';
@@ -381,13 +368,11 @@ async function selectAccount(accId) {
         else initial = 100000;
     }
     
-    // Ajuste visual si la fusión superó el plan base
     if(acc.status === 'LIVE' && acc.balance > initial * 1.5) initial = acc.balance;
 
     const isLive = acc.status === 'LIVE';
     const profit = acc.balance - initial;
 
-    // 4. RENDERIZAR TARJETAS TERMINAL
     if(isLive) {
         document.getElementById('accountStats').innerHTML = `
             <div class="glass-panel p-5 rounded-xl border-l-2 border-brand live-glow relative overflow-hidden group">
@@ -443,11 +428,9 @@ async function selectAccount(accId) {
         `;
     }
 
-    // 5. CÁLCULOS BARRAS DE PROGRESO
     const maxLoss = initial * 0.10;
     const dailyMax = initial * 0.05;
 
-    // A. META
     if (isLive) {
         document.getElementById('profitProgressText').innerText = "SIN LÍMITE 🚀";
         document.getElementById('profitProgressBar').style.width = "100%";
@@ -464,7 +447,6 @@ async function selectAccount(accId) {
         document.getElementById('targetMoneyContainer').innerHTML = `<span>Falta:</span> <span class="text-white font-mono">$<span id="targetMoney">${(profitTarget - ev.profit).toFixed(2)}</span></span>`;
     }
 
-    // B. DRAWDOWN TOTAL
     const currentTotalLoss = initial - acc.equity;
     let totalLossPercent = 0;
     let totalBar = 0;
@@ -476,7 +458,6 @@ async function selectAccount(accId) {
     document.getElementById('ddProgressText').innerText = `-${totalLossPercent.toFixed(2)}% / 10%`;
     document.getElementById('maxLossMoney').innerText = (maxLoss - currentTotalLoss).toFixed(2);
 
-    // C. DRAWDOWN DIARIO
     const dailyStart = acc.dailyStartBalance || initial;
     const currentDailyLoss = dailyStart - acc.equity;
     let dailyLossPercent = 0;
@@ -489,7 +470,6 @@ async function selectAccount(accId) {
     document.getElementById('dailyProgressText').innerText = `-${dailyLossPercent.toFixed(2)}% / 5%`;
     document.getElementById('dailyLossMoney').innerText = (dailyMax - currentDailyLoss).toFixed(2);
 
-    // D. DÍAS
     if (isLive) {
             document.getElementById('daysProgressText').innerText = "ILIMITADO";
             document.getElementById('daysProgressBar').style.width = "100%";
@@ -500,7 +480,6 @@ async function selectAccount(accId) {
         document.getElementById('daysLabel').innerText = "Consistencia Requerida";
     }
 
-    // 6. BADGES Y BOTÓN RECLAMAR
     const badge = document.getElementById('verdictBadge');
     const existingBtn = document.getElementById('claimButton');
     if(existingBtn) existingBtn.remove();
@@ -574,7 +553,6 @@ async function updateTrades(acc) {
     document.getElementById('tradesTableBody').innerHTML = html || '<tr><td colspan="10" class="p-8 text-center text-gray-500 italic">No hay operaciones registradas.</td></tr>';
 }
 
-// 🔥 MODIFICADO PARA USAR EL MODAL
 function tryTrade(type) {
     if(currentAccountStatus === 'BREACHED') { 
         showToast("Cuenta bloqueada por infracción.", "error"); 
@@ -610,7 +588,6 @@ function tryTrade(type) {
     );
 }
 
-// Mantenemos placeTrade como wrapper para compatibilidad
 function placeTrade(type) { tryTrade(type); }
 
 async function closeTrade(tradeId) {
@@ -626,7 +603,6 @@ async function closeTrade(tradeId) {
     } catch(e) { showToast("Error al cerrar", "error"); }
 }
 
-// 🔥 CORREGIDO: tryPurchase en lugar de confirmPurchase
 function tryPurchase(planName) {
     showConfirm(
         "Confirmar Compra",
@@ -650,7 +626,6 @@ function tryPurchase(planName) {
     );
 }
 
-// 🔥 MODIFICADO PARA USAR EL MODAL
 async function claimFunded(accountId) {
         showConfirm("Reclamar Cuenta Real", "¿Estás listo para pasar a LIVE? Se archivará la evaluación.", async () => {
             const token = localStorage.getItem('token');
@@ -683,9 +658,8 @@ function checkAutoBuy() {
     }
 }
 
-// 🔥 FUNCIÓN AÑADIDA PARA QUE FUNCIONE EL GRÁFICO
+// 🔥 GRÁFICO REPARADO Y OPTIMIZADO
 function loadTradingView(symbol = "BINANCE:BTCUSD") {
-    // Lógica para ponerle el prefijo correcto según el mercado
     let finalSymbol = symbol;
     if (!symbol.includes(':')) {
         if (['BTCUSD', 'ETHUSD'].includes(symbol)) finalSymbol = 'BINANCE:' + symbol;
@@ -716,16 +690,13 @@ function loadTradingView(symbol = "BINANCE:BTCUSD") {
     });
 }
 
-// Listeners e Inicializadores
-// Esperamos a que la página termine de cargar y la ruedita se pare
-window.addEventListener('load', () => {
-    // 1. Activamos los botones y paneles
-    document.getElementById('symbolSelector').addEventListener('change', (e) => loadTradingView(e.target.value));
-    checkAutoBuy();
-    initDashboard();
+// 🔥 INICIALIZACIÓN LIMPIA Y SEGURA (Sin "cargando infinito")
+document.getElementById('symbolSelector').addEventListener('change', (e) => loadTradingView(e.target.value));
 
-    // 2. Retrasamos el gráfico una fracción de segundo para no bloquear el navegador
-    setTimeout(() => {
-        loadTradingView();
-    }, 100);
-});
+checkAutoBuy();
+initDashboard();
+
+// Retrasamos el gráfico medio segundo para no congelar la carga inicial
+setTimeout(() => {
+    loadTradingView();
+}, 500);
