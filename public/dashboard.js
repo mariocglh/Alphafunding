@@ -131,11 +131,9 @@ async function initDashboard() {
         document.getElementById('userNameDisplay').innerText = playerName;
         document.getElementById('userIdDisplay').innerText = userId.slice(0, 8);
         
-        // --- ARREGLO FOTO: Círculo con Inicial Manual ---
         const headerImg = document.getElementById('headerProfileImg');
-        // Reemplazamos el <img> por un <div> con la inicial si la imagen falla
         headerImg.parentElement.innerHTML = `
-            <div class="w-10 h-10 rounded-full border-2 border-brand bg-brand/10 flex items-center justify-center text-brand font-bold text-lg shadow-lg">
+            <div id="headerProfileImg" class="w-10 h-10 rounded-full border-2 border-brand bg-brand/10 flex items-center justify-center text-brand font-bold text-lg shadow-lg">
                 ${inicial}
             </div>
         `;
@@ -196,12 +194,10 @@ function renderManagementPanel() {
     grid.innerHTML = filteredAccounts.map(acc => {
         let borderColor = 'border-gray-700';
         let statusBadge = '<span class="px-2 py-1 bg-gray-700 rounded text-[10px] text-white">ACTIVA</span>';
-        let isLive = false;
-
+        
         if(acc.status === 'LIVE') { 
             borderColor = 'border-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.2)]';
             statusBadge = '<span class="px-2 py-1 bg-blue-600 rounded text-[10px] text-white font-bold animate-pulse">LIVE REAL</span>';
-            isLive = true;
         } else if (acc.status === 'BREACHED') {
             borderColor = 'border-red-500';
             statusBadge = '<span class="px-2 py-1 bg-red-600 rounded text-[10px] text-white font-bold">QUEMADA 💀</span>';
@@ -212,8 +208,9 @@ function renderManagementPanel() {
             statusBadge = '<span class="px-2 py-1 bg-gray-600 rounded text-[10px] text-white font-bold">ARCHIVADA</span>';
         }
 
+        const canMerge = (acc.status === 'LIVE' || acc.status === 'ACTIVE');
         const isChecked = mergeSelection.includes(acc.id) ? 'checked' : '';
-        const checkHtml = isLive ? `<input type="checkbox" onchange="toggleMergeSelection('${acc.id}')" ${isChecked} class="w-5 h-5 rounded border-gray-600 bg-dark-bg text-brand focus:ring-brand cursor-pointer">` : '';
+        const checkHtml = canMerge ? `<input type="checkbox" onchange="toggleMergeSelection('${acc.id}')" ${isChecked} class="w-5 h-5 rounded border-gray-600 bg-dark-bg text-brand focus:ring-brand cursor-pointer z-50">` : '';
 
         const historyId = `hist-${acc.id}`;
         
@@ -227,7 +224,7 @@ function renderManagementPanel() {
                 </div>
                 <div class="flex flex-col items-end gap-2">
                     ${statusBadge}
-                    ${checkHtml}
+                    ${checkHtml} 
                 </div>
             </div>
 
@@ -259,7 +256,7 @@ function renderManagementPanel() {
 
 function toggleHistory(id) {
     const el = document.getElementById(id);
-    el.classList.toggle('hidden');
+    if(el) el.classList.toggle('hidden');
 }
 
 function toggleMergeSelection(accId) {
@@ -269,13 +266,14 @@ function toggleMergeSelection(accId) {
         mergeSelection.push(accId);
     }
 
-    const btn = document.getElementById('mergeActionPanel');
-    const txt = document.getElementById('mergeBtnText');
+    const btnPanel = document.getElementById('mergeActionPanel');
+    const btnText = document.getElementById('mergeBtnText');
+    
     if(mergeSelection.length >= 2) { 
-        btn.classList.remove('hidden');
-        txt.innerHTML = `<i class="ph-bold ph-intersect"></i> FUSIONAR (${mergeSelection.length}) CUENTAS`;
+        btnPanel.classList.remove('hidden');
+        btnText.innerHTML = `<i class="ph-bold ph-intersect"></i> FUSIONAR (${mergeSelection.length}) CUENTAS`;
     } else {
-        btn.classList.add('hidden');
+        btnPanel.classList.add('hidden');
     }
 }
 
