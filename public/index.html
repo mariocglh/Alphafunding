@@ -29,86 +29,79 @@
         }
     </script>
     <style>
-        /* CSS PERSONALIZADO PARA ESTÉTICA ELITE */
+        /* 🔥 ESTÉTICA ELITE LIMPIA Y LEGIBLE 🔥 */
         body { background-color: #F6F6F4 !important; color: #111827 !important; scroll-behavior: smooth; }
         
-        /* Forzamos el texto negro en elementos que antes eran blancos */
-        .text-white { color: #000000 !important; }
-        .text-gray-300, .text-gray-400 { color: #4B5563 !important; font-weight: 500; }
+        /* Texto y Contraste */
+        .text-black-elite { color: #000000 !important; }
+        .text-gray-muted { color: #6B7280 !important; }
         
-        /* Bordes definidos para alto contraste */
-        .border-dark-border, .border-gray-700, .border-gray-800 { border-color: rgba(0,0,0,0.12) !important; }
-        
-        /* Paneles Premium */
-        .glass-card, .glass-panel { 
-            background: #FFFFFF !important; 
-            border: 1px solid rgba(0,0,0,0.08) !important;
-            box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05); 
-            transition: all 0.3s ease;
+        /* Tarjetas Blancas con Borde Negro (Premium) */
+        .premium-card-white {
+            background-color: #FFFFFF !important;
+            border: 1px solid rgba(0,0,0,0.1) !important;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .glass-card:hover {
+        .premium-card-white:hover {
             border-color: #000000 !important;
             transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.08);
         }
-        
-        /* Estilo para los logos de mercados */
-        .market-icon-container {
+
+        /* Tarjeta Destacada (Gris muy oscuro, no negro puro para que se lea) */
+        .featured-card-dark {
+            background-color: #111827 !important;
+            border: 1px solid #1f2937 !important;
+            color: #FFFFFF !important;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        /* Contenedores de Iconos */
+        .icon-box {
+            width: 56px;
+            height: 56px;
             background: #000000;
             color: #FFFFFF;
-            width: 64px;
-            height: 64px;
-            border-radius: 20px;
+            border-radius: 16px;
             display: flex;
             align-items: center;
-            justify-center: center;
+            justify-content: center;
             margin-bottom: 1.5rem;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
 
-        /* Botones de acción */
-        .bg-brand { background-color: #000000 !important; color: #FFFFFF !important; }
-        .hover\:bg-brand-dark:hover { background-color: #1a1a1a !important; }
-        
-        /* Animación Fade In Up para el Hero */
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-hero { animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-
-        /* Estilo del logo central */
-        .hero-logo-text {
-            letter-spacing: 0.4em;
+        /* Tipografía del Hero Central */
+        .hero-brand-title {
+            letter-spacing: 0.3em;
             text-transform: uppercase;
             font-weight: 900;
             color: #000000;
         }
 
-        .hero-glow {
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100%;
-            height: 600px;
-            background: radial-gradient(circle at 50% 0%, rgba(0,0,0,0.03) 0%, transparent 70%);
-            pointer-events: none;
-            z-index: 0;
+        /* Animaciones */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
+        .animate-fade-up { animation: fadeUp 0.8s ease-out forwards; }
+        
+        /* Toast fix */
+        .slide-in-right { animation: slideIn 0.4s ease-out forwards; }
+        @keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
     </style>
 </head>
 <body class="antialiased">
 
     <div id="toastContainer" class="fixed top-5 right-5 z-[200] flex flex-col gap-3 pointer-events-none"></div>
 
-    <nav class="fixed w-full z-50 glass-card border-b border-dark-border">
+    <nav class="fixed w-full z-50 bg-white/80 backdrop-blur-md border-b border-dark-border">
         <div class="max-w-7xl mx-auto px-4 md:px-6 h-16 md:h-20 flex items-center justify-between">
-            <div class="flex items-center gap-3 cursor-pointer group" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+            <div class="flex items-center gap-3 cursor-pointer" onclick="window.scrollTo({top:0, behavior:'smooth'})">
                 <img src="favicon.png?v=3" alt="Logo" class="w-10 h-10 object-contain">
-                <span class="text-xl md:text-2xl font-black tracking-tighter">Ethernal<span class="text-gray-500 font-medium">Capitals</span></span>
+                <span class="text-xl md:text-2xl font-bold tracking-tight">Ethernal<span class="text-black">Capitals</span></span>
             </div>
             
-            <div class="hidden md:flex items-center gap-8 text-sm font-bold uppercase tracking-widest text-gray-500">
+            <div class="hidden md:flex items-center gap-8 text-sm font-semibold text-gray-500">
                 <a href="#ventajas" class="hover:text-black transition">Mercados</a>
                 <a href="#planes" class="hover:text-black transition">Planes</a>
                 <a href="rules.html" class="hover:text-black transition">Reglas</a>
@@ -120,73 +113,70 @@
         </div>
     </nav>
 
-    <header class="relative pt-40 pb-24 px-4 md:px-6 overflow-hidden min-h-screen flex items-center justify-center">
-        <div class="hero-glow"></div>
-        <div class="max-w-5xl mx-auto text-center relative z-10 animate-hero">
+    <header class="relative pt-40 pb-24 px-4 md:px-6 overflow-hidden flex flex-col items-center justify-center min-h-[90vh]">
+        <div class="max-w-5xl mx-auto text-center relative z-10 animate-fade-up">
             
-            <div class="flex flex-col items-center mb-12">
-                <img src="favicon.png?v=3" alt="Logo Gigante" class="w-32 h-32 md:w-48 md:h-48 object-contain mb-6 drop-shadow-2xl">
-                <h2 class="hero-logo-text text-3xl md:text-5xl">Ethernal Capitals</h2>
-            </div>
+            <img src="favicon.png?v=3" alt="Ethernal Logo" class="w-32 h-32 md:w-48 md:h-48 mx-auto mb-6 drop-shadow-2xl">
+            <h2 class="hero-brand-title text-2xl md:text-4xl mb-12">Ethernal Capitals</h2>
 
-            <h1 class="text-5xl md:text-7xl lg:text-8xl font-extrabold leading-tight mb-8 tracking-tight text-black">
+            <h1 class="text-5xl md:text-7xl lg:text-8xl font-black leading-tight mb-8 tracking-tight text-black">
                 Domina Forex, Cripto<br>
                 <span class="text-gray-400 font-light italic">Índices y Acciones</span>
             </h1>
             
             <p class="text-lg md:text-xl text-gray-500 mb-12 max-w-2xl mx-auto leading-relaxed font-medium">
-                Consigue hasta $200,000 de capital institucional. Sin restricciones de estilo ni límites de tiempo. Tú operas, nosotros ponemos el capital.
+                Accede a capital institucional de hasta $200,000. Sin límites de tiempo ni restricciones de estilo. Tú pones el talento, nosotros el capital.
             </p>
             
-            <div class="flex flex-col sm:flex-row items-center justify-center gap-6">
-                <button onclick="handlePlanClick()" class="w-full sm:w-auto bg-black text-white hover:bg-gray-800 px-10 py-5 rounded-2xl font-black text-xs uppercase tracking-[0.2em] transition shadow-2xl">
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
+                <button onclick="handlePlanClick()" class="w-full sm:w-auto bg-black text-white hover:bg-gray-800 px-10 py-4 rounded-xl font-bold text-sm uppercase tracking-widest transition shadow-xl">
                     Ver Cuentas
                 </button>
-                <a href="rules.html" class="w-full sm:w-auto bg-white border-2 border-black text-black hover:bg-black hover:text-white px-10 py-5 rounded-2xl font-black text-xs uppercase tracking-[0.2em] transition flex items-center gap-2 justify-center">
+                <a href="rules.html" class="w-full sm:w-auto bg-white border-2 border-black text-black hover:bg-black hover:text-white px-10 py-4 rounded-xl font-bold text-sm uppercase tracking-widest transition flex items-center justify-center gap-2">
                     <i class="ph-bold ph-book-open text-lg"></i> Reglas de Oro
                 </a>
             </div>
         </div>
     </header>
 
-    <section id="ventajas" class="py-24 bg-white border-t border-gray-100">
+    <section id="ventajas" class="py-24 bg-white border-y border-gray-100">
         <div class="max-w-7xl mx-auto px-6">
-            <div class="text-center mb-20">
-                <h2 class="text-3xl md:text-5xl font-extrabold text-black tracking-tight mb-4">Activos de Grado Institucional</h2>
-                <p class="text-gray-500 font-bold uppercase tracking-widest text-xs">Ejecución ultrarrápida en todos los instrumentos</p>
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-black text-black tracking-tight mb-4">Condiciones de Nivel Institucional</h2>
+                <p class="text-gray-500 font-medium">Spreads brutos, ejecución ultrarrápida y cero restricciones.</p>
             </div>
 
             <div class="grid md:grid-cols-4 gap-8">
-                <div class="p-10 glass-card rounded-[2.5rem] flex flex-col items-center text-center">
-                    <div class="market-icon-container">
-                        <i class="ph-fill ph-currency-eur text-3xl"></i>
+                <div class="premium-card-white p-10 rounded-[2.5rem] flex flex-col items-center text-center">
+                    <div class="icon-box">
+                        <i class="ph-bold ph-currency-eur text-2xl"></i>
                     </div>
                     <h3 class="font-black text-xl mb-4 uppercase tracking-tighter">Forex</h3>
                     <p class="text-sm text-gray-500 leading-relaxed font-medium">Opera los pares mayores y menores con spreads brutos desde 0.0 pips.</p>
                 </div>
 
-                <div class="p-10 glass-card rounded-[2.5rem] flex flex-col items-center text-center">
-                    <div class="market-icon-container">
-                        <i class="ph-fill ph-bitcoin-logo text-3xl"></i>
+                <div class="premium-card-white p-10 rounded-[2.5rem] flex flex-col items-center text-center">
+                    <div class="icon-box">
+                        <i class="ph-bold ph-bitcoin-logo text-2xl"></i>
                     </div>
                     <h3 class="font-black text-xl mb-4 uppercase tracking-tighter">Cripto</h3>
-                    <p class="text-sm text-gray-500 leading-relaxed font-medium">Bitcoin, Ethereum y más. Operativa disponible 24/7, incluyendo fines de semana.</p>
+                    <p class="text-sm text-gray-500 leading-relaxed font-medium">Bitcoin, Ethereum y principales altcoins 24/7 sin descanso.</p>
                 </div>
 
-                <div class="p-10 glass-card rounded-[2.5rem] flex flex-col items-center text-center">
-                    <div class="market-icon-container">
-                        <i class="ph-fill ph-chart-bar text-3xl"></i>
+                <div class="premium-card-white p-10 rounded-[2.5rem] flex flex-col items-center text-center">
+                    <div class="icon-box">
+                        <i class="ph-bold ph-chart-bar text-2xl"></i>
                     </div>
                     <h3 class="font-black text-xl mb-4 uppercase tracking-tighter">Índices</h3>
-                    <p class="text-sm text-gray-500 leading-relaxed font-medium">Los mercados más líquidos: US30, NAS100, DAX40 y SPX500 a tu alcance.</p>
+                    <p class="text-sm text-gray-500 leading-relaxed font-medium">Acceso directo a US30, NAS100, DAX40 y SPX500.</p>
                 </div>
 
-                <div class="p-10 glass-card rounded-[2.5rem] flex flex-col items-center text-center">
-                    <div class="market-icon-container">
-                        <i class="ph-fill ph-buildings text-3xl"></i>
+                <div class="premium-card-white p-10 rounded-[2.5rem] flex flex-col items-center text-center">
+                    <div class="icon-box">
+                        <i class="ph-bold ph-buildings text-2xl"></i>
                     </div>
                     <h3 class="font-black text-xl mb-4 uppercase tracking-tighter">Acciones</h3>
-                    <p class="text-sm text-gray-500 leading-relaxed font-medium">Invierte en CFDs de los gigantes tecnológicos: Apple, Tesla, Nvidia y Amazon.</p>
+                    <p class="text-sm text-gray-500 leading-relaxed font-medium">CFDs de Apple, Tesla, Nvidia, Amazon y más gigantes tecnológicos.</p>
                 </div>
             </div>
         </div>
@@ -194,57 +184,57 @@
 
     <section id="planes" class="py-24 relative bg-[#F6F6F4]">
         <div class="max-w-7xl mx-auto px-6">
-            <div class="text-center mb-20">
-                <h2 class="text-4xl md:text-6xl font-black mb-6 tracking-tighter">Elige tu Desafío</h2>
-                <p class="text-gray-500 font-bold uppercase tracking-widest text-xs">Un solo pago por el examen. Sin cuotas mensuales.</p>
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-black mb-6 tracking-tight">Elige tu Desafío</h2>
+                <p class="text-gray-500 font-bold uppercase tracking-widest text-xs">Sin suscripciones mensuales. Un solo pago por examen.</p>
             </div>
 
             <div class="grid md:grid-cols-4 gap-6 lg:gap-8 items-center">
-                <div class="glass-card p-8 rounded-[2rem] flex flex-col border-2 border-transparent">
-                    <h3 class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-4">Starter</h3>
-                    <div class="text-5xl font-black text-black mb-8">$10,000</div>
-                    <div class="text-3xl font-bold text-black/20 mb-8 border-b border-gray-100 pb-8">$100 <span class="text-xs uppercase">Fee</span></div>
-                    <ul class="space-y-4 mb-10 text-xs font-bold text-gray-500 flex-1">
+                <div class="premium-card-white p-8 rounded-[2rem] flex flex-col">
+                    <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Starter</h3>
+                    <div class="text-4xl font-black text-black mb-6">$10,000</div>
+                    <div class="text-2xl font-bold text-gray-300 mb-8 border-b border-gray-100 pb-6">$100 <span class="text-xs uppercase">Fee</span></div>
+                    <ul class="space-y-4 mb-8 text-xs font-bold text-gray-500 flex-1">
                         <li class="flex items-center gap-3"><i class="ph-bold ph-check text-black"></i> 8% Profit Target</li>
                         <li class="flex items-center gap-3"><i class="ph-bold ph-check text-black"></i> 10% Max Loss</li>
-                        <li class="flex items-center gap-3"><i class="ph-bold ph-check text-black"></i> Apalancamiento 1:100</li>
+                        <li class="flex items-center gap-3"><i class="ph-bold ph-lightning text-black"></i> Leverage 1:100</li>
                     </ul>
                     <button onclick="handlePlanClick()" class="w-full py-4 rounded-xl border-2 border-black font-black text-[10px] uppercase tracking-widest hover:bg-black hover:text-white transition">Seleccionar</button>
                 </div>
 
-                <div class="glass-card p-8 rounded-[2rem] flex flex-col border-2 border-transparent">
-                    <h3 class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-4">Advanced</h3>
-                    <div class="text-5xl font-black text-black mb-8">$50,000</div>
-                    <div class="text-3xl font-bold text-black/20 mb-8 border-b border-gray-100 pb-8">$300 <span class="text-xs uppercase">Fee</span></div>
-                    <ul class="space-y-4 mb-10 text-xs font-bold text-gray-500 flex-1">
+                <div class="premium-card-white p-8 rounded-[2rem] flex flex-col">
+                    <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Advanced</h3>
+                    <div class="text-4xl font-black text-black mb-6">$50,000</div>
+                    <div class="text-2xl font-bold text-gray-300 mb-8 border-b border-gray-100 pb-6">$300 <span class="text-xs uppercase">Fee</span></div>
+                    <ul class="space-y-4 mb-8 text-xs font-bold text-gray-500 flex-1">
                         <li class="flex items-center gap-3"><i class="ph-bold ph-check text-black"></i> 8% Profit Target</li>
                         <li class="flex items-center gap-3"><i class="ph-bold ph-check text-black"></i> 10% Max Loss</li>
-                        <li class="flex items-center gap-3"><i class="ph-bold ph-check text-black"></i> Apalancamiento 1:100</li>
+                        <li class="flex items-center gap-3"><i class="ph-bold ph-lightning text-black"></i> Leverage 1:100</li>
                     </ul>
                     <button onclick="handlePlanClick()" class="w-full py-4 rounded-xl border-2 border-black font-black text-[10px] uppercase tracking-widest hover:bg-black hover:text-white transition">Seleccionar</button>
                 </div>
 
-                <div class="bg-black p-10 rounded-[2.5rem] flex flex-col relative transform md:-translate-y-6 shadow-[0_30px_60px_-12px_rgba(0,0,0,0.3)] text-white">
+                <div class="featured-card-dark p-10 rounded-[2.5rem] flex flex-col relative transform md:-translate-y-6 shadow-2xl">
                     <div class="absolute top-0 right-0 bg-white text-black font-black text-[9px] px-4 py-2 rounded-bl-2xl uppercase tracking-widest">Popular</div>
-                    <h3 class="text-[10px] font-black text-gray-500 uppercase tracking-[0.2em] mb-4">Professional</h3>
-                    <div class="text-6xl font-black mb-8 text-white">$100,000</div>
-                    <div class="text-3xl font-bold text-gray-700 mb-8 border-b border-gray-800 pb-8">$500 <span class="text-xs uppercase">Fee</span></div>
-                    <ul class="space-y-4 mb-10 text-xs font-bold text-gray-400 flex-1">
+                    <h3 class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4">Professional</h3>
+                    <div class="text-6xl font-black mb-6 text-white">$100,000</div>
+                    <div class="text-3xl font-bold text-gray-600 mb-8 border-b border-gray-800 pb-6">$500 <span class="text-xs uppercase">Fee</span></div>
+                    <ul class="space-y-4 mb-10 text-sm font-medium text-gray-300 flex-1">
                         <li class="flex items-center gap-3"><i class="ph-bold ph-check text-white"></i> 8% Profit Target</li>
                         <li class="flex items-center gap-3"><i class="ph-bold ph-check text-white"></i> 10% Max Loss</li>
-                        <li class="flex items-center gap-3"><i class="ph-bold ph-check text-white"></i> Soporte VIP 24/7</li>
+                        <li class="flex items-center gap-3"><i class="ph-bold ph-star text-yellow-500"></i> Soporte VIP 24/7</li>
                     </ul>
                     <button onclick="handlePlanClick()" class="w-full py-5 rounded-2xl bg-white text-black font-black text-[10px] uppercase tracking-widest hover:bg-gray-200 transition shadow-xl">Comprar Ahora</button>
                 </div>
 
-                <div class="glass-card p-8 rounded-[2rem] flex flex-col border-2 border-transparent">
-                    <h3 class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-4">Expert</h3>
-                    <div class="text-5xl font-black text-black mb-8">$200,000</div>
-                    <div class="text-3xl font-bold text-black/20 mb-8 border-b border-gray-100 pb-8">$900 <span class="text-xs uppercase">Fee</span></div>
-                    <ul class="space-y-4 mb-10 text-xs font-bold text-gray-500 flex-1">
+                <div class="premium-card-white p-8 rounded-[2rem] flex flex-col">
+                    <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Expert</h3>
+                    <div class="text-4xl font-black text-black mb-6">$200,000</div>
+                    <div class="text-2xl font-bold text-gray-300 mb-8 border-b border-gray-100 pb-6">$900 <span class="text-xs uppercase">Fee</span></div>
+                    <ul class="space-y-4 mb-8 text-xs font-bold text-gray-500 flex-1">
                         <li class="flex items-center gap-3"><i class="ph-bold ph-check text-black"></i> 8% Profit Target</li>
                         <li class="flex items-center gap-3"><i class="ph-bold ph-check text-black"></i> 10% Max Loss</li>
-                        <li class="flex items-center gap-3"><i class="ph-bold ph-check text-black"></i> Capital Máximo</li>
+                        <li class="flex items-center gap-3"><i class="ph-bold ph-crown text-black"></i> Capital Máximo</li>
                     </ul>
                     <button onclick="handlePlanClick()" class="w-full py-4 rounded-xl border-2 border-black font-black text-[10px] uppercase tracking-widest hover:bg-black hover:text-white transition">Seleccionar</button>
                 </div>
@@ -259,46 +249,45 @@
                     <img src="favicon.png?v=3" class="w-8 h-8">
                     <span class="font-black text-black uppercase tracking-widest text-lg">Ethernal Capitals</span>
                 </div>
-                <p class="text-sm text-gray-500 font-medium leading-relaxed">Proporcionamos el capital y la tecnología, tú pones la disciplina y el talento. La Prop Firm diseñada por y para traders.</p>
+                <p class="text-sm text-gray-500 font-medium leading-relaxed">Proporcionamos el capital y la tecnología, tú pones la disciplina. La Prop Firm líder para traders de élite.</p>
             </div>
             <div>
                 <h4 class="font-black text-black mb-6 uppercase tracking-widest text-xs">Legal</h4>
                 <ul class="space-y-3 text-sm text-gray-500 font-bold">
-                    <li><a href="legal.html" class="hover:text-black transition">Términos y Condiciones</a></li>
-                    <li><a href="legal.html" class="hover:text-black transition">Política de Privacidad</a></li>
-                    <li><a href="legal.html" class="hover:text-black transition">Descargo de Riesgo</a></li>
+                    <li><a href="legal.html" class="hover:text-black transition">Términos</a></li>
+                    <li><a href="legal.html" class="hover:text-black transition">Privacidad</a></li>
+                    <li><a href="legal.html" class="hover:text-black transition">Riesgos</a></li>
                 </ul>
             </div>
             <div>
                 <h4 class="font-black text-black mb-6 uppercase tracking-widest text-xs">Soporte</h4>
                 <ul class="space-y-3 text-sm text-gray-500 font-bold">
-                    <li><a href="help.html" class="hover:text-black transition">Centro de Ayuda (FAQ)</a></li>
-                    <li><a href="help.html" class="hover:text-black transition">Contactar Soporte</a></li>
-                    <li><a href="rules.html" class="hover:text-black transition">Reglas de Trading</a></li>
+                    <li><a href="help.html" class="hover:text-black transition">Centro de Ayuda</a></li>
+                    <li><a href="help.html" class="hover:text-black transition">Contacto</a></li>
+                    <li><a href="rules.html" class="hover:text-black transition">Reglas</a></li>
                 </ul>
             </div>
             <div>
                 <h4 class="font-black text-black mb-6 uppercase tracking-widest text-xs">Síguenos</h4>
                 <div class="flex justify-center md:justify-start gap-4">
                     <a href="#" class="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center hover:bg-black hover:text-white transition shadow-sm"><i class="ph-fill ph-twitter-logo text-xl"></i></a>
-                    <a href="#" class="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center hover:bg-black hover:text-white transition shadow-sm"><i class="ph-fill ph-instagram-logo text-xl"></i></a>
                     <a href="#" class="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center hover:bg-black hover:text-white transition shadow-sm"><i class="ph-fill ph-discord-logo text-xl"></i></a>
                 </div>
             </div>
         </div>
-        <div class="border-t border-gray-100 pt-10 text-[10px] font-black uppercase tracking-[0.4em] text-gray-400">
-            &copy; 2026 Ethernal Capitals Global LLC. Todos los derechos reservados.
+        <div class="border-t border-gray-100 pt-10 text-[10px] font-black uppercase tracking-[0.4em] text-gray-300">
+            &copy; 2026 Ethernal Capitals Global LLC.
         </div>
     </footer>
 
-    <div id="authModal" class="hidden fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm px-4">
+    <div id="authModal" class="hidden fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-md px-4">
         <div class="bg-white w-full max-w-md rounded-[2.5rem] p-10 relative border border-gray-100 shadow-2xl">
             <button onclick="closeModal()" class="absolute top-8 right-8 text-gray-400 hover:text-black transition">
                 <i class="ph-bold ph-x text-xl"></i>
             </button>
 
             <div class="flex flex-col items-center mb-10">
-                <img src="favicon.png?v=3" alt="Logo" class="w-16 h-16 mb-4">
+                <img src="favicon.png?v=3" alt="Logo" class="w-14 h-14 mb-4">
                 <h3 class="font-black uppercase tracking-[0.2em] text-sm text-black">Ethernal Capitals</h3>
             </div>
 
@@ -310,28 +299,22 @@
             <form id="formLogin" class="space-y-6">
                 <div>
                     <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3 ml-1">Email</label>
-                    <div class="relative">
-                        <i class="ph-bold ph-envelope absolute left-4 top-4 text-gray-400"></i>
-                        <input type="email" id="loginEmail" class="w-full bg-gray-50 border border-gray-100 rounded-2xl p-4 pl-12 text-sm focus:border-black outline-none transition font-medium text-black" placeholder="tu@email.com">
-                    </div>
+                    <input type="email" id="loginEmail" class="w-full bg-gray-50 border border-gray-100 rounded-2xl p-4 text-sm focus:border-black outline-none text-black font-medium" placeholder="tu@email.com">
                 </div>
                 <div>
                     <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3 ml-1">Contraseña</label>
-                    <div class="relative">
-                        <i class="ph-bold ph-lock-key absolute left-4 top-4 text-gray-400"></i>
-                        <input type="password" id="loginPass" class="w-full bg-gray-50 border border-gray-100 rounded-2xl p-4 pl-12 text-sm focus:border-black outline-none transition font-medium text-black" placeholder="••••••••">
-                    </div>
+                    <input type="password" id="loginPass" class="w-full bg-gray-50 border border-gray-100 rounded-2xl p-4 text-sm focus:border-black outline-none text-black font-medium" placeholder="••••••••">
                 </div>
                 <button type="submit" class="w-full bg-black text-white font-black py-5 rounded-2xl transition mt-4 uppercase tracking-widest text-[10px] shadow-xl">Acceder al Terminal</button>
             </form>
 
             <form id="formRegister" class="space-y-6 hidden">
                 <div class="grid grid-cols-2 gap-4">
-                    <input type="text" id="regName" placeholder="Nombre" class="w-full bg-gray-50 border border-gray-100 rounded-2xl p-4 text-sm focus:border-black outline-none transition font-medium text-black">
-                    <input type="text" id="regLast" placeholder="Apellido" class="w-full bg-gray-50 border border-gray-100 rounded-2xl p-4 text-sm focus:border-black outline-none transition font-medium text-black">
+                    <input type="text" id="regName" placeholder="Nombre" class="w-full bg-gray-50 border border-gray-100 rounded-2xl p-4 text-sm focus:border-black outline-none text-black font-medium">
+                    <input type="text" id="regLast" placeholder="Apellido" class="w-full bg-gray-50 border border-gray-100 rounded-2xl p-4 text-sm focus:border-black outline-none text-black font-medium">
                 </div>
-                <input type="email" id="regEmail" placeholder="Email" class="w-full bg-gray-50 border border-gray-100 rounded-2xl p-4 text-sm focus:border-black outline-none transition font-medium text-black">
-                <input type="password" id="regPass" placeholder="Contraseña" class="w-full bg-gray-50 border border-gray-100 rounded-2xl p-4 text-sm focus:border-black outline-none transition font-medium text-black">
+                <input type="email" id="regEmail" placeholder="Email" class="w-full bg-gray-50 border border-gray-100 rounded-2xl p-4 text-sm focus:border-black outline-none text-black font-medium">
+                <input type="password" id="regPass" placeholder="Contraseña" class="w-full bg-gray-50 border border-gray-100 rounded-2xl p-4 text-sm focus:border-black outline-none text-black font-medium">
                 <button type="submit" class="w-full bg-black text-white font-black py-5 rounded-2xl transition mt-4 uppercase tracking-widest text-[10px] shadow-xl">Crear Cuenta</button>
             </form>
 
@@ -340,7 +323,7 @@
     </div>
 
     <script>
-        const API_URL = ''; // En producción se deja vacío o se pone la URL
+        const API_URL = '';
         const modal = document.getElementById('authModal');
         const formLogin = document.getElementById('formLogin');
         const formRegister = document.getElementById('formRegister');
@@ -389,10 +372,10 @@
         }
 
         function logout() {
-            if(confirm("¿Deseas cerrar la sesión de forma segura?")) {
+            if(confirm("¿Deseas cerrar la sesión?")) {
                 localStorage.clear();
                 updateUI();
-                showToast("Sesión cerrada con éxito", "success");
+                showToast("Sesión cerrada", "success");
             }
         }
 
@@ -412,12 +395,11 @@
             }
         }
 
-        // LÓGICA DE LOGIN
         formLogin.addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = document.getElementById('loginEmail').value;
             const password = document.getElementById('loginPass').value;
-            msgDisplay.innerText = "Verificando credenciales...";
+            msgDisplay.innerText = "Cargando...";
 
             try {
                 const res = await fetch(`${API_URL}/login`, {
@@ -431,24 +413,20 @@
                     localStorage.setItem('userId', data.userId);
                     localStorage.setItem('userName', data.name || 'Trader');
                     updateUI(); 
-                    showToast(`Bienvenido de nuevo, ${data.name}`, "success");
+                    showToast(`Bienvenido ${data.name}`, "success");
                     setTimeout(() => closeModal(), 1000);
                 } else {
-                    msgDisplay.innerText = data.error || "Error de acceso";
+                    msgDisplay.innerText = data.error || "Error";
                 }
-            } catch (error) { 
-                msgDisplay.innerText = "Error de conexión con el servidor"; 
-            }
+            } catch (error) { msgDisplay.innerText = "Error de conexión"; }
         });
 
-        // LÓGICA DE REGISTRO
         formRegister.addEventListener('submit', async (e) => {
             e.preventDefault();
             const firstName = document.getElementById('regName').value;
             const lastName = document.getElementById('regLast').value;
             const email = document.getElementById('regEmail').value;
             const password = document.getElementById('regPass').value;
-            msgDisplay.innerText = "Creando perfil de inversor...";
 
             try {
                 const res = await fetch(`${API_URL}/register`, {
@@ -458,17 +436,14 @@
                 });
                 const data = await res.json();
                 if (res.ok) {
-                    showToast("¡Cuenta creada correctamente!", "success");
+                    showToast("¡Cuenta creada!", "success");
                     setTimeout(() => switchTab('login'), 1500);
                 } else {
-                    msgDisplay.innerText = data.error || "Error en el registro";
+                    msgDisplay.innerText = data.error || "Error";
                 }
-            } catch (error) { 
-                msgDisplay.innerText = "Error de red"; 
-            }
+            } catch (error) { msgDisplay.innerText = "Error de conexión"; }
         });
 
-        // Inicializar interfaz
         updateUI();
     </script>
 </body>
