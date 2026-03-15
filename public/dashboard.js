@@ -733,7 +733,7 @@ function loadTradingView(symbol = "BINANCE:BTCUSD") {
         "symbol": finalSymbol,
         "interval": "15",
         "timezone": "Etc/UTC",
-        "theme": "dark",
+        "theme": "light",
         "style": "1",
         "locale": "es",
         "enable_publishing": false,

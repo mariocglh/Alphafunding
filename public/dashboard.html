@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EthernalCapitals | Terminal Profesional</title>
     <link rel="icon" type="image/png" href="favicon.png?v=2">
-<link rel="apple-touch-icon" href="favicon.png?v=2">
+    <link rel="apple-touch-icon" href="favicon.png?v=2">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -16,8 +16,8 @@
             theme: {
                 extend: {
                     colors: {
-                        brand: { DEFAULT: '#3b82f6', dark: '#2563eb', glow: '#60a5fa' },
-                        dark: { bg: '#0b0f19', card: '#111827', border: '#1f2937', hover: '#1f2937' },
+                        brand: { DEFAULT: '#000000', dark: '#1f2937', glow: '#4b5563' },
+                        dark: { bg: '#F6F6F4', card: '#FFFFFF', border: '#E5E7EB', hover: '#F3F4F6' },
                         danger: '#ef4444',
                         success: '#22c55e',
                         warning: '#f59e0b',
@@ -28,6 +28,24 @@
             }
         }
     </script>
+    <style>
+        /* 🔥 TRUCO DE MAGIA: Invertimos los colores sin tocar tu HTML */
+        body { background-color: #F6F6F4 !important; color: #111827 !important; }
+        .text-white { color: #000000 !important; }
+        .text-gray-300, .text-gray-400 { color: #4B5563 !important; font-weight: 500; }
+        .text-gray-500 { color: #6B7280 !important; }
+        .border-gray-700, .border-gray-800 { border-color: #E5E7EB !important; }
+        .bg-gray-700 { background-color: #F3F4F6 !important; color: #000000 !important; border: 1px solid #E5E7EB; }
+        .hover\:bg-gray-600:hover { background-color: #E5E7EB !important; }
+        .glass-card, .glass-panel { background: rgba(255, 255, 255, 0.9) !important; backdrop-filter: blur(10px); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
+        .bg-dark-bg\/90 { background-color: rgba(246, 246, 244, 0.95) !important; }
+        .bg-brand { background-color: #000000 !important; color: #FFFFFF !important; }
+        .text-brand { color: #000000 !important; }
+        .border-brand { border-color: #000000 !important; }
+        .border-brand\/20 { border-color: rgba(0,0,0,0.1) !important; }
+        .bg-brand\/10 { background-color: rgba(0,0,0,0.03) !important; }
+        #headerProfileImg { background-color: #000000 !important; color: #FFFFFF !important; border-color: transparent !important;}
+    </style>
 
     <link rel="stylesheet" href="dashboard.css">
 </head>

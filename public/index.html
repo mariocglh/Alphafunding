@@ -14,10 +14,14 @@
             theme: {
                 extend: {
                     colors: {
-                        brand: { DEFAULT: '#3b82f6', dark: '#2563eb', glow: '#60a5fa' },
-                        dark: { bg: '#0b0f19', card: '#111827', border: '#1f2937' },
+                        // El color principal ahora es el NEGRO ELEGANTE de tu logo
+                        brand: { DEFAULT: '#000000', dark: '#1f2937', glow: '#4b5563' },
+                        // Invertimos el fondo oscuro por el tono CREMA/PAPEL de tu logo
+                        dark: { bg: '#F6F6F4', card: '#FFFFFF', border: '#E5E7EB', hover: '#F3F4F6' },
+                        danger: '#ef4444',
                         success: '#22c55e',
-                        danger: '#ef4444'
+                        warning: '#f59e0b',
+                        gold: '#fbbf24'
                     },
                     fontFamily: { sans: ['Inter', 'sans-serif'] }
                 }
@@ -25,16 +29,34 @@
         }
     </script>
     <style>
-        body { background-color: #0b0f19; color: white; font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
-        .hero-glow { background: radial-gradient(circle at center, rgba(59, 130, 246, 0.15) 0%, rgba(11, 15, 25, 0) 70%); }
-        .glass-card { background: rgba(17, 24, 39, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.05); }
-        .animate-fade-in { animation: fadeIn 0.5s ease-out; }
-        .slide-in-right { animation: slideInRight 0.4s ease-out forwards; }
-        .fade-out { animation: fadeOut 0.4s ease-out forwards; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes slideInRight { from { opacity: 0; transform: translateX(100%); } to { opacity: 1; transform: translateX(0); } }
-        @keyframes fadeOut { to { opacity: 0; transform: translateX(100%); } }
+        /* 🔥 TRUCO DE MAGIA: Invertimos los colores sin tocar tu HTML */
+        body { background-color: #F6F6F4 !important; color: #111827 !important; }
+        
+        /* Convertimos todos los textos blancos en negros o grises muy oscuros */
+        .text-white { color: #000000 !important; }
+        .text-gray-300, .text-gray-400 { color: #4B5563 !important; font-weight: 500; }
+        .text-gray-500 { color: #6B7280 !important; }
+        
+        /* Ajustamos los bordes para que sean sutiles en el modo claro */
+        .border-gray-700, .border-gray-800 { border-color: #E5E7EB !important; }
+        
+        /* Botones grises (como "Ver Historial") ahora son grises claros con texto negro */
+        .bg-gray-700 { background-color: #F3F4F6 !important; color: #000000 !important; border: 1px solid #E5E7EB; }
+        .hover\:bg-gray-600:hover { background-color: #E5E7EB !important; }
+        
+        /* Paneles con efecto cristal adaptados a modo claro */
+        .glass-card, .glass-panel { background: rgba(255, 255, 255, 0.9) !important; backdrop-filter: blur(10px); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
+        .bg-dark-bg\/90 { background-color: rgba(246, 246, 244, 0.95) !important; }
+        
+        /* Ajustes de botones principales (Negro sobre crema) */
+        .bg-brand { background-color: #000000 !important; color: #FFFFFF !important; }
+        .text-brand { color: #000000 !important; }
+        .border-brand { border-color: #000000 !important; }
+        .border-brand\/20 { border-color: rgba(0,0,0,0.1) !important; }
+        .bg-brand\/10 { background-color: rgba(0,0,0,0.03) !important; }
+        
+        /* Ajustamos el círculo de la foto de perfil para que resalte */
+        #headerProfileImg { background-color: #000000 !important; color: #FFFFFF !important; border-color: transparent !important;}
     </style>
 </head>
 <body class="antialiased">

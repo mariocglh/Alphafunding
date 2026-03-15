@@ -4,26 +4,57 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EthernalCapitals | Mi Perfil</title>
-    <link rel="icon" type="image/png" href="favicon.png?v=2">
-<link rel="apple-touch-icon" href="favicon.png?v=2">
+    
+    <link rel="icon" type="image/png" href="favicon.png?v=3">
+    <link rel="apple-touch-icon" href="favicon.png?v=3">
+    
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        brand: { DEFAULT: '#3b82f6', dark: '#2563eb' },
-                        dark: { bg: '#0b0f19', card: '#111827', border: '#1f2937' }
+                        brand: { DEFAULT: '#000000', dark: '#1f2937', glow: '#4b5563' },
+                        dark: { bg: '#F6F6F4', card: '#FFFFFF', border: '#E5E7EB', hover: '#F3F4F6' },
+                        danger: '#ef4444',
+                        success: '#22c55e',
+                        warning: '#f59e0b',
+                        gold: '#fbbf24'
                     },
                     fontFamily: { sans: ['Inter', 'sans-serif'] }
                 }
             }
         }
     </script>
+    
     <style>
-        body { background-color: #0b0f19; color: white; font-family: 'Inter', sans-serif; }
+        body { background-color: #F6F6F4 !important; color: #111827 !important; font-family: 'Inter', sans-serif; }
+        .text-white { color: #000000 !important; }
+        .text-gray-300, .text-gray-400 { color: #4B5563 !important; font-weight: 500; }
+        .text-gray-500 { color: #6B7280 !important; }
+        .border-gray-700, .border-gray-800 { border-color: #E5E7EB !important; }
+        .bg-gray-700 { background-color: #F3F4F6 !important; color: #000000 !important; border: 1px solid #E5E7EB; }
+        .hover\:bg-gray-600:hover { background-color: #E5E7EB !important; }
+        .glass-card, .glass-panel { background: rgba(255, 255, 255, 0.9) !important; backdrop-filter: blur(10px); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
+        .bg-dark-bg\/90 { background-color: rgba(246, 246, 244, 0.95) !important; }
+        .bg-dark-bg { background-color: #F6F6F4 !important; }
+        .bg-dark-card { background-color: #FFFFFF !important; }
+        .bg-brand { background-color: #000000 !important; color: #FFFFFF !important; }
+        .text-brand { color: #000000 !important; }
+        .border-brand { border-color: #000000 !important; }
+        .border-brand\/20 { border-color: rgba(0,0,0,0.1) !important; }
+        .bg-brand\/10 { background-color: rgba(0,0,0,0.03) !important; }
+        
+        /* Ajustes específicos de inputs para perfil en modo claro */
+        input { border-color: #E5E7EB !important; background-color: #F6F6F4 !important; color: #111827 !important; }
+        input:focus { border-color: #000000 !important; box-shadow: 0 0 0 1px #000000; }
+        input::placeholder { color: #9CA3AF !important; }
+        
+        /* Ajuste de foto de perfil */
+        #profileImage { border-color: #FFFFFF !important; }
     </style>
 </head>
 <body class="flex h-screen overflow-hidden">
@@ -31,15 +62,15 @@
     <aside class="w-20 md:w-64 bg-dark-card border-r border-dark-border flex flex-col justify-between z-30">
         <div>
             <div class="h-20 flex items-center justify-center md:justify-start md:px-6 border-b border-dark-border">
-                <i class="ph-fill ph-globe-hemisphere-west text-3xl text-brand md:mr-2"></i>
-                <span class="font-bold text-lg hidden md:block">Ethernal<span class="text-brand">Capitals</span></span>
+                <i class="ph-fill ph-wave-sine text-3xl text-brand md:mr-2"></i>
+                <span class="font-bold text-lg hidden md:block">Ethernal<span class="text-gray-500">Capitals</span></span>
             </div>
             <nav class="p-4 space-y-2 mt-2">
-                <a href="index.html" class="flex items-center gap-3 p-3 rounded-lg text-gray-400 hover:bg-dark-bg hover:text-white transition group">
-                    <i class="ph-bold ph-house text-xl group-hover:text-brand transition"></i> <span class="hidden md:block">Inicio</span>
+                <a href="index.html" class="flex items-center gap-3 p-3 rounded-lg text-gray-400 hover:bg-dark-bg hover:text-brand transition group">
+                    <i class="ph-bold ph-house text-xl transition"></i> <span class="hidden md:block">Inicio</span>
                 </a>
-                <a href="dashboard.html" class="flex items-center gap-3 p-3 rounded-lg text-gray-400 hover:bg-dark-bg hover:text-white transition group">
-                    <i class="ph-bold ph-chart-line-up text-xl group-hover:text-brand transition"></i> <span class="hidden md:block">Dashboard</span>
+                <a href="dashboard.html" class="flex items-center gap-3 p-3 rounded-lg text-gray-400 hover:bg-dark-bg hover:text-brand transition group">
+                    <i class="ph-bold ph-chart-line-up text-xl transition"></i> <span class="hidden md:block">Dashboard</span>
                 </a>
                 <a href="#" class="flex items-center gap-3 p-3 rounded-lg bg-brand/10 text-brand font-bold border border-brand/20">
                     <i class="ph-fill ph-user-gear text-xl"></i> <span class="hidden md:block">Mi Perfil</span>
@@ -47,7 +78,7 @@
             </nav>
         </div>
         <div class="p-4 border-t border-dark-border">
-            <button onclick="logout()" class="w-full flex items-center justify-center md:justify-start gap-3 p-3 text-red-400 hover:bg-red-500/10 rounded-lg transition">
+            <button onclick="logout()" class="w-full flex items-center justify-center md:justify-start gap-3 p-3 text-red-500 hover:bg-red-50 hover:text-red-700 rounded-lg transition">
                 <i class="ph-bold ph-sign-out text-xl"></i> <span class="hidden md:block">Cerrar Sesión</span>
             </button>
         </div>
@@ -61,11 +92,11 @@
                 <p class="text-gray-400">Actualiza tu foto, datos personales y seguridad.</p>
             </div>
 
-            <div class="bg-dark-card border border-dark-border p-8 rounded-2xl flex flex-col md:flex-row items-center gap-8 shadow-lg">
+            <div class="bg-dark-card border border-dark-border p-8 rounded-2xl flex flex-col md:flex-row items-center gap-8 shadow-sm">
                 <div class="relative group">
-                    <img id="profileImage" src="https://ui-avatars.com/api/?name=User&background=3b82f6&color=fff" class="w-32 h-32 rounded-full object-cover border-4 border-dark-bg shadow-2xl transition group-hover:opacity-75">
+                    <img id="profileImage" src="https://ui-avatars.com/api/?name=User&background=000&color=fff" class="w-32 h-32 rounded-full object-cover border-4 shadow-md transition group-hover:opacity-75">
                     
-                    <label for="fileInput" class="absolute bottom-0 right-0 bg-brand text-white p-2.5 rounded-full cursor-pointer hover:bg-brand-dark transition shadow-lg border-4 border-dark-card">
+                    <label for="fileInput" class="absolute bottom-0 right-0 bg-brand text-white p-2.5 rounded-full cursor-pointer hover:bg-brand-dark transition shadow-md border-4 border-white">
                         <i class="ph-bold ph-camera text-lg"></i>
                     </label>
                     <input type="file" id="fileInput" class="hidden" accept="image/*" onchange="previewImage(event)">
@@ -75,13 +106,13 @@
                     <h3 class="text-xl font-bold text-white" id="displayFullName">Cargando usuario...</h3>
                     <p class="text-sm text-gray-500">ID de Cliente: <span id="displayId" class="font-mono text-gray-400">...</span></p>
                     <div class="flex gap-2 justify-center md:justify-start mt-2">
-                        <span class="px-3 py-1 bg-green-500/10 text-green-400 rounded-full text-[10px] font-bold border border-green-500/20 uppercase tracking-wide">Verificado</span>
+                        <span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-[10px] font-bold border border-green-200 uppercase tracking-wide">Verificado</span>
                         <span class="px-3 py-1 bg-brand/10 text-brand rounded-full text-[10px] font-bold border border-brand/20 uppercase tracking-wide">Trader</span>
                     </div>
                 </div>
             </div>
 
-            <div class="bg-dark-card border border-dark-border p-8 rounded-2xl shadow-lg">
+            <div class="bg-dark-card border border-dark-border p-8 rounded-2xl shadow-sm">
                 <h3 class="text-lg font-bold text-white mb-6 flex items-center gap-2">
                     <i class="ph-bold ph-identification-card text-brand"></i> Información Personal
                 </h3>
@@ -90,19 +121,19 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <label class="block text-xs font-bold text-gray-500 uppercase mb-2 ml-1">Nombre</label>
-                            <input type="text" id="firstName" class="w-full bg-dark-bg border border-dark-border rounded-xl p-3 text-white focus:border-brand focus:ring-1 focus:ring-brand outline-none transition placeholder-gray-600">
+                            <input type="text" id="firstName" class="w-full rounded-xl p-3 outline-none transition placeholder-gray-400">
                         </div>
                         <div>
                             <label class="block text-xs font-bold text-gray-500 uppercase mb-2 ml-1">Apellidos</label>
-                            <input type="text" id="lastName" class="w-full bg-dark-bg border border-dark-border rounded-xl p-3 text-white focus:border-brand focus:ring-1 focus:ring-brand outline-none transition placeholder-gray-600">
+                            <input type="text" id="lastName" class="w-full rounded-xl p-3 outline-none transition placeholder-gray-400">
                         </div>
                     </div>
 
                     <div>
                         <label class="block text-xs font-bold text-gray-500 uppercase mb-2 ml-1">Correo Electrónico</label>
                         <div class="relative">
-                            <i class="ph-bold ph-envelope absolute left-4 top-3.5 text-gray-500"></i>
-                            <input type="email" id="email" class="w-full bg-dark-bg border border-dark-border rounded-xl p-3 pl-10 text-white focus:border-brand focus:ring-1 focus:ring-brand outline-none transition placeholder-gray-600">
+                            <i class="ph-bold ph-envelope absolute left-4 top-3.5 text-gray-400"></i>
+                            <input type="email" id="email" class="w-full rounded-xl p-3 pl-10 outline-none transition placeholder-gray-400">
                         </div>
                     </div>
 
@@ -112,14 +143,14 @@
                         </h3>
                         <label class="block text-xs font-bold text-gray-500 uppercase mb-2 ml-1">Nueva Contraseña</label>
                         <div class="relative">
-                            <i class="ph-bold ph-password absolute left-4 top-3.5 text-gray-500"></i>
-                            <input type="password" id="password" placeholder="Dejar en blanco para mantener la actual" class="w-full bg-dark-bg border border-dark-border rounded-xl p-3 pl-10 text-white focus:border-brand focus:ring-1 focus:ring-brand outline-none transition placeholder-gray-600">
+                            <i class="ph-bold ph-password absolute left-4 top-3.5 text-gray-400"></i>
+                            <input type="password" id="password" placeholder="Dejar en blanco para mantener la actual" class="w-full rounded-xl p-3 pl-10 outline-none transition placeholder-gray-400">
                         </div>
                         <p class="text-xs text-gray-500 mt-2 ml-1">Mínimo 6 caracteres. Si no quieres cambiarla, no escribas nada.</p>
                     </div>
 
                     <div class="flex justify-end pt-4">
-                        <button type="submit" class="bg-brand hover:bg-brand-dark text-white px-8 py-3 rounded-xl font-bold transition shadow-lg shadow-brand/20 flex items-center gap-2">
+                        <button type="submit" class="bg-brand hover:opacity-80 text-white px-8 py-3 rounded-xl font-bold transition shadow-md flex items-center gap-2">
                             <i class="ph-bold ph-floppy-disk"></i> Guardar Cambios
                         </button>
                     </div>
@@ -161,8 +192,8 @@
                     if(savedPhoto) {
                         document.getElementById('profileImage').src = savedPhoto;
                     } else {
-                        // Si no, generar avatar con iniciales
-                        document.getElementById('profileImage').src = `https://ui-avatars.com/api/?name=${data.player.name}&background=3b82f6&color=fff`;
+                        // Si no, generar avatar con iniciales (ahora con fondo negro para hacer juego)
+                        document.getElementById('profileImage').src = `https://ui-avatars.com/api/?name=${data.player.name}&background=000&color=fff`;
                     }
                 } else {
                     alert("Sesión expirada");
