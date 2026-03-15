@@ -56,6 +56,12 @@
             color: #FFFFFF !important;
             box-shadow: 0 20px 40px rgba(0,0,0,0.2);
         }
+        
+        /* 🔥 SOLUCIÓN DE CONTRASTE: Forzamos el blanco puro en el precio del plan Pro 🔥 */
+        .featured-card-dark .pro-price {
+            color: #FFFFFF !important;
+            text-shadow: 0 0 15px rgba(255,255,255,0.3); /* Un ligero brillo para máxima legibilidad */
+        }
 
         /* Contenedores de Iconos */
         .icon-box {
@@ -95,10 +101,14 @@
     <div id="toastContainer" class="fixed top-5 right-5 z-[200] flex flex-col gap-3 pointer-events-none"></div>
 
     <nav class="fixed w-full z-50 bg-white/80 backdrop-blur-md border-b border-dark-border">
-        <div class="max-w-7xl mx-auto px-4 md:px-6 h-16 md:h-20 flex items-center justify-between">
-            <div class="flex items-center gap-3 cursor-pointer" onclick="window.scrollTo({top:0, behavior:'smooth'})">
-                <img src="favicon.png?v=3" alt="Logo" class="w-10 h-10 object-contain">
-                <span class="text-xl md:text-2xl font-bold tracking-tight">Ethernal<span class="text-black">Capitals</span></span>
+        <div class="max-w-7xl mx-auto px-4 md:px-6 h-16 md:h-24 flex items-center justify-between">
+            
+            <div class="flex items-center gap-3 cursor-pointer group" onclick="window.scrollTo({top:0, behavior:'smooth'})">
+                <img src="favicon.png?v=3" alt="Logo" class="w-10 h-10 md:w-12 md:h-12 object-contain group-hover:scale-105 transition-transform">
+                <div class="flex flex-col">
+                    <span class="text-xl md:text-2xl font-black tracking-[0.15em] uppercase leading-none text-black">Ethernal</span>
+                    <span class="text-[10px] md:text-[11px] font-semibold tracking-[0.3em] uppercase text-gray-500 mt-1">Capitals</span>
+                </div>
             </div>
             
             <div class="hidden md:flex items-center gap-8 text-sm font-semibold text-gray-500">
@@ -193,7 +203,7 @@
                 <div class="premium-card-white p-8 rounded-[2rem] flex flex-col">
                     <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Starter</h3>
                     <div class="text-4xl font-black text-black mb-6">$10,000</div>
-                    <div class="text-2xl font-bold text-gray-300 mb-8 border-b border-gray-100 pb-6">$100 <span class="text-xs uppercase">Fee</span></div>
+                    <div class="text-2xl font-bold text-gray-300 mb-8 border-b border-gray-100 pb-6">$100</div>
                     <ul class="space-y-4 mb-8 text-xs font-bold text-gray-500 flex-1">
                         <li class="flex items-center gap-3"><i class="ph-bold ph-check text-black"></i> 8% Profit Target</li>
                         <li class="flex items-center gap-3"><i class="ph-bold ph-check text-black"></i> 10% Max Loss</li>
@@ -205,7 +215,7 @@
                 <div class="premium-card-white p-8 rounded-[2rem] flex flex-col">
                     <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Advanced</h3>
                     <div class="text-4xl font-black text-black mb-6">$50,000</div>
-                    <div class="text-2xl font-bold text-gray-300 mb-8 border-b border-gray-100 pb-6">$300 <span class="text-xs uppercase">Fee</span></div>
+                    <div class="text-2xl font-bold text-gray-300 mb-8 border-b border-gray-100 pb-6">$300</div>
                     <ul class="space-y-4 mb-8 text-xs font-bold text-gray-500 flex-1">
                         <li class="flex items-center gap-3"><i class="ph-bold ph-check text-black"></i> 8% Profit Target</li>
                         <li class="flex items-center gap-3"><i class="ph-bold ph-check text-black"></i> 10% Max Loss</li>
@@ -217,8 +227,8 @@
                 <div class="featured-card-dark p-10 rounded-[2.5rem] flex flex-col relative transform md:-translate-y-6 shadow-2xl">
                     <div class="absolute top-0 right-0 bg-white text-black font-black text-[9px] px-4 py-2 rounded-bl-2xl uppercase tracking-widest">Popular</div>
                     <h3 class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4">Professional</h3>
-                    <div class="text-6xl font-black mb-6 text-white">$100,000</div>
-                    <div class="text-3xl font-bold text-gray-600 mb-8 border-b border-gray-800 pb-6">$500 <span class="text-xs uppercase">Fee</span></div>
+                    <div class="text-6xl font-black mb-6 text-white pro-price">$100,000</div>
+                    <div class="text-3xl font-bold text-gray-600 mb-8 border-b border-gray-800 pb-6">$500</div>
                     <ul class="space-y-4 mb-10 text-sm font-medium text-gray-300 flex-1">
                         <li class="flex items-center gap-3"><i class="ph-bold ph-check text-white"></i> 8% Profit Target</li>
                         <li class="flex items-center gap-3"><i class="ph-bold ph-check text-white"></i> 10% Max Loss</li>
@@ -230,7 +240,7 @@
                 <div class="premium-card-white p-8 rounded-[2rem] flex flex-col">
                     <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Expert</h3>
                     <div class="text-4xl font-black text-black mb-6">$200,000</div>
-                    <div class="text-2xl font-bold text-gray-300 mb-8 border-b border-gray-100 pb-6">$900 <span class="text-xs uppercase">Fee</span></div>
+                    <div class="text-2xl font-bold text-gray-300 mb-8 border-b border-gray-100 pb-6">$900</div>
                     <ul class="space-y-4 mb-8 text-xs font-bold text-gray-500 flex-1">
                         <li class="flex items-center gap-3"><i class="ph-bold ph-check text-black"></i> 8% Profit Target</li>
                         <li class="flex items-center gap-3"><i class="ph-bold ph-check text-black"></i> 10% Max Loss</li>
@@ -280,7 +290,7 @@
         </div>
     </footer>
 
-    <div id="authModal" class="hidden fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-md px-4">
+    <div id="authModal" class="hidden fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm px-4">
         <div class="bg-white w-full max-w-md rounded-[2.5rem] p-10 relative border border-gray-100 shadow-2xl">
             <button onclick="closeModal()" class="absolute top-8 right-8 text-gray-400 hover:text-black transition">
                 <i class="ph-bold ph-x text-xl"></i>
