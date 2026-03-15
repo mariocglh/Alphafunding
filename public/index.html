@@ -205,7 +205,7 @@
                         <li class="flex items-center gap-3"><i class="ph-bold ph-check text-black"></i> 10% Max Loss</li>
                         <li class="flex items-center gap-3"><i class="ph-bold ph-lightning text-black"></i> Leverage 1:100</li>
                     </ul>
-                    <button onclick="handlePlanClick()" class="w-full py-4 rounded-xl border-2 border-black font-black text-[10px] uppercase tracking-widest hover:bg-black hover:text-white transition">Seleccionar</button>
+                    <button onclick="handlePlanClick('price_1TBJKnGwsgs6w56SAbMkjEO8')" class="w-full py-4 rounded-xl border-2 border-black font-black text-[10px] uppercase tracking-widest hover:bg-black hover:text-white transition">Seleccionar</button>
                 </div>
 
                 <div class="premium-card-white p-8 rounded-[2rem] flex flex-col">
@@ -217,7 +217,7 @@
                         <li class="flex items-center gap-3"><i class="ph-bold ph-check text-black"></i> 10% Max Loss</li>
                         <li class="flex items-center gap-3"><i class="ph-bold ph-lightning text-black"></i> Leverage 1:100</li>
                     </ul>
-                    <button onclick="handlePlanClick()" class="w-full py-4 rounded-xl border-2 border-black font-black text-[10px] uppercase tracking-widest hover:bg-black hover:text-white transition">Seleccionar</button>
+                    <button onclick="handlePlanClick('price_1TBJKCGwsgs6w56SSkwEPUXL')" class="w-full py-4 rounded-xl border-2 border-black font-black text-[10px] uppercase tracking-widest hover:bg-black hover:text-white transition">Seleccionar</button>
                 </div>
 
                 <div class="featured-card-dark p-10 rounded-[2.5rem] flex flex-col relative transform md:-translate-y-6 shadow-2xl">
@@ -230,7 +230,7 @@
                         <li class="flex items-center gap-3"><i class="ph-bold ph-check text-white"></i> 10% Max Loss</li>
                         <li class="flex items-center gap-3"><i class="ph-bold ph-star text-yellow-500"></i> Soporte VIP 24/7</li>
                     </ul>
-                    <button onclick="handlePlanClick()" class="w-full py-5 rounded-2xl bg-white text-black font-black text-[10px] uppercase tracking-widest hover:bg-gray-200 transition shadow-xl">Comprar Ahora</button>
+                    <button onclick="handlePlanClick('price_1TBJLxGwsgs6w56SALJ63wRF')" class="w-full py-5 rounded-2xl bg-white text-black font-black text-[10px] uppercase tracking-widest hover:bg-gray-200 transition shadow-xl">Comprar Ahora</button>
                 </div>
 
                 <div class="premium-card-white p-8 rounded-[2rem] flex flex-col">
@@ -242,7 +242,7 @@
                         <li class="flex items-center gap-3"><i class="ph-bold ph-check text-black"></i> 10% Max Loss</li>
                         <li class="flex items-center gap-3"><i class="ph-bold ph-crown text-black"></i> Capital Máximo</li>
                     </ul>
-                    <button onclick="handlePlanClick()" class="w-full py-4 rounded-xl border-2 border-black font-black text-[10px] uppercase tracking-widest hover:bg-black hover:text-white transition">Seleccionar</button>
+                    <button onclick="handlePlanClick('price_1TBJMMGwsgs6w56Sul6uJTKV')" class="w-full py-4 rounded-xl border-2 border-black font-black text-[10px] uppercase tracking-widest hover:bg-black hover:text-white transition">Seleccionar</button>
                 </div>
             </div>
         </div>
@@ -373,13 +373,13 @@
 }
 
         // Sustituye tu función actual por esta
-function handlePlanClick(planName, price) {
+function handlePlanClick(priceId) {
     if (!localStorage.getItem('token')) {
         // Si no está logueado, al modal de registro
         openModal('register');
     } else {
-        // Si está logueado, mandamos al dashboard con los parámetros del plan
-        window.location.href = `dashboard.html?buyPlan=true&plan=${encodeURIComponent(planName)}&price=${price}`;
+        // Mandamos al dashboard con el ID real de Stripe
+        window.location.href = `dashboard.html?buyPlan=true&priceId=${priceId}`;
     }
 }
 

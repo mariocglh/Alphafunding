@@ -612,20 +612,17 @@ async function closeTrade(tradeId) {
     } catch(e) { showToast("Error al cerrar", "error"); }
 }
 
-// 🔥 AQUÍ HEMOS APLICADO EL FETCH CORRECTO A /API/PAYMENTS/...
-async function tryPurchase(planName) {
-    const prices = {
-        'Starter 10k': 100,
-        'Standard 50k': 300,
-        'Challenge 100k': 500,
-        'Pro 200k': 900
-    };
-
-    const price = prices[planName];
-    const userId = localStorage.getItem('userId');
+// 🔥 FUNCIÓN DE COMPRA REAL (STRIPE LIVE READY)
+async function tryPurchase(priceId) {
     const token = localStorage.getItem('token');
+    const userId = localStorage.getItem('userId');
+    
+    if (!token) {
+        window.location.href = 'index.html';
+        return;
+    }
 
-    showToast("Generando sesión segura...", "success");
+    showToast("Conectando con la pasarela segura...", "success");
 
     try {
         const response = await fetch(`${API_URL}/api/payments/create-checkout-session`, {
@@ -634,19 +631,22 @@ async function tryPurchase(planName) {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}` 
             },
-            body: JSON.stringify({ planName, price, userId })
+            // Enviamos el priceId real de Stripe. El servidor usará este ID 
+            // para saber qué cobrar sin posibilidad de error.
+            body: JSON.stringify({ priceId, userId })
         });
 
         const data = await response.json();
         
         if (data.url) {
-            // Redirigimos al usuario a la página de pago de Stripe
+            // Redirección oficial a Stripe
             window.location.href = data.url;
         } else {
-            showToast("Error al conectar con la pasarela", "error");
+            showToast("Error: " + (data.error || "No se pudo crear la sesión"), "error");
         }
     } catch (error) {
-        showToast("Error de conexión", "error");
+        console.error("Error en Stripe Checkout:", error);
+        showToast("Error de conexión con el servidor", "error");
     }
 }
 
@@ -687,9 +687,12 @@ function logout() {
 
 function checkAutoBuy() {
     const urlParams = new URLSearchParams(window.location.search);
-    const planToBuy = urlParams.get('buyPlan');
-    if (planToBuy) {
-        showSection('shop');
+    const priceId = urlParams.get('priceId'); // Recibimos el ID de Stripe desde la URL
+    
+    if (priceId) {
+        // Ejecutamos la compra inmediatamente
+        tryPurchase(priceId);
+        // Limpiamos la URL para que no intente comprar de nuevo al recargar
         window.history.replaceState({}, document.title, "dashboard.html");
     }
 }
