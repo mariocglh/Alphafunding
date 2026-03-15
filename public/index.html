@@ -372,10 +372,19 @@
     }
 }
 
-        function handlePlanClick() {
-            if (localStorage.getItem('token')) window.location.href = 'dashboard.html?buyPlan=true'; 
-            else openModal('register');
-        }
+        // Sustituye tu función actual por esta
+function handlePlanClick(planName, price) {
+    if (!localStorage.getItem('token')) {
+        // Si no está logueado, al modal de registro
+        openModal('register');
+    } else {
+        // Si está logueado, mandamos al dashboard con los parámetros del plan
+        window.location.href = `dashboard.html?buyPlan=true&plan=${encodeURIComponent(planName)}&price=${price}`;
+    }
+}
+
+// Y en los botones del HTML, asegúrate de pasar los datos, por ejemplo:
+// onclick="handlePlanClick('Professional 100k', 500)"
 
         function logout() {
             if(confirm("¿Deseas cerrar la sesión?")) {

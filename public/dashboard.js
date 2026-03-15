@@ -562,58 +562,6 @@ async function updateTrades(acc) {
     document.getElementById('tradesTableBody').innerHTML = html || '<tr><td colspan="10" class="p-8 text-center text-gray-500 italic">No hay operaciones registradas.</td></tr>';
 }
 
-// --- CORRECCIÓN DE LA GESTIÓN DE CUENTAS (Eliminada la función duplicada) ---
-function renderManagementPanel() {
-    const grid = document.getElementById('managementGrid');
-    
-    if(filteredAccounts.length === 0) {
-        grid.innerHTML = '<div class="col-span-3 text-center text-gray-500 py-10 italic">No se encontraron cuentas.</div>';
-        return;
-    }
-
-    grid.innerHTML = filteredAccounts.map(acc => {
-        let borderColor = 'border-gray-700';
-        let statusBadge = '<span class="px-2 py-1 bg-gray-700 rounded text-[10px] text-white">ACTIVA</span>';
-        
-        if(acc.status === 'LIVE') { 
-            borderColor = 'border-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.2)]';
-            statusBadge = '<span class="px-2 py-1 bg-blue-600 rounded text-[10px] text-white font-bold animate-pulse">LIVE REAL</span>';
-        } else if (acc.status === 'BREACHED') {
-            borderColor = 'border-red-500';
-            statusBadge = '<span class="px-2 py-1 bg-red-600 rounded text-[10px] text-white font-bold">QUEMADA 💀</span>';
-        }
-
-        // Checkbox de fusión (Solo para LIVE según tu servidor)
-        const isChecked = mergeSelection.includes(acc.id) ? 'checked' : '';
-        const checkHtml = acc.status === 'LIVE' ? `<input type="checkbox" onchange="toggleMergeSelection('${acc.id}')" ${isChecked} class="w-5 h-5 rounded border-gray-600 bg-dark-bg text-brand focus:ring-brand cursor-pointer z-50">` : '';
-
-        return `
-        <div class="glass-panel p-6 rounded-xl border ${borderColor} flex flex-col gap-4 relative group hover:bg-dark-card/80 transition">
-            <div class="flex justify-between items-start">
-                <div>
-                    <div class="text-[10px] text-gray-500 uppercase font-bold tracking-widest mb-1">${acc.plan}</div>
-                    <div class="text-2xl font-bold text-white">$${acc.balance.toLocaleString()}</div>
-                    <div class="text-xs text-gray-400 font-mono mt-1">Login: ${acc.login}</div>
-                </div>
-                <div class="flex flex-col items-end gap-2">
-                    ${statusBadge}
-                    ${checkHtml}
-                </div>
-            </div>
-            <div class="grid grid-cols-2 gap-2 text-xs bg-dark-bg p-3 rounded-lg border border-dark-border">
-                <div class="text-gray-500">Equidad:</div><div class="text-right text-white font-mono">$${acc.equity.toLocaleString()}</div>
-                <div class="text-gray-500">Profit:</div><div class="text-right ${acc.balance >= acc.initialBalance ? 'text-green-400' : 'text-red-400'} font-mono">$${(acc.balance - (acc.initialBalance || 0)).toFixed(2)}</div>
-            </div>
-            <div class="flex gap-2 mt-auto">
-                <button onclick="toggleHistory('hist-${acc.id}')" class="flex-1 py-2 rounded-lg bg-gray-700 hover:bg-gray-600 text-xs font-bold text-white transition">VER HISTORIAL</button>
-            </div>
-            <div id="hist-${acc.id}" class="hidden mt-4 pt-4 border-t border-gray-700 max-h-40 overflow-y-auto">
-                 <p class="text-[10px] text-gray-500 italic">Cargando...</p>
-            </div>
-        </div>`;
-    }).join('');
-}
-
 function tryTrade(type) {
     if(currentAccountStatus === 'BREACHED') { 
         showToast("Cuenta bloqueada por infracción.", "error"); 
@@ -664,28 +612,55 @@ async function closeTrade(tradeId) {
     } catch(e) { showToast("Error al cerrar", "error"); }
 }
 
-function tryPurchase(planName) {
-    showConfirm(
-        "Confirmar Compra",
-        `¿Deseas adquirir el plan ${planName}? El pago es único.`,
-        async () => {
-            const userId = localStorage.getItem('userId');
-            try {
-                const res = await fetch(`${API_URL}/create-account`, {
-                    method: 'POST', headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ userId, planName })
-                });
-                if(res.ok) {
-                    showToast("¡Cuenta comprada con éxito! 🚀");
-                    setTimeout(() => window.location.reload(), 1500);
-                } else {
-                    showToast("Error en la compra.", "error");
-                }
-            } catch(e) { showToast("Error de conexión", "error"); }
-        },
-        'buy'
-    );
+// 🔥 AQUÍ HEMOS APLICADO EL FETCH CORRECTO A /API/PAYMENTS/...
+async function tryPurchase(planName) {
+    const prices = {
+        'Starter 10k': 100,
+        'Standard 50k': 300,
+        'Challenge 100k': 500,
+        'Pro 200k': 900
+    };
+
+    const price = prices[planName];
+    const userId = localStorage.getItem('userId');
+    const token = localStorage.getItem('token');
+
+    showToast("Generando sesión segura...", "success");
+
+    try {
+        const response = await fetch(`${API_URL}/api/payments/create-checkout-session`, {
+            method: 'POST',
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}` 
+            },
+            body: JSON.stringify({ planName, price, userId })
+        });
+
+        const data = await response.json();
+        
+        if (data.url) {
+            // Redirigimos al usuario a la página de pago de Stripe
+            window.location.href = data.url;
+        } else {
+            showToast("Error al conectar con la pasarela", "error");
+        }
+    } catch (error) {
+        showToast("Error de conexión", "error");
+    }
 }
+
+// Lógica para detectar si vuelve de pagar (al cargar la página)
+window.onload = () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('payment') === 'success') {
+        showToast("¡Pago completado! Tu capital se está activando...", "success");
+        // Aquí podrías llamar a una función para refrescar las cuentas
+    }
+    if (urlParams.get('payment') === 'cancel') {
+        showToast("Pago cancelado", "error");
+    }
+};
 
 async function claimFunded(accountId) {
         showConfirm("Reclamar Cuenta Real", "¿Estás listo para pasar a LIVE? Se archivará la evaluación.", async () => {
@@ -719,7 +694,7 @@ function checkAutoBuy() {
     }
 }
 
-// 🔥 GRÁFICO REPARADO Y OPTIMIZADO
+// 🔥 GRÁFICO REPARADO (CON COLOR BLANCO MATE Y GRID CLARO)
 function loadTradingView(symbol = "BINANCE:BTCUSD") {
     let finalSymbol = symbol;
     if (!symbol.includes(':')) {
@@ -737,8 +712,8 @@ function loadTradingView(symbol = "BINANCE:BTCUSD") {
         "style": "1",
         "locale": "es",
         "enable_publishing": false,
-        "backgroundColor": "#0b0f19",
-        "gridColor": "#1f2937",
+        "backgroundColor": "#FFFFFF",
+        "gridColor": "#F3F4F6",
         "hide_top_toolbar": false,
         "hide_side_toolbar": true,
         "allow_symbol_change": false,

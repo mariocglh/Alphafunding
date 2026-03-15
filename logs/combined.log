@@ -120,3 +120,4 @@
 {"level":"warn","message":"⚠️ Scalping detectado en trade 6654731. Beneficio anulado."}
 {"level":"info","message":"📈 Trade ABIERTO: BUY BTCUSD"}
 {"level":"info","message":"✅ Login exitoso: mariocglh@alphafunding.com","service":"auth-controller","timestamp":"2026-01-12 16:02:16"}
+{"level":"info","message":"✅ Login exitoso: oladios@gmail.com","service":"auth-controller","timestamp":"2026-03-15 18:15:50"}
