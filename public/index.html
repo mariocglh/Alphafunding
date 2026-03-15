@@ -8,7 +8,7 @@
     <link rel="icon" type="image/png" href="favicon.png?v=3">
     <link rel="apple-touch-icon" href="favicon.png?v=3">
     
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -16,9 +16,7 @@
             theme: {
                 extend: {
                     colors: {
-                        // El color principal es el NEGRO ELEGANTE de tu logo
                         brand: { DEFAULT: '#000000', dark: '#111827', glow: '#4b5563' },
-                        // Invertimos el fondo oscuro por el tono CREMA/PAPEL de tu logo
                         dark: { bg: '#F6F6F4', card: '#FFFFFF', border: '#E5E7EB', hover: '#F3F4F6' },
                         danger: '#ef4444',
                         success: '#22c55e',
@@ -31,54 +29,72 @@
         }
     </script>
     <style>
-        /* 🔥 TRUCO DE MAGIA: Invertimos los colores base sin romper estructura */
-        body { background-color: #F6F6F4 !important; color: #111827 !important; }
+        /* CSS PERSONALIZADO PARA ESTÉTICA ELITE */
+        body { background-color: #F6F6F4 !important; color: #111827 !important; scroll-behavior: smooth; }
         
-        /* Convertimos todos los textos blancos genéricos en negros */
+        /* Forzamos el texto negro en elementos que antes eran blancos */
         .text-white { color: #000000 !important; }
         .text-gray-300, .text-gray-400 { color: #4B5563 !important; font-weight: 500; }
-        .text-gray-500 { color: #6B7280 !important; }
         
-        /* Bordes sutiles en modo claro */
-        .border-gray-700, .border-gray-800 { border-color: #E5E7EB !important; }
+        /* Bordes definidos para alto contraste */
+        .border-dark-border, .border-gray-700, .border-gray-800 { border-color: rgba(0,0,0,0.12) !important; }
         
-        /* Botones grises a grises claros con texto negro */
-        .bg-gray-700 { background-color: #E5E7EB !important; color: #000000 !important; border: 1px solid #D1D5DB; }
-        .hover\:bg-gray-600:hover { background-color: #D1D5DB !important; }
-        
-        /* Paneles con efecto cristal adaptados a modo claro */
-        .glass-card, .glass-panel { background: rgba(255, 255, 255, 0.95) !important; backdrop-filter: blur(10px); box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05); }
-        .bg-dark-bg\/90 { background-color: rgba(246, 246, 244, 0.95) !important; }
-        
-        /* Ajustes de botones principales (Negro sobre crema) */
-        .bg-brand { background-color: #000000 !important; color: #FFFFFF !important; }
-        .text-brand { color: #000000 !important; }
-        .border-brand { border-color: #000000 !important; }
-        .border-brand\/20 { border-color: rgba(0,0,0,0.1) !important; }
-        .bg-brand\/10 { background-color: rgba(0,0,0,0.04) !important; }
-        
-        /* Círculo de la foto de perfil */
-        #headerProfileImg { background-color: #000000 !important; color: #FFFFFF !important; border-color: transparent !important;}
-        
-        /* 🔥 NUEVAS CLASES PARA ALTO CONTRASTE (Deep Black) 🔥 */
-        /* Usamos códigos hexadecimales directos para saltarnos el override de .text-white */
-        .deep-black-card {
-            background-color: #0a0a0a !important;
-            border: 1px solid #262626 !important;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        /* Paneles Premium */
+        .glass-card, .glass-panel { 
+            background: #FFFFFF !important; 
+            border: 1px solid rgba(0,0,0,0.08) !important;
+            box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05); 
+            transition: all 0.3s ease;
         }
-        .deep-text-white { color: #f8fafc !important; }
-        .deep-text-gray { color: #9ca3af !important; }
+        .glass-card:hover {
+            border-color: #000000 !important;
+            transform: translateY(-4px);
+        }
         
-        /* Animaciones de entrada premium */
+        /* Estilo para los logos de mercados */
+        .market-icon-container {
+            background: #000000;
+            color: #FFFFFF;
+            width: 64px;
+            height: 64px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-center: center;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Botones de acción */
+        .bg-brand { background-color: #000000 !important; color: #FFFFFF !important; }
+        .hover\:bg-brand-dark:hover { background-color: #1a1a1a !important; }
+        
+        /* Animación Fade In Up para el Hero */
         @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        .animate-fade-up { animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        .delay-100 { animation-delay: 100ms; }
-        .delay-200 { animation-delay: 200ms; }
-        .delay-300 { animation-delay: 300ms; }
+        .animate-hero { animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+        /* Estilo del logo central */
+        .hero-logo-text {
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+            font-weight: 900;
+            color: #000000;
+        }
+
+        .hero-glow {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            height: 600px;
+            background: radial-gradient(circle at 50% 0%, rgba(0,0,0,0.03) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
     </style>
 </head>
 <body class="antialiased">
@@ -86,289 +102,245 @@
     <div id="toastContainer" class="fixed top-5 right-5 z-[200] flex flex-col gap-3 pointer-events-none"></div>
 
     <nav class="fixed w-full z-50 glass-card border-b border-dark-border">
-        <div class="max-w-7xl mx-auto px-4 md:px-6 h-16 md:h-24 flex items-center justify-between">
-            
-            <div class="flex items-center gap-3 cursor-pointer group" onclick="window.scrollTo(0,0)">
-                <img src="favicon.png?v=3" alt="Logo Ethernal Capitals" class="w-10 h-10 md:w-12 md:h-12 object-contain group-hover:scale-105 transition-transform duration-300">
-                <div class="flex flex-col justify-center">
-                    <span class="text-lg md:text-xl font-extrabold tracking-[0.15em] uppercase leading-none text-black">Ethernal</span>
-                    <span class="text-[10px] md:text-[11px] font-semibold tracking-[0.3em] uppercase leading-tight text-gray-500 mt-0.5">Capitals</span>
-                </div>
+        <div class="max-w-7xl mx-auto px-4 md:px-6 h-16 md:h-20 flex items-center justify-between">
+            <div class="flex items-center gap-3 cursor-pointer group" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+                <img src="favicon.png?v=3" alt="Logo" class="w-10 h-10 object-contain">
+                <span class="text-xl md:text-2xl font-black tracking-tighter">Ethernal<span class="text-gray-500 font-medium">Capitals</span></span>
             </div>
             
-            <div class="hidden md:flex items-center gap-10 text-sm font-bold text-gray-500 uppercase tracking-wider">
+            <div class="hidden md:flex items-center gap-8 text-sm font-bold uppercase tracking-widest text-gray-500">
                 <a href="#ventajas" class="hover:text-black transition">Mercados</a>
                 <a href="#planes" class="hover:text-black transition">Planes</a>
                 <a href="rules.html" class="hover:text-black transition">Reglas</a>
             </div>
 
             <div id="navButtons" class="flex items-center gap-4">
-                <div class="animate-pulse bg-gray-200 w-24 h-8 rounded"></div>
+                <div class="animate-pulse bg-gray-200 w-24 h-8 rounded-lg"></div>
             </div>
         </div>
     </nav>
 
-    <header class="relative pt-40 md:pt-48 pb-24 px-4 md:px-6 overflow-hidden">
-        <div class="absolute inset-0 z-0 opacity-[0.03]" style="background-image: radial-gradient(#000 1px, transparent 1px); background-size: 32px 32px;"></div>
-        
-        <div class="max-w-5xl mx-auto text-center relative z-10 flex flex-col items-center">
+    <header class="relative pt-40 pb-24 px-4 md:px-6 overflow-hidden min-h-screen flex items-center justify-center">
+        <div class="hero-glow"></div>
+        <div class="max-w-5xl mx-auto text-center relative z-10 animate-hero">
             
-            <div class="mb-8 animate-fade-up">
-                <img src="favicon.png?v=3" alt="Ethernal Capitals Icon" class="w-28 h-28 md:w-40 md:h-40 mx-auto drop-shadow-2xl">
+            <div class="flex flex-col items-center mb-12">
+                <img src="favicon.png?v=3" alt="Logo Gigante" class="w-32 h-32 md:w-48 md:h-48 object-contain mb-6 drop-shadow-2xl">
+                <h2 class="hero-logo-text text-3xl md:text-5xl">Ethernal Capitals</h2>
             </div>
 
-            <div class="inline-block px-5 py-2 rounded-full bg-black/5 border border-black/10 text-black text-xs font-bold mb-8 uppercase tracking-widest animate-fade-up delay-100">
-                🌍 Opera Todos Los Mercados
-            </div>
-            
-            <h1 class="text-5xl md:text-7xl lg:text-8xl font-extrabold leading-[1.1] mb-6 tracking-tight animate-fade-up delay-200 text-black">
+            <h1 class="text-5xl md:text-7xl lg:text-8xl font-extrabold leading-tight mb-8 tracking-tight text-black">
                 Domina Forex, Cripto<br>
-                <span class="text-gray-500 font-light">Índices y Acciones</span>
+                <span class="text-gray-400 font-light italic">Índices y Acciones</span>
             </h1>
             
-            <p class="text-lg md:text-xl text-gray-600 mb-12 max-w-2xl mx-auto leading-relaxed animate-fade-up delay-300 font-medium">
-                Consigue hasta $200,000 de capital. Sin restricciones de estilo. Sin límites de tiempo. Tú operas, nosotros ponemos el dinero.
+            <p class="text-lg md:text-xl text-gray-500 mb-12 max-w-2xl mx-auto leading-relaxed font-medium">
+                Consigue hasta $200,000 de capital institucional. Sin restricciones de estilo ni límites de tiempo. Tú operas, nosotros ponemos el capital.
             </p>
             
-            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-up delay-300 w-full sm:w-auto">
-                <button onclick="handlePlanClick()" class="w-full sm:w-auto bg-black text-white hover:bg-gray-800 px-10 py-4 rounded-xl font-bold text-sm uppercase tracking-widest transition shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-6">
+                <button onclick="handlePlanClick()" class="w-full sm:w-auto bg-black text-white hover:bg-gray-800 px-10 py-5 rounded-2xl font-black text-xs uppercase tracking-[0.2em] transition shadow-2xl">
                     Ver Cuentas
                 </button>
-                <a href="rules.html" class="w-full sm:w-auto bg-transparent border-2 border-black text-black hover:bg-black/5 px-10 py-4 rounded-xl font-bold text-sm uppercase tracking-widest transition flex items-center justify-center gap-2">
-                    <i class="ph-bold ph-book-open text-lg"></i> Reglas
+                <a href="rules.html" class="w-full sm:w-auto bg-white border-2 border-black text-black hover:bg-black hover:text-white px-10 py-5 rounded-2xl font-black text-xs uppercase tracking-[0.2em] transition flex items-center gap-2 justify-center">
+                    <i class="ph-bold ph-book-open text-lg"></i> Reglas de Oro
                 </a>
             </div>
         </div>
     </header>
 
-    <section id="ventajas" class="py-24 bg-white relative border-y border-dark-border">
+    <section id="ventajas" class="py-24 bg-white border-t border-gray-100">
         <div class="max-w-7xl mx-auto px-6">
-            
-            <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-4xl font-extrabold mb-4 text-black tracking-tight">Condiciones de Nivel Institucional</h2>
-                <p class="text-gray-500 font-medium">Spreads brutos, ejecución ultrarrápida y cero restricciones.</p>
+            <div class="text-center mb-20">
+                <h2 class="text-3xl md:text-5xl font-extrabold text-black tracking-tight mb-4">Activos de Grado Institucional</h2>
+                <p class="text-gray-500 font-bold uppercase tracking-widest text-xs">Ejecución ultrarrápida en todos los instrumentos</p>
             </div>
 
-            <div class="grid md:grid-cols-4 gap-6">
-                
-                <div class="deep-black-card p-8 rounded-3xl group relative overflow-hidden transition-transform hover:-translate-y-2">
-                    <div class="absolute -right-6 -top-6 opacity-[0.03] group-hover:opacity-10 transition-opacity">
-                        <i class="ph-fill ph-currency-eur text-9xl text-white"></i>
+            <div class="grid md:grid-cols-4 gap-8">
+                <div class="p-10 glass-card rounded-[2.5rem] flex flex-col items-center text-center">
+                    <div class="market-icon-container">
+                        <i class="ph-fill ph-currency-eur text-3xl"></i>
                     </div>
-                    <div class="w-14 h-14 rounded-2xl bg-gray-900 border border-gray-800 flex items-center justify-center mb-6 shadow-inner">
-                        <i class="ph-bold ph-currency-eur text-2xl text-white"></i>
-                    </div>
-                    <h3 class="font-bold text-xl deep-text-white mb-3 tracking-wide">Forex</h3>
-                    <p class="text-sm deep-text-gray leading-relaxed">Majors & Minors con spreads raw en un entorno de máxima liquidez y ejecución instantánea.</p>
+                    <h3 class="font-black text-xl mb-4 uppercase tracking-tighter">Forex</h3>
+                    <p class="text-sm text-gray-500 leading-relaxed font-medium">Opera los pares mayores y menores con spreads brutos desde 0.0 pips.</p>
                 </div>
 
-                <div class="deep-black-card p-8 rounded-3xl group relative overflow-hidden transition-transform hover:-translate-y-2">
-                    <div class="absolute -right-6 -top-6 opacity-[0.03] group-hover:opacity-10 transition-opacity">
-                        <i class="ph-fill ph-bitcoin-logo text-9xl text-white"></i>
+                <div class="p-10 glass-card rounded-[2.5rem] flex flex-col items-center text-center">
+                    <div class="market-icon-container">
+                        <i class="ph-fill ph-bitcoin-logo text-3xl"></i>
                     </div>
-                    <div class="w-14 h-14 rounded-2xl bg-gray-900 border border-gray-800 flex items-center justify-center mb-6 shadow-inner">
-                        <i class="ph-bold ph-bitcoin-logo text-2xl text-white"></i>
-                    </div>
-                    <h3 class="font-bold text-xl deep-text-white mb-3 tracking-wide">Cripto</h3>
-                    <p class="text-sm deep-text-gray leading-relaxed">Opera Bitcoin, Ethereum y principales altcoins 24/7 sin descanso durante el fin de semana.</p>
+                    <h3 class="font-black text-xl mb-4 uppercase tracking-tighter">Cripto</h3>
+                    <p class="text-sm text-gray-500 leading-relaxed font-medium">Bitcoin, Ethereum y más. Operativa disponible 24/7, incluyendo fines de semana.</p>
                 </div>
 
-                <div class="deep-black-card p-8 rounded-3xl group relative overflow-hidden transition-transform hover:-translate-y-2">
-                    <div class="absolute -right-6 -top-6 opacity-[0.03] group-hover:opacity-10 transition-opacity">
-                        <i class="ph-fill ph-chart-bar text-9xl text-white"></i>
+                <div class="p-10 glass-card rounded-[2.5rem] flex flex-col items-center text-center">
+                    <div class="market-icon-container">
+                        <i class="ph-fill ph-chart-bar text-3xl"></i>
                     </div>
-                    <div class="w-14 h-14 rounded-2xl bg-gray-900 border border-gray-800 flex items-center justify-center mb-6 shadow-inner">
-                        <i class="ph-bold ph-chart-bar text-2xl text-white"></i>
-                    </div>
-                    <h3 class="font-bold text-xl deep-text-white mb-3 tracking-wide">Índices</h3>
-                    <p class="text-sm deep-text-gray leading-relaxed">Acceso completo a US30, NAS100, SPX500 y DAX40 con apalancamiento competitivo.</p>
+                    <h3 class="font-black text-xl mb-4 uppercase tracking-tighter">Índices</h3>
+                    <p class="text-sm text-gray-500 leading-relaxed font-medium">Los mercados más líquidos: US30, NAS100, DAX40 y SPX500 a tu alcance.</p>
                 </div>
 
-                <div class="deep-black-card p-8 rounded-3xl group relative overflow-hidden transition-transform hover:-translate-y-2">
-                    <div class="absolute -right-6 -top-6 opacity-[0.03] group-hover:opacity-10 transition-opacity">
-                        <i class="ph-fill ph-buildings text-9xl text-white"></i>
+                <div class="p-10 glass-card rounded-[2.5rem] flex flex-col items-center text-center">
+                    <div class="market-icon-container">
+                        <i class="ph-fill ph-buildings text-3xl"></i>
                     </div>
-                    <div class="w-14 h-14 rounded-2xl bg-gray-900 border border-gray-800 flex items-center justify-center mb-6 shadow-inner">
-                        <i class="ph-bold ph-buildings text-2xl text-white"></i>
-                    </div>
-                    <h3 class="font-bold text-xl deep-text-white mb-3 tracking-wide">Acciones</h3>
-                    <p class="text-sm deep-text-gray leading-relaxed">CFDs de las principales empresas tecnológicas del mundo: Tesla, Apple, Nvidia, Amazon y más.</p>
+                    <h3 class="font-black text-xl mb-4 uppercase tracking-tighter">Acciones</h3>
+                    <p class="text-sm text-gray-500 leading-relaxed font-medium">Invierte en CFDs de los gigantes tecnológicos: Apple, Tesla, Nvidia y Amazon.</p>
                 </div>
-
             </div>
         </div>
     </section>
 
     <section id="planes" class="py-24 relative bg-[#F6F6F4]">
         <div class="max-w-7xl mx-auto px-6">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-4xl font-extrabold mb-4 text-black tracking-tight">Elige tu Capital Inicial</h2>
-                <p class="text-gray-500 font-medium">Un solo pago. Sin suscripciones mensuales ni cuotas ocultas.</p>
+            <div class="text-center mb-20">
+                <h2 class="text-4xl md:text-6xl font-black mb-6 tracking-tighter">Elige tu Desafío</h2>
+                <p class="text-gray-500 font-bold uppercase tracking-widest text-xs">Un solo pago por el examen. Sin cuotas mensuales.</p>
             </div>
 
             <div class="grid md:grid-cols-4 gap-6 lg:gap-8 items-center">
-                
-                <div class="glass-card p-8 rounded-3xl flex flex-col hover:border-black/30 transition-all duration-300">
-                    <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Starter</h3>
-                    <div class="text-4xl font-extrabold text-black mb-6">$10,000</div>
-                    <div class="text-2xl font-bold text-gray-400 mb-8 border-b border-gray-200 pb-6">$100 <span class="text-sm font-medium">/ pago único</span></div>
-                    <ul class="space-y-4 mb-8 text-sm font-medium text-gray-600 flex-1">
+                <div class="glass-card p-8 rounded-[2rem] flex flex-col border-2 border-transparent">
+                    <h3 class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-4">Starter</h3>
+                    <div class="text-5xl font-black text-black mb-8">$10,000</div>
+                    <div class="text-3xl font-bold text-black/20 mb-8 border-b border-gray-100 pb-8">$100 <span class="text-xs uppercase">Fee</span></div>
+                    <ul class="space-y-4 mb-10 text-xs font-bold text-gray-500 flex-1">
                         <li class="flex items-center gap-3"><i class="ph-bold ph-check text-black"></i> 8% Profit Target</li>
-                        <li class="flex items-center gap-3"><i class="ph-bold ph-check text-black"></i> 10% Max Drawdown</li>
-                        <li class="flex items-center gap-3"><i class="ph-bold ph-check text-black"></i> 5% Daily Drawdown</li>
+                        <li class="flex items-center gap-3"><i class="ph-bold ph-check text-black"></i> 10% Max Loss</li>
+                        <li class="flex items-center gap-3"><i class="ph-bold ph-check text-black"></i> Apalancamiento 1:100</li>
                     </ul>
-                    <button onclick="handlePlanClick()" class="block w-full py-3.5 rounded-xl border-2 border-black text-black hover:bg-black hover:text-white font-bold uppercase tracking-wider text-xs transition">Seleccionar</button>
+                    <button onclick="handlePlanClick()" class="w-full py-4 rounded-xl border-2 border-black font-black text-[10px] uppercase tracking-widest hover:bg-black hover:text-white transition">Seleccionar</button>
                 </div>
 
-                <div class="glass-card p-8 rounded-3xl flex flex-col hover:border-black/30 transition-all duration-300">
-                    <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Advanced</h3>
-                    <div class="text-4xl font-extrabold text-black mb-6">$50,000</div>
-                    <div class="text-2xl font-bold text-gray-400 mb-8 border-b border-gray-200 pb-6">$300 <span class="text-sm font-medium">/ pago único</span></div>
-                    <ul class="space-y-4 mb-8 text-sm font-medium text-gray-600 flex-1">
+                <div class="glass-card p-8 rounded-[2rem] flex flex-col border-2 border-transparent">
+                    <h3 class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-4">Advanced</h3>
+                    <div class="text-5xl font-black text-black mb-8">$50,000</div>
+                    <div class="text-3xl font-bold text-black/20 mb-8 border-b border-gray-100 pb-8">$300 <span class="text-xs uppercase">Fee</span></div>
+                    <ul class="space-y-4 mb-10 text-xs font-bold text-gray-500 flex-1">
                         <li class="flex items-center gap-3"><i class="ph-bold ph-check text-black"></i> 8% Profit Target</li>
-                        <li class="flex items-center gap-3"><i class="ph-bold ph-check text-black"></i> 10% Max Drawdown</li>
-                        <li class="flex items-center gap-3"><i class="ph-bold ph-check text-black"></i> 5% Daily Drawdown</li>
+                        <li class="flex items-center gap-3"><i class="ph-bold ph-check text-black"></i> 10% Max Loss</li>
+                        <li class="flex items-center gap-3"><i class="ph-bold ph-check text-black"></i> Apalancamiento 1:100</li>
                     </ul>
-                    <button onclick="handlePlanClick()" class="block w-full py-3.5 rounded-xl border-2 border-black text-black hover:bg-black hover:text-white font-bold uppercase tracking-wider text-xs transition">Seleccionar</button>
+                    <button onclick="handlePlanClick()" class="w-full py-4 rounded-xl border-2 border-black font-black text-[10px] uppercase tracking-widest hover:bg-black hover:text-white transition">Seleccionar</button>
                 </div>
 
-                <div class="deep-black-card p-8 rounded-3xl flex flex-col relative transform md:-translate-y-4 z-10 shadow-[0_20px_60px_rgba(0,0,0,0.3)]">
-                    <div class="absolute top-0 right-0 bg-white text-black text-[10px] font-bold px-4 py-1.5 rounded-bl-xl rounded-tr-2xl tracking-widest uppercase">Más Popular</div>
-                    
-                    <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Professional</h3>
-                    <div class="text-5xl font-extrabold deep-text-white mb-6">$100,000</div>
-                    <div class="text-2xl font-bold text-gray-400 mb-8 border-b border-gray-800 pb-6">$500 <span class="text-sm font-medium">/ pago único</span></div>
-                    
-                    <ul class="space-y-4 mb-8 text-sm font-medium text-gray-300 flex-1">
+                <div class="bg-black p-10 rounded-[2.5rem] flex flex-col relative transform md:-translate-y-6 shadow-[0_30px_60px_-12px_rgba(0,0,0,0.3)] text-white">
+                    <div class="absolute top-0 right-0 bg-white text-black font-black text-[9px] px-4 py-2 rounded-bl-2xl uppercase tracking-widest">Popular</div>
+                    <h3 class="text-[10px] font-black text-gray-500 uppercase tracking-[0.2em] mb-4">Professional</h3>
+                    <div class="text-6xl font-black mb-8 text-white">$100,000</div>
+                    <div class="text-3xl font-bold text-gray-700 mb-8 border-b border-gray-800 pb-8">$500 <span class="text-xs uppercase">Fee</span></div>
+                    <ul class="space-y-4 mb-10 text-xs font-bold text-gray-400 flex-1">
                         <li class="flex items-center gap-3"><i class="ph-bold ph-check text-white"></i> 8% Profit Target</li>
-                        <li class="flex items-center gap-3"><i class="ph-bold ph-check text-white"></i> 10% Max Drawdown</li>
-                        <li class="flex items-center gap-3"><i class="ph-bold ph-check text-white"></i> 5% Daily Drawdown</li>
-                        <li class="flex items-center gap-3"><i class="ph-fill ph-star text-yellow-500"></i> <span class="deep-text-white font-bold">Soporte Prioritario</span></li>
+                        <li class="flex items-center gap-3"><i class="ph-bold ph-check text-white"></i> 10% Max Loss</li>
+                        <li class="flex items-center gap-3"><i class="ph-bold ph-check text-white"></i> Soporte VIP 24/7</li>
                     </ul>
-                    <button onclick="handlePlanClick()" class="block w-full py-4 rounded-xl bg-white text-black font-bold uppercase tracking-wider text-xs hover:bg-gray-200 transition shadow-lg">Empezar Challenge</button>
+                    <button onclick="handlePlanClick()" class="w-full py-5 rounded-2xl bg-white text-black font-black text-[10px] uppercase tracking-widest hover:bg-gray-200 transition shadow-xl">Comprar Ahora</button>
                 </div>
 
-                <div class="glass-card p-8 rounded-3xl flex flex-col hover:border-black/30 transition-all duration-300">
-                    <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Expert</h3>
-                    <div class="text-4xl font-extrabold text-black mb-6">$200,000</div>
-                    <div class="text-2xl font-bold text-gray-400 mb-8 border-b border-gray-200 pb-6">$900 <span class="text-sm font-medium">/ pago único</span></div>
-                    <ul class="space-y-4 mb-8 text-sm font-medium text-gray-600 flex-1">
+                <div class="glass-card p-8 rounded-[2rem] flex flex-col border-2 border-transparent">
+                    <h3 class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-4">Expert</h3>
+                    <div class="text-5xl font-black text-black mb-8">$200,000</div>
+                    <div class="text-3xl font-bold text-black/20 mb-8 border-b border-gray-100 pb-8">$900 <span class="text-xs uppercase">Fee</span></div>
+                    <ul class="space-y-4 mb-10 text-xs font-bold text-gray-500 flex-1">
                         <li class="flex items-center gap-3"><i class="ph-bold ph-check text-black"></i> 8% Profit Target</li>
-                        <li class="flex items-center gap-3"><i class="ph-bold ph-check text-black"></i> 10% Max Drawdown</li>
-                        <li class="flex items-center gap-3"><i class="ph-bold ph-check text-black"></i> 5% Daily Drawdown</li>
+                        <li class="flex items-center gap-3"><i class="ph-bold ph-check text-black"></i> 10% Max Loss</li>
+                        <li class="flex items-center gap-3"><i class="ph-bold ph-check text-black"></i> Capital Máximo</li>
                     </ul>
-                    <button onclick="handlePlanClick()" class="block w-full py-3.5 rounded-xl border-2 border-black text-black hover:bg-black hover:text-white font-bold uppercase tracking-wider text-xs transition">Seleccionar</button>
+                    <button onclick="handlePlanClick()" class="w-full py-4 rounded-xl border-2 border-black font-black text-[10px] uppercase tracking-widest hover:bg-black hover:text-white transition">Seleccionar</button>
                 </div>
             </div>
         </div>
     </section>
 
-    <footer class="py-16 px-6 border-t border-dark-border bg-white text-gray-500">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 mb-12 text-center md:text-left">
-            <div class="md:col-span-1">
-                <div class="flex items-center justify-center md:justify-start gap-3 mb-6">
-                    <img src="favicon.png?v=3" alt="Logo" class="w-8 h-8 opacity-80">
-                    <div class="flex flex-col justify-center">
-                        <span class="text-sm font-extrabold tracking-widest uppercase leading-none text-black">Ethernal</span>
-                        <span class="text-[9px] font-semibold tracking-[0.2em] uppercase leading-tight text-gray-400 mt-0.5">Capitals</span>
-                    </div>
-                </div>
-                <p class="text-sm font-medium leading-relaxed">La firma de fondeo de élite para traders consistentes. Tu talento, nuestro capital.</p>
-            </div>
-            
+    <footer class="py-20 px-6 border-t border-dark-border text-center bg-white">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 mb-16 text-center md:text-left">
             <div>
-                <h4 class="font-bold text-black mb-6 uppercase tracking-widest text-xs">Legal</h4>
-                <ul class="space-y-3 text-sm font-medium">
+                <div class="flex items-center justify-center md:justify-start gap-3 mb-6">
+                    <img src="favicon.png?v=3" class="w-8 h-8">
+                    <span class="font-black text-black uppercase tracking-widest text-lg">Ethernal Capitals</span>
+                </div>
+                <p class="text-sm text-gray-500 font-medium leading-relaxed">Proporcionamos el capital y la tecnología, tú pones la disciplina y el talento. La Prop Firm diseñada por y para traders.</p>
+            </div>
+            <div>
+                <h4 class="font-black text-black mb-6 uppercase tracking-widest text-xs">Legal</h4>
+                <ul class="space-y-3 text-sm text-gray-500 font-bold">
                     <li><a href="legal.html" class="hover:text-black transition">Términos y Condiciones</a></li>
                     <li><a href="legal.html" class="hover:text-black transition">Política de Privacidad</a></li>
                     <li><a href="legal.html" class="hover:text-black transition">Descargo de Riesgo</a></li>
                 </ul>
             </div>
-            
             <div>
-                <h4 class="font-bold text-black mb-6 uppercase tracking-widest text-xs">Soporte</h4>
-                <ul class="space-y-3 text-sm font-medium">
-                    <li><a href="help.html" class="hover:text-black transition">Centro de Ayuda</a></li>
-                    <li><a href="help.html" class="hover:text-black transition">Contacto</a></li>
+                <h4 class="font-black text-black mb-6 uppercase tracking-widest text-xs">Soporte</h4>
+                <ul class="space-y-3 text-sm text-gray-500 font-bold">
+                    <li><a href="help.html" class="hover:text-black transition">Centro de Ayuda (FAQ)</a></li>
+                    <li><a href="help.html" class="hover:text-black transition">Contactar Soporte</a></li>
                     <li><a href="rules.html" class="hover:text-black transition">Reglas de Trading</a></li>
                 </ul>
             </div>
-            
             <div>
-                <h4 class="font-bold text-black mb-6 uppercase tracking-widest text-xs">Comunidad</h4>
+                <h4 class="font-black text-black mb-6 uppercase tracking-widest text-xs">Síguenos</h4>
                 <div class="flex justify-center md:justify-start gap-4">
-                    <a href="#" class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center hover:bg-black hover:text-white hover:border-black transition shadow-sm"><i class="ph-fill ph-twitter-logo text-lg"></i></a>
-                    <a href="#" class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center hover:bg-black hover:text-white hover:border-black transition shadow-sm"><i class="ph-fill ph-instagram-logo text-lg"></i></a>
-                    <a href="#" class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center hover:bg-black hover:text-white hover:border-black transition shadow-sm"><i class="ph-fill ph-discord-logo text-lg"></i></a>
+                    <a href="#" class="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center hover:bg-black hover:text-white transition shadow-sm"><i class="ph-fill ph-twitter-logo text-xl"></i></a>
+                    <a href="#" class="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center hover:bg-black hover:text-white transition shadow-sm"><i class="ph-fill ph-instagram-logo text-xl"></i></a>
+                    <a href="#" class="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center hover:bg-black hover:text-white transition shadow-sm"><i class="ph-fill ph-discord-logo text-xl"></i></a>
                 </div>
             </div>
         </div>
-        <div class="border-t border-gray-200 pt-8 text-center text-xs font-medium uppercase tracking-widest">
+        <div class="border-t border-gray-100 pt-10 text-[10px] font-black uppercase tracking-[0.4em] text-gray-400">
             &copy; 2026 Ethernal Capitals Global LLC. Todos los derechos reservados.
         </div>
     </footer>
 
-    <div id="authModal" class="hidden fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-md px-4 fade-in">
-        <div class="glass-card w-full max-w-md rounded-3xl p-8 relative border border-gray-200 shadow-[0_20px_60px_rgba(0,0,0,0.1)]">
-            <button onclick="closeModal()" class="absolute top-6 right-6 text-gray-400 hover:text-black transition bg-gray-100 hover:bg-gray-200 w-8 h-8 rounded-full flex items-center justify-center">
-                <i class="ph-bold ph-x text-sm"></i>
+    <div id="authModal" class="hidden fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm px-4">
+        <div class="bg-white w-full max-w-md rounded-[2.5rem] p-10 relative border border-gray-100 shadow-2xl">
+            <button onclick="closeModal()" class="absolute top-8 right-8 text-gray-400 hover:text-black transition">
+                <i class="ph-bold ph-x text-xl"></i>
             </button>
 
-            <div class="flex justify-center mb-6">
-                <img src="favicon.png?v=3" alt="Logo" class="w-12 h-12">
+            <div class="flex flex-col items-center mb-10">
+                <img src="favicon.png?v=3" alt="Logo" class="w-16 h-16 mb-4">
+                <h3 class="font-black uppercase tracking-[0.2em] text-sm text-black">Ethernal Capitals</h3>
             </div>
 
-            <div class="flex mb-8 border-b border-gray-200">
-                <button onclick="switchTab('login')" id="tabLogin" class="pb-4 text-black border-b-2 border-black font-bold uppercase tracking-widest transition flex-1 text-center text-[10px]">Acceder</button>
-                <button onclick="switchTab('register')" id="tabRegister" class="pb-4 text-gray-400 hover:text-black font-bold uppercase tracking-widest transition flex-1 text-center text-[10px]">Crear Cuenta</button>
+            <div class="flex mb-10 border-b border-gray-100">
+                <button onclick="switchTab('login')" id="tabLogin" class="pb-4 text-black border-b-2 border-black font-black uppercase tracking-widest flex-1 text-center text-[10px]">Acceder</button>
+                <button onclick="switchTab('register')" id="tabRegister" class="pb-4 text-gray-400 hover:text-black font-black uppercase tracking-widest flex-1 text-center text-[10px]">Registro</button>
             </div>
 
-            <form id="formLogin" class="space-y-5">
+            <form id="formLogin" class="space-y-6">
                 <div>
-                    <label class="block text-[10px] font-bold text-gray-500 mb-2 ml-1 uppercase tracking-widest">Email</label>
+                    <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3 ml-1">Email</label>
                     <div class="relative">
                         <i class="ph-bold ph-envelope absolute left-4 top-4 text-gray-400"></i>
-                        <input type="email" id="loginEmail" class="w-full bg-gray-50 border border-gray-200 rounded-xl p-3.5 pl-11 text-sm focus:border-black focus:ring-1 focus:ring-black outline-none text-black transition placeholder-gray-400 font-medium" placeholder="usuario@email.com">
+                        <input type="email" id="loginEmail" class="w-full bg-gray-50 border border-gray-100 rounded-2xl p-4 pl-12 text-sm focus:border-black outline-none transition font-medium text-black" placeholder="tu@email.com">
                     </div>
                 </div>
                 <div>
-                    <label class="block text-[10px] font-bold text-gray-500 mb-2 ml-1 uppercase tracking-widest">Contraseña</label>
+                    <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3 ml-1">Contraseña</label>
                     <div class="relative">
                         <i class="ph-bold ph-lock-key absolute left-4 top-4 text-gray-400"></i>
-                        <input type="password" id="loginPass" class="w-full bg-gray-50 border border-gray-200 rounded-xl p-3.5 pl-11 text-sm focus:border-black focus:ring-1 focus:ring-black outline-none text-black transition placeholder-gray-400 font-medium" placeholder="••••••••">
+                        <input type="password" id="loginPass" class="w-full bg-gray-50 border border-gray-100 rounded-2xl p-4 pl-12 text-sm focus:border-black outline-none transition font-medium text-black" placeholder="••••••••">
                     </div>
                 </div>
-                <button type="submit" class="w-full bg-black hover:bg-gray-800 text-white font-bold py-4 rounded-xl transition mt-4 shadow-lg text-xs uppercase tracking-widest">Entrar al Terminal</button>
+                <button type="submit" class="w-full bg-black text-white font-black py-5 rounded-2xl transition mt-4 uppercase tracking-widest text-[10px] shadow-xl">Acceder al Terminal</button>
             </form>
 
-            <form id="formRegister" class="space-y-5 hidden">
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                    <div>
-                        <label class="block text-[10px] font-bold text-gray-500 mb-2 ml-1 uppercase tracking-widest">Nombre</label>
-                        <input type="text" id="regName" class="w-full bg-gray-50 border border-gray-200 rounded-xl p-3.5 text-sm focus:border-black focus:ring-1 focus:ring-black outline-none text-black transition font-medium">
-                    </div>
-                    <div>
-                        <label class="block text-[10px] font-bold text-gray-500 mb-2 ml-1 uppercase tracking-widest">Apellido</label>
-                        <input type="text" id="regLast" class="w-full bg-gray-50 border border-gray-200 rounded-xl p-3.5 text-sm focus:border-black focus:ring-1 focus:ring-black outline-none text-black transition font-medium">
-                    </div>
+            <form id="formRegister" class="space-y-6 hidden">
+                <div class="grid grid-cols-2 gap-4">
+                    <input type="text" id="regName" placeholder="Nombre" class="w-full bg-gray-50 border border-gray-100 rounded-2xl p-4 text-sm focus:border-black outline-none transition font-medium text-black">
+                    <input type="text" id="regLast" placeholder="Apellido" class="w-full bg-gray-50 border border-gray-100 rounded-2xl p-4 text-sm focus:border-black outline-none transition font-medium text-black">
                 </div>
-                <div>
-                    <label class="block text-[10px] font-bold text-gray-500 mb-2 ml-1 uppercase tracking-widest">Email</label>
-                    <input type="email" id="regEmail" class="w-full bg-gray-50 border border-gray-200 rounded-xl p-3.5 text-sm focus:border-black focus:ring-1 focus:ring-black outline-none text-black transition font-medium">
-                </div>
-                <div>
-                    <label class="block text-[10px] font-bold text-gray-500 mb-2 ml-1 uppercase tracking-widest">Contraseña</label>
-                    <input type="password" id="regPass" class="w-full bg-gray-50 border border-gray-200 rounded-xl p-3.5 text-sm focus:border-black focus:ring-1 focus:ring-black outline-none text-black transition font-medium">
-                </div>
-                <button type="submit" class="w-full bg-black hover:bg-gray-800 text-white font-bold py-4 rounded-xl transition mt-4 shadow-lg text-xs uppercase tracking-widest">Comenzar Evaluación</button>
+                <input type="email" id="regEmail" placeholder="Email" class="w-full bg-gray-50 border border-gray-100 rounded-2xl p-4 text-sm focus:border-black outline-none transition font-medium text-black">
+                <input type="password" id="regPass" placeholder="Contraseña" class="w-full bg-gray-50 border border-gray-100 rounded-2xl p-4 text-sm focus:border-black outline-none transition font-medium text-black">
+                <button type="submit" class="w-full bg-black text-white font-black py-5 rounded-2xl transition mt-4 uppercase tracking-widest text-[10px] shadow-xl">Crear Cuenta</button>
             </form>
 
-            <div id="authMessage" class="mt-6 text-center text-xs font-bold text-red-500 h-4"></div>
+            <div id="authMessage" class="mt-8 text-center text-[10px] font-black uppercase text-red-500 h-4"></div>
         </div>
     </div>
 
     <script>
-        const API_URL = '';
+        const API_URL = ''; // En producción se deja vacío o se pone la URL
         const modal = document.getElementById('authModal');
         const formLogin = document.getElementById('formLogin');
         const formRegister = document.getElementById('formRegister');
@@ -378,51 +350,35 @@
         function showToast(msg, type = 'success') {
             const container = document.getElementById('toastContainer');
             const toast = document.createElement('div');
-            const colors = type === 'success' ? 'bg-white border-l-4 border-black text-black' : 'bg-red-50 border-l-4 border-red-500 text-red-600';
-            const icon = type === 'success' ? '<i class="ph-fill ph-check-circle text-black text-xl"></i>' : '<i class="ph-fill ph-warning-circle text-red-500 text-xl"></i>';
-            toast.className = `flex items-center gap-3 p-4 rounded-xl shadow-2xl pointer-events-auto border border-gray-200 slide-in-right ${colors} min-w-[300px] font-medium`;
-            toast.innerHTML = `${icon} <div class="text-sm">${msg}</div>`;
+            const colors = type === 'success' ? 'bg-white border-black text-black' : 'bg-red-50 border-red-500 text-red-600';
+            toast.className = `flex items-center gap-3 p-5 rounded-2xl shadow-2xl pointer-events-auto border-l-4 ${colors} min-w-[320px] font-bold text-sm slide-in-right`;
+            toast.innerHTML = `<i class="ph-fill ph-info text-xl"></i> <div>${msg}</div>`;
             container.appendChild(toast);
             setTimeout(() => { toast.classList.add('fade-out'); setTimeout(() => toast.remove(), 400); }, 3000);
         }
 
         function updateUI() {
             const token = localStorage.getItem('token');
-            const userId = localStorage.getItem('userId');
             const userName = localStorage.getItem('userName') || 'Trader';
             const inicial = userName.trim().charAt(0).toUpperCase();
 
-            if (token && userId) {
+            if (token) {
                 navContainer.innerHTML = `
-                    <div class="flex items-center gap-5 animate-fade-in pl-5 border-l border-gray-200">
-                        <div class="hidden md:block text-right">
-                            <div class="text-[9px] text-gray-400 font-bold uppercase tracking-widest mb-0.5">HOLA,</div>
-                            <div class="text-sm font-extrabold text-black leading-none tracking-tight">${userName.split(' ')[0]}</div>
-                        </div>
-                        
-                        <a href="profile.html" class="relative group cursor-pointer" title="Ir a mi Perfil">
-                            <div class="w-10 h-10 rounded-full border-2 border-black bg-black flex items-center justify-center text-white font-bold shadow-md transition-transform group-hover:scale-105">
+                    <div class="flex items-center gap-4 border-l border-gray-100 pl-6">
+                        <a href="profile.html" class="flex items-center gap-3 group">
+                            <div class="w-10 h-10 rounded-full bg-black flex items-center justify-center text-white font-black shadow-lg group-hover:scale-105 transition">
                                 ${inicial}
-                                <div class="absolute -bottom-1 -right-1 w-3.5 h-3.5 bg-green-500 border-2 border-white rounded-full"></div>
                             </div>
+                            <span class="hidden lg:block text-[10px] font-black uppercase tracking-widest text-black">${userName.split(' ')[0]}</span>
                         </a>
-
-                        <a href="dashboard.html" class="bg-black hover:bg-gray-800 text-white px-5 py-2.5 rounded-xl font-bold text-xs uppercase tracking-widest transition shadow-lg flex items-center gap-2">
-                            <i class="ph-bold ph-chart-line-up text-lg"></i> <span class="hidden lg:inline">Terminal</span>
-                        </a>
-                        <button onclick="logout()" class="text-gray-400 hover:text-red-500 transition p-2 bg-gray-50 hover:bg-red-50 rounded-full" title="Cerrar Sesión">
-                            <i class="ph-bold ph-sign-out text-lg"></i>
-                        </button>
+                        <a href="dashboard.html" class="bg-black text-white px-6 py-2.5 rounded-xl font-black text-[10px] uppercase tracking-widest shadow-lg hover:opacity-80 transition">Dashboard</a>
+                        <button onclick="logout()" class="text-gray-400 hover:text-black transition"><i class="ph-bold ph-sign-out text-xl"></i></button>
                     </div>
                 `;
             } else {
                 navContainer.innerHTML = `
-                    <button onclick="openModal('login')" class="text-xs font-bold text-gray-500 hover:text-black uppercase tracking-widest transition flex items-center gap-2">
-                        <i class="ph-bold ph-user"></i> <span class="hidden sm:inline">Acceder</span>
-                    </button>
-                    <button onclick="openModal('register')" class="bg-black hover:bg-gray-800 text-white px-6 py-3 rounded-xl font-bold text-xs uppercase tracking-widest transition shadow-lg ml-3 sm:ml-0">
-                        Comenzar
-                    </button>
+                    <button onclick="openModal('login')" class="text-[10px] font-black uppercase tracking-widest hover:text-black transition mr-4 text-gray-500">Entrar</button>
+                    <button onclick="openModal('register')" class="bg-black text-white px-8 py-3.5 rounded-xl font-black text-[10px] uppercase tracking-widest shadow-lg hover:opacity-80 transition">Comenzar</button>
                 `;
             }
         }
@@ -433,10 +389,10 @@
         }
 
         function logout() {
-            if(confirm("¿Cerrar sesión en este dispositivo?")) {
+            if(confirm("¿Deseas cerrar la sesión de forma segura?")) {
                 localStorage.clear();
                 updateUI();
-                showToast("Sesión cerrada correctamente", "success");
+                showToast("Sesión cerrada con éxito", "success");
             }
         }
 
@@ -447,21 +403,21 @@
             msgDisplay.innerText = '';
             if(mode === 'login') {
                 formLogin.classList.remove('hidden'); formRegister.classList.add('hidden');
-                document.getElementById('tabLogin').className = "pb-4 text-black border-b-2 border-black font-bold uppercase tracking-widest transition flex-1 text-center text-[10px]";
-                document.getElementById('tabRegister').className = "pb-4 text-gray-400 hover:text-black font-bold uppercase tracking-widest transition flex-1 text-center text-[10px]";
+                document.getElementById('tabLogin').className = "pb-4 text-black border-b-2 border-black font-black uppercase tracking-widest flex-1 text-center text-[10px]";
+                document.getElementById('tabRegister').className = "pb-4 text-gray-400 hover:text-black font-black uppercase tracking-widest flex-1 text-center text-[10px]";
             } else {
                 formLogin.classList.add('hidden'); formRegister.classList.remove('hidden');
-                document.getElementById('tabLogin').className = "pb-4 text-gray-400 hover:text-black font-bold uppercase tracking-widest transition flex-1 text-center text-[10px]";
-                document.getElementById('tabRegister').className = "pb-4 text-black border-b-2 border-black font-bold uppercase tracking-widest transition flex-1 text-center text-[10px]";
+                document.getElementById('tabLogin').className = "pb-4 text-gray-400 hover:text-black font-black uppercase tracking-widest flex-1 text-center text-[10px]";
+                document.getElementById('tabRegister').className = "pb-4 text-black border-b-2 border-black font-black uppercase tracking-widest flex-1 text-center text-[10px]";
             }
         }
 
+        // LÓGICA DE LOGIN
         formLogin.addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = document.getElementById('loginEmail').value;
             const password = document.getElementById('loginPass').value;
-            msgDisplay.className = "mt-6 text-center text-xs font-bold text-gray-500 h-4 uppercase tracking-widest";
-            msgDisplay.innerText = "Verificando...";
+            msgDisplay.innerText = "Verificando credenciales...";
 
             try {
                 const res = await fetch(`${API_URL}/login`, {
@@ -471,30 +427,28 @@
                 });
                 const data = await res.json();
                 if (res.ok) {
-                    showToast(`¡Bienvenido de nuevo, ${data.name}!`, "success");
                     localStorage.setItem('token', data.token);
                     localStorage.setItem('userId', data.userId);
                     localStorage.setItem('userName', data.name || 'Trader');
                     updateUI(); 
+                    showToast(`Bienvenido de nuevo, ${data.name}`, "success");
                     setTimeout(() => closeModal(), 1000);
                 } else {
-                    msgDisplay.className = "mt-6 text-center text-xs font-bold text-red-500 h-4 uppercase tracking-widest";
                     msgDisplay.innerText = data.error || "Error de acceso";
                 }
-            } catch (error) {
-                msgDisplay.className = "mt-6 text-center text-xs font-bold text-red-500 h-4 uppercase tracking-widest";
-                msgDisplay.innerText = "Error de conexión";
+            } catch (error) { 
+                msgDisplay.innerText = "Error de conexión con el servidor"; 
             }
         });
 
+        // LÓGICA DE REGISTRO
         formRegister.addEventListener('submit', async (e) => {
             e.preventDefault();
             const firstName = document.getElementById('regName').value;
             const lastName = document.getElementById('regLast').value;
             const email = document.getElementById('regEmail').value;
             const password = document.getElementById('regPass').value;
-            msgDisplay.className = "mt-6 text-center text-xs font-bold text-gray-500 h-4 uppercase tracking-widest";
-            msgDisplay.innerText = "Creando cuenta...";
+            msgDisplay.innerText = "Creando perfil de inversor...";
 
             try {
                 const res = await fetch(`${API_URL}/register`, {
@@ -504,18 +458,17 @@
                 });
                 const data = await res.json();
                 if (res.ok) {
-                    showToast("¡Cuenta creada! Inicia sesión.", "success");
+                    showToast("¡Cuenta creada correctamente!", "success");
                     setTimeout(() => switchTab('login'), 1500);
                 } else {
-                    msgDisplay.className = "mt-6 text-center text-xs font-bold text-red-500 h-4 uppercase tracking-widest";
-                    msgDisplay.innerText = data.error || "Error en registro";
+                    msgDisplay.innerText = data.error || "Error en el registro";
                 }
             } catch (error) { 
-                msgDisplay.className = "mt-6 text-center text-xs font-bold text-red-500 h-4 uppercase tracking-widest";
-                msgDisplay.innerText = "Error de conexión";
+                msgDisplay.innerText = "Error de red"; 
             }
         });
 
+        // Inicializar interfaz
         updateUI();
     </script>
 </body>
