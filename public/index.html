@@ -101,28 +101,24 @@
     <div id="toastContainer" class="fixed top-5 right-5 z-[200] flex flex-col gap-3 pointer-events-none"></div>
 
     <nav class="fixed w-full z-50 bg-white/80 backdrop-blur-md border-b border-dark-border">
-        <div class="max-w-7xl mx-auto px-4 md:px-6 h-16 md:h-24 flex items-center justify-between">
-            
-            <div class="flex items-center gap-3 cursor-pointer group" onclick="window.scrollTo({top:0, behavior:'smooth'})">
-                <img src="favicon.png?v=3" alt="Logo" class="w-10 h-10 md:w-12 md:h-12 object-contain group-hover:scale-105 transition-transform">
-                <div class="flex flex-col">
-                    <span class="text-xl md:text-2xl font-black tracking-[0.15em] uppercase leading-none text-black">Ethernal</span>
-                    <span class="text-[10px] md:text-[11px] font-semibold tracking-[0.3em] uppercase text-gray-500 mt-1">Capitals</span>
-                </div>
-            </div>
-            
-            <div class="hidden md:flex items-center gap-8 text-sm font-semibold text-gray-500">
-                <a href="#ventajas" class="hover:text-black transition">Mercados</a>
-                <a href="#planes" class="hover:text-black transition">Planes</a>
-                <a href="rules.html" class="hover:text-black transition">Reglas</a>
-            </div>
-
-            <div id="navButtons" class="flex items-center gap-4">
-                <div class="animate-pulse bg-gray-200 w-24 h-8 rounded-lg"></div>
-            </div>
+    <div class="max-w-7xl mx-auto px-2 md:px-6 h-16 md:h-20 flex items-center justify-between">
+        
+        <div class="flex items-center gap-2 cursor-pointer group flex-shrink-0" onclick="window.scrollTo({top:0, behavior:'smooth'})">
+            <img src="favicon.png?v=3" alt="Logo" class="w-8 h-8 md:w-10 md:h-10 object-contain">
+            <span class="text-lg md:text-2xl font-bold tracking-tight">Ethernal<span class="text-black">Capitals</span></span>
         </div>
-    </nav>
+        
+        <div class="hidden md:flex items-center gap-8 text-sm font-semibold text-gray-500">
+            <a href="#ventajas" class="hover:text-black transition">Mercados</a>
+            <a href="#planes" class="hover:text-black transition">Planes</a>
+            <a href="rules.html" class="hover:text-black transition">Reglas</a>
+        </div>
 
+        <div id="navButtons" class="flex items-center gap-2 md:gap-4 flex-shrink-0">
+            <div class="animate-pulse bg-gray-200 w-20 md:w-24 h-8 rounded-lg"></div>
+        </div>
+    </div>
+</nav>
     <header class="relative pt-40 pb-24 px-4 md:px-6 overflow-hidden flex flex-col items-center justify-center min-h-[90vh]">
         <div class="max-w-5xl mx-auto text-center relative z-10 animate-fade-up">
             
@@ -351,30 +347,30 @@
         }
 
         function updateUI() {
-            const token = localStorage.getItem('token');
-            const userName = localStorage.getItem('userName') || 'Trader';
-            const inicial = userName.trim().charAt(0).toUpperCase();
+    const token = localStorage.getItem('token');
+    const userName = localStorage.getItem('userName') || 'Trader';
+    const inicial = userName.trim().charAt(0).toUpperCase();
 
-            if (token) {
-                navContainer.innerHTML = `
-                    <div class="flex items-center gap-4 border-l border-gray-100 pl-6">
-                        <a href="profile.html" class="flex items-center gap-3 group">
-                            <div class="w-10 h-10 rounded-full bg-black flex items-center justify-center text-white font-black shadow-lg group-hover:scale-105 transition">
-                                ${inicial}
-                            </div>
-                            <span class="hidden lg:block text-[10px] font-black uppercase tracking-widest text-black">${userName.split(' ')[0]}</span>
-                        </a>
-                        <a href="dashboard.html" class="bg-black text-white px-6 py-2.5 rounded-xl font-black text-[10px] uppercase tracking-widest shadow-lg hover:opacity-80 transition">Dashboard</a>
-                        <button onclick="logout()" class="text-gray-400 hover:text-black transition"><i class="ph-bold ph-sign-out text-xl"></i></button>
+    if (token) {
+        navContainer.innerHTML = `
+            <div class="flex items-center gap-2 md:gap-4 border-l border-gray-100 pl-2 md:pl-6">
+                <a href="profile.html" class="flex items-center gap-2 group">
+                    <div class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-black flex items-center justify-center text-white font-black shadow-lg text-xs md:text-base">
+                        ${inicial}
                     </div>
-                `;
-            } else {
-                navContainer.innerHTML = `
-                    <button onclick="openModal('login')" class="text-[10px] font-black uppercase tracking-widest hover:text-black transition mr-4 text-gray-500">Entrar</button>
-                    <button onclick="openModal('register')" class="bg-black text-white px-8 py-3.5 rounded-xl font-black text-[10px] uppercase tracking-widest shadow-lg hover:opacity-80 transition">Comenzar</button>
-                `;
-            }
-        }
+                    <span class="hidden lg:block text-[10px] font-black uppercase tracking-widest text-black">${userName.split(' ')[0]}</span>
+                </a>
+                <a href="dashboard.html" class="bg-black text-white px-3 md:px-6 py-2 md:py-2.5 rounded-lg md:rounded-xl font-black text-[9px] md:text-[10px] uppercase tracking-widest shadow-lg">Terminal</a>
+                <button onclick="logout()" class="text-gray-400 hover:text-black transition"><i class="ph-bold ph-sign-out text-lg md:text-xl"></i></button>
+            </div>
+        `;
+    } else {
+        navContainer.innerHTML = `
+            <button onclick="openModal('login')" class="text-[9px] md:text-[10px] font-black uppercase tracking-widest hover:text-black transition mr-2 md:mr-4 text-gray-500">Entrar</button>
+            <button onclick="openModal('register')" class="bg-black text-white px-4 md:px-8 py-2.5 md:py-3.5 rounded-lg md:rounded-xl font-black text-[9px] md:text-[10px] uppercase tracking-widest shadow-lg">Comenzar</button>
+        `;
+    }
+}
 
         function handlePlanClick() {
             if (localStorage.getItem('token')) window.location.href = 'dashboard.html?buyPlan=true'; 
