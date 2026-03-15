@@ -8,7 +8,7 @@
     <link rel="icon" type="image/png" href="favicon.png?v=3">
     <link rel="apple-touch-icon" href="favicon.png?v=3">
     
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -17,12 +17,9 @@
             theme: {
                 extend: {
                     colors: {
-                        brand: { DEFAULT: '#000000', dark: '#1f2937', glow: '#4b5563' },
+                        brand: { DEFAULT: '#000000', dark: '#111827', glow: '#4b5563' },
                         dark: { bg: '#F6F6F4', card: '#FFFFFF', border: '#E5E7EB', hover: '#F3F4F6' },
-                        danger: '#ef4444',
-                        success: '#22c55e',
-                        warning: '#f59e0b',
-                        gold: '#fbbf24'
+                        accent: '#fbbf24'
                     },
                     fontFamily: { sans: ['Inter', 'sans-serif'] }
                 }
@@ -31,217 +28,219 @@
     </script>
     
     <style>
+        /* 🔥 ESTÉTICA ELITE: Alto contraste corporativo */
         body { background-color: #F6F6F4 !important; color: #111827 !important; font-family: 'Inter', sans-serif; }
         .text-white { color: #000000 !important; }
         .text-gray-300, .text-gray-400 { color: #4B5563 !important; font-weight: 500; }
         .text-gray-500 { color: #6B7280 !important; }
-        .border-gray-700, .border-gray-800 { border-color: #E5E7EB !important; }
-        .bg-gray-700 { background-color: #F3F4F6 !important; color: #000000 !important; border: 1px solid #E5E7EB; }
-        .hover\:bg-gray-600:hover { background-color: #E5E7EB !important; }
-        .bg-dark-bg\/90, .bg-dark-bg\/80 { background-color: rgba(246, 246, 244, 0.95) !important; }
-        .bg-dark-bg { background-color: #F6F6F4 !important; }
-        .bg-dark-card { background-color: #FFFFFF !important; }
-        .bg-brand { background-color: #000000 !important; color: #FFFFFF !important; }
-        .text-brand { color: #000000 !important; }
-        .border-brand { border-color: #000000 !important; }
-        .border-brand\/20 { border-color: rgba(0,0,0,0.1) !important; }
-        .bg-brand\/10 { background-color: rgba(0,0,0,0.03) !important; }
-
-        /* Ajustes de colores de texto para acentos en modo claro */
-        .text-red-400 { color: #dc2626 !important; }
-        .text-green-400 { color: #16a34a !important; }
-        .text-blue-400 { color: #2563eb !important; }
-        .text-purple-400, .text-purple-300 { color: #7e22ce !important; }
-        .text-orange-300 { color: #ea580c !important; }
-
-        /* Tarjetas de Reglas adaptadas al modo claro */
+        
+        .border-dark-border { border-color: rgba(0,0,0,0.08) !important; }
+        
         .glass-card { 
-            background: rgba(255, 255, 255, 0.9) !important; 
+            background: rgba(255, 255, 255, 0.98) !important; 
             backdrop-filter: blur(12px); 
-            border: 1px solid #E5E7EB !important; 
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0,0,0,0.08) !important; 
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03);
         }
         .glass-card:hover {
             border-color: #000000 !important;
             transform: translateY(-5px);
-            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.1);
         }
+
+        .bg-dark-bg { background-color: #F6F6F4 !important; }
+        .bg-dark-card { background-color: #FFFFFF !important; }
+        .bg-brand { background-color: #000000 !important; color: #FFFFFF !important; }
+        
+        /* Ajustes de colores semánticos para lectura clara */
+        .text-red-400 { color: #dc2626 !important; }
+        .text-green-400 { color: #16a34a !important; }
+        .text-blue-400 { color: #2563eb !important; }
+        .text-purple-400 { color: #7e22ce !important; }
+        .text-orange-300 { color: #ea580c !important; }
+        
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .animate-fade-in { animation: fadeIn 0.6s ease-out; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col">
+<body class="min-h-screen flex flex-col antialiased">
 
     <nav class="border-b border-dark-border bg-dark-bg/80 backdrop-blur-md sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-            <a href="index.html" class="flex items-center gap-2">
-                <i class="ph-fill ph-wave-sine text-3xl text-brand"></i>
-                <span class="font-bold text-xl tracking-tight text-white">Ethernal<span class="text-gray-500">Capitals</span></span>
+        <div class="max-w-7xl mx-auto px-6 h-16 md:h-24 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-3 cursor-pointer group">
+                <img src="favicon.png?v=3" alt="Logo" class="w-10 h-10 md:w-12 md:h-12 object-contain group-hover:scale-105 transition-transform duration-300">
+                <div class="flex flex-col justify-center">
+                    <span class="text-lg md:text-xl font-extrabold tracking-[0.15em] uppercase leading-none text-black">Ethernal</span>
+                    <span class="text-[10px] md:text-[11px] font-semibold tracking-[0.3em] uppercase leading-tight text-gray-500 mt-0.5">Capitals</span>
+                </div>
             </a>
             <div class="flex gap-4">
-                <a href="index.html" class="text-gray-400 hover:text-white px-4 py-2 text-sm font-medium transition">Inicio</a>
-                <a href="dashboard.html" class="bg-brand hover:opacity-80 text-white px-6 py-2 rounded-lg text-sm font-bold transition flex items-center gap-2 shadow-md">
-                    <i class="ph-bold ph-chart-line-up"></i> Ir al Dashboard
+                <a href="index.html" class="text-gray-500 font-bold uppercase tracking-widest text-[10px] md:text-xs hover:text-black transition">Inicio</a>
+                <a href="dashboard.html" class="bg-black hover:bg-gray-800 text-white px-6 py-2.5 rounded-xl text-[10px] md:text-xs font-bold uppercase tracking-widest transition flex items-center gap-2 shadow-lg">
+                    <i class="ph-bold ph-chart-line-up"></i> Terminal
                 </a>
             </div>
         </div>
     </nav>
 
-    <header class="py-20 text-center px-4 relative overflow-hidden">
-        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-brand/5 rounded-full blur-[100px] -z-10"></div>
-        <h1 class="text-4xl md:text-5xl font-bold text-white mb-6">Reglas de <span class="text-transparent bg-clip-text bg-gradient-to-r from-gray-900 to-gray-500">Oro</span></h1>
-        <p class="text-gray-400 max-w-2xl mx-auto text-lg leading-relaxed">
-            Nuestro capital, tu talento. Hemos diseñado estas reglas para proteger nuestros fondos y fomentar tu disciplina como trader profesional.
+    <header class="py-20 text-center px-4 relative overflow-hidden animate-fade-in">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-black/5 rounded-full blur-[100px] -z-10"></div>
+        <h1 class="text-4xl md:text-6xl font-extrabold text-black mb-6 tracking-tight">Reglas de <span class="text-gray-500">Oro</span></h1>
+        <p class="text-gray-600 max-w-2xl mx-auto text-lg leading-relaxed font-medium">
+            Nuestro capital, tu talento. Hemos diseñado estas reglas para proteger nuestros fondos y fomentar tu disciplina como trader profesional de élite.
         </p>
     </header>
 
-    <main class="max-w-7xl mx-auto px-6 pb-20 space-y-16">
+    <main class="max-w-7xl mx-auto px-6 pb-24 space-y-20 w-full animate-fade-in">
 
         <section>
-            <div class="flex items-center gap-4 mb-8">
-                <div class="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-400"><i class="ph-bold ph-target text-xl"></i></div>
-                <h2 class="text-2xl font-bold text-white">Objetivos y Límites Duros</h2>
+            <div class="flex items-center gap-4 mb-10">
+                <div class="w-12 h-12 rounded-2xl bg-black/5 border border-black/10 flex items-center justify-center text-black shadow-inner"><i class="ph-bold ph-target text-2xl"></i></div>
+                <h2 class="text-3xl font-extrabold text-black tracking-tight">Objetivos y Límites Duros</h2>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="glass-card p-8 rounded-2xl relative overflow-hidden">
-                    <div class="absolute top-0 right-0 p-4 opacity-10"><i class="ph-fill ph-trend-up text-6xl text-green-500"></i></div>
-                    <div class="text-green-400 font-bold text-sm uppercase tracking-widest mb-2">Meta</div>
-                    <h3 class="text-2xl font-bold text-white mb-4">Objetivo de Ganancia (8%)</h3>
-                    <p class="text-gray-400 text-sm mb-6">Debes alcanzar un 8% de beneficio sobre el balance inicial sin infringir ninguna regla de pérdida.</p>
-                    <div class="bg-dark-bg p-4 rounded-lg border border-dark-border">
-                        <span class="text-xs font-bold text-gray-500 uppercase block mb-1">📝 ¿Por qué?</span>
-                        <p class="text-xs text-gray-300">Demuestra que tienes una estrategia rentable y capacidad de generar alpha.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="glass-card p-10 rounded-3xl relative overflow-hidden">
+                    <div class="absolute -right-4 -top-4 p-4 opacity-5"><i class="ph-fill ph-trend-up text-9xl text-black"></i></div>
+                    <div class="text-green-600 font-extrabold text-[10px] uppercase tracking-[0.2em] mb-3">Objetivo</div>
+                    <h3 class="text-2xl font-bold text-black mb-4 tracking-tight">Profit Target (8%)</h3>
+                    <p class="text-gray-500 text-sm mb-8 leading-relaxed font-medium">Debes alcanzar un 8% de beneficio sobre el balance inicial sin infringir ninguna regla de pérdida.</p>
+                    <div class="bg-gray-50 p-5 rounded-2xl border border-gray-100 shadow-inner">
+                        <span class="text-[9px] font-bold text-gray-400 uppercase tracking-widest block mb-2">💡 Propósito</span>
+                        <p class="text-xs text-gray-600 leading-relaxed font-medium">Demuestra que tienes una estrategia rentable y capacidad de generar beneficios consistentes.</p>
                     </div>
                 </div>
 
-                <div class="glass-card p-8 rounded-2xl relative overflow-hidden border-l-4 border-l-red-500">
-                    <div class="absolute top-0 right-0 p-4 opacity-10"><i class="ph-fill ph-warning-octagon text-6xl text-red-500"></i></div>
-                    <div class="text-red-400 font-bold text-sm uppercase tracking-widest mb-2">Límite</div>
-                    <h3 class="text-2xl font-bold text-white mb-4">Pérdida Diaria Máxima (5%)</h3>
-                    <p class="text-gray-400 text-sm mb-6">Tu equidad o balance no puede bajar más del 5% del saldo inicial del día.</p>
-                    <div class="bg-dark-bg p-4 rounded-lg border border-dark-border">
-                        <span class="text-xs font-bold text-gray-500 uppercase block mb-1">📝 ¿Por qué?</span>
-                        <p class="text-xs text-gray-300">Protege contra días de "tilt" emocional. Un mal día no debería arruinar tu carrera.</p>
+                <div class="glass-card p-10 rounded-3xl relative overflow-hidden border-l-4 border-l-red-500 !border-l-4">
+                    <div class="absolute -right-4 -top-4 p-4 opacity-5"><i class="ph-fill ph-warning-octagon text-9xl text-black"></i></div>
+                    <div class="text-red-600 font-extrabold text-[10px] uppercase tracking-[0.2em] mb-3">Límite Crítico</div>
+                    <h3 class="text-2xl font-bold text-black mb-4 tracking-tight">Pérdida Diaria (5%)</h3>
+                    <p class="text-gray-500 text-sm mb-8 leading-relaxed font-medium">Tu equidad o balance no puede bajar más del 5% del saldo inicial del día.</p>
+                    <div class="bg-gray-50 p-5 rounded-2xl border border-gray-100 shadow-inner">
+                        <span class="text-[9px] font-bold text-gray-400 uppercase tracking-widest block mb-2">💡 Propósito</span>
+                        <p class="text-xs text-gray-600 leading-relaxed font-medium">Protege contra el "tilt" emocional. Un mal día no debe poner en riesgo tu cuenta.</p>
                     </div>
                 </div>
 
-                <div class="glass-card p-8 rounded-2xl relative overflow-hidden border-l-4 border-l-red-500">
-                    <div class="absolute top-0 right-0 p-4 opacity-10"><i class="ph-fill ph-skull text-6xl text-red-500"></i></div>
-                    <div class="text-red-400 font-bold text-sm uppercase tracking-widest mb-2">Límite</div>
-                    <h3 class="text-2xl font-bold text-white mb-4">Pérdida Total (10%)</h3>
-                    <p class="text-gray-400 text-sm mb-6">El Drawdown total de la cuenta nunca puede exceder el 10% del balance inicial.</p>
-                    <div class="bg-dark-bg p-4 rounded-lg border border-dark-border">
-                        <span class="text-xs font-bold text-gray-500 uppercase block mb-1">📝 ¿Por qué?</span>
-                        <p class="text-xs text-gray-300">Es nuestro límite de riesgo corporativo. Preservar el capital es la regla #1.</p>
+                <div class="glass-card p-10 rounded-3xl relative overflow-hidden border-l-4 border-l-red-500 !border-l-4">
+                    <div class="absolute -right-4 -top-4 p-4 opacity-5"><i class="ph-fill ph-skull text-9xl text-black"></i></div>
+                    <div class="text-red-600 font-extrabold text-[10px] uppercase tracking-[0.2em] mb-3">Límite Fatal</div>
+                    <h3 class="text-2xl font-bold text-black mb-4 tracking-tight">Pérdida Total (10%)</h3>
+                    <p class="text-gray-500 text-sm mb-8 leading-relaxed font-medium">El Drawdown total de la cuenta nunca puede exceder el 10% del balance inicial.</p>
+                    <div class="bg-gray-50 p-5 rounded-2xl border border-gray-100 shadow-inner">
+                        <span class="text-[9px] font-bold text-gray-400 uppercase tracking-widest block mb-2">💡 Propósito</span>
+                        <p class="text-xs text-gray-600 leading-relaxed font-medium">Límite de riesgo corporativo. Preservar el capital es la regla fundamental de Ethernal Capitals.</p>
                     </div>
                 </div>
             </div>
         </section>
 
         <section>
-            <div class="flex items-center gap-4 mb-8">
-                <div class="w-10 h-10 rounded-full bg-purple-500/10 flex items-center justify-center text-purple-400"><i class="ph-bold ph-shield-check text-xl"></i></div>
-                <h2 class="text-2xl font-bold text-white">Reglas de Conducta Profesional</h2>
+            <div class="flex items-center gap-4 mb-10">
+                <div class="w-12 h-12 rounded-2xl bg-black/5 border border-black/10 flex items-center justify-center text-black shadow-inner"><i class="ph-bold ph-shield-check text-2xl"></i></div>
+                <h2 class="text-3xl font-extrabold text-black tracking-tight">Conducta Profesional</h2>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="glass-card p-8 rounded-2xl">
-                    <div class="flex justify-between items-start mb-4">
-                        <h3 class="text-xl font-bold text-white">⚖️ Regla de Consistencia (50%)</h3>
-                        <span class="px-2 py-1 bg-purple-500/20 text-purple-300 text-xs font-bold rounded">AUTOMÁTICA</span>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="glass-card p-8 rounded-3xl group">
+                    <div class="flex justify-between items-start mb-6">
+                        <h3 class="text-xl font-bold text-black tracking-tight">⚖️ Regla de Consistencia (50%)</h3>
+                        <span class="px-3 py-1 bg-black text-white text-[9px] font-black rounded-lg uppercase tracking-widest">Estricto</span>
                     </div>
-                    <p class="text-gray-400 text-sm mb-4">Ninguna operación individual puede representar más del 50% de tu beneficio total para aprobar.</p>
-                    <div class="bg-dark-bg p-4 rounded-lg border border-dark-border">
-                        <span class="text-xs font-bold text-gray-500 uppercase block mb-1">📝 Justificación</span>
-                        <p class="text-xs text-gray-300">Evita el "gambling" o golpes de suerte. Buscamos traders que ganen de forma recurrente.</p>
-                    </div>
-                </div>
-
-                <div class="glass-card p-8 rounded-2xl">
-                    <div class="flex justify-between items-start mb-4">
-                        <h3 class="text-xl font-bold text-white">📅 Weekend Holding</h3>
-                        <span class="px-2 py-1 bg-orange-500/20 text-orange-300 text-xs font-bold rounded">BLOQUEO VIERNES</span>
-                    </div>
-                    <p class="text-gray-400 text-sm mb-4">Todas las operaciones deben cerrarse el viernes antes de las 21:00 UTC. El mercado cerrará y no podrás operar hasta el domingo.</p>
-                    <div class="bg-dark-bg p-4 rounded-lg border border-dark-border">
-                        <span class="text-xs font-bold text-gray-500 uppercase block mb-1">📝 Justificación</span>
-                        <p class="text-xs text-gray-300">Evita los "Gaps" de apertura del fin de semana que pueden causar pérdidas superiores al Stop Loss debido a la baja liquidez.</p>
+                    <p class="text-gray-500 text-sm mb-6 leading-relaxed font-medium">Ninguna operación individual puede representar más del 50% de tu beneficio total para aprobar.</p>
+                    <div class="bg-gray-50 p-5 rounded-2xl border border-gray-100 font-medium">
+                        <p class="text-xs text-gray-600 leading-relaxed">Buscamos traders con procesos repetibles, no apostadores que dependen de un solo golpe de suerte fortuito.</p>
                     </div>
                 </div>
 
-                <div class="glass-card p-8 rounded-2xl">
-                    <div class="flex justify-between items-start mb-4">
-                        <h3 class="text-xl font-bold text-white">🤖 Anti-HFT & Scalping</h3>
-                        <span class="px-2 py-1 bg-blue-500/20 text-blue-400 text-xs font-bold rounded">ALGORITMO</span>
+                <div class="glass-card p-8 rounded-3xl group">
+                    <div class="flex justify-between items-start mb-6">
+                        <h3 class="text-xl font-bold text-black tracking-tight">📅 Weekend Holding</h3>
+                        <span class="px-3 py-1 bg-black text-white text-[9px] font-black rounded-lg uppercase tracking-widest">Cierre Auto</span>
                     </div>
-                    <p class="text-gray-400 text-sm mb-4">Prohibido abrir operaciones con menos de 5 segundos de diferencia. Operaciones cerradas en < 30 segundos no contarán beneficio.</p>
-                    <div class="bg-dark-bg p-4 rounded-lg border border-dark-border">
-                        <span class="text-xs font-bold text-gray-500 uppercase block mb-1">📝 Justificación</span>
-                        <p class="text-xs text-gray-300">Bloquea bots de alta frecuencia y arbitraje de latencia que explotan errores del servidor en lugar de operar el mercado real.</p>
+                    <p class="text-gray-500 text-sm mb-6 leading-relaxed font-medium">Todas las operaciones deben cerrarse el viernes antes de las 21:00 UTC. No se permite holding el fin de semana.</p>
+                    <div class="bg-gray-50 p-5 rounded-2xl border border-gray-100 font-medium">
+                        <p class="text-xs text-gray-600 leading-relaxed">Evita los "Gaps" de apertura del domingo que pueden saltar el Stop Loss y causar pérdidas incontroladas.</p>
                     </div>
                 </div>
 
-                <div class="glass-card p-8 rounded-2xl">
-                    <div class="flex justify-between items-start mb-4">
-                        <h3 class="text-xl font-bold text-white">⏳ Días Mínimos (5 días)</h3>
-                        <span class="px-2 py-1 bg-gray-200 text-gray-700 text-xs font-bold rounded">REQUISITO</span>
+                <div class="glass-card p-8 rounded-3xl group">
+                    <div class="flex justify-between items-start mb-6">
+                        <h3 class="text-xl font-bold text-black tracking-tight">🤖 Anti-HFT & Scalping</h3>
+                        <span class="px-3 py-1 bg-black text-white text-[9px] font-black rounded-lg uppercase tracking-widest">Algoritmo</span>
                     </div>
-                    <p class="text-gray-400 text-sm mb-4">Debes operar al menos 5 días distintos para poder solicitar tu cuenta fondeada.</p>
-                    <div class="bg-dark-bg p-4 rounded-lg border border-dark-border">
-                        <span class="text-xs font-bold text-gray-500 uppercase block mb-1">📝 Justificación</span>
-                        <p class="text-xs text-gray-300">Asegura que tu estrategia es sostenible en el tiempo y no fruto de una semana de suerte.</p>
+                    <p class="text-gray-500 text-sm mb-6 leading-relaxed font-medium">Prohibido abrir operaciones en ráfaga (< 5 seg). Trades cerrados en menos de 30 seg no computan beneficio.</p>
+                    <div class="bg-gray-50 p-5 rounded-2xl border border-gray-100 font-medium">
+                        <p class="text-xs text-gray-600 leading-relaxed">Bloquea el arbitraje de latencia y bots tóxicos que no operan bajo condiciones reales de mercado.</p>
+                    </div>
+                </div>
+
+                <div class="glass-card p-8 rounded-3xl group">
+                    <div class="flex justify-between items-start mb-6">
+                        <h3 class="text-xl font-bold text-black tracking-tight">⏳ Días Mínimos (5 días)</h3>
+                        <span class="px-3 py-1 bg-black text-white text-[9px] font-black rounded-lg uppercase tracking-widest">Obligatorio</span>
+                    </div>
+                    <p class="text-gray-500 text-sm mb-6 leading-relaxed font-medium">Debes operar al menos 5 días distintos para poder solicitar tu cuenta fondeada oficial.</p>
+                    <div class="bg-gray-50 p-5 rounded-2xl border border-gray-100 font-medium">
+                        <p class="text-xs text-gray-600 leading-relaxed">Garantiza que el rendimiento no es fruto de la volatilidad puntual de un solo día, sino de una gestión sólida.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="bg-dark-card border border-dark-border rounded-2xl p-8 text-center shadow-sm">
-            <h2 class="text-2xl font-bold text-white mb-4">¿Tienes dudas sobre una infracción?</h2>
-            <p class="text-gray-400 mb-6">Nuestro sistema monitorea estas reglas en tiempo real. Si infringes una regla "dura" (Drawdown), la cuenta se cierra automáticamente.</p>
-            <div class="flex justify-center gap-4">
-                <a href="help.html" class="text-brand hover:underline font-bold text-sm">Contactar Soporte</a>
-                <span class="text-gray-400">|</span>
-                <a href="legal.html" class="text-brand hover:underline font-bold text-sm">Ver Términos y Condiciones</a>
+        <section class="bg-black text-white rounded-[2rem] p-12 text-center shadow-2xl relative overflow-hidden">
+            <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 24px 24px;"></div>
+            <div class="relative z-10">
+                <h2 class="text-3xl font-extrabold mb-4 tracking-tight">¿Dudas sobre una posible infracción?</h2>
+                <p class="text-gray-400 mb-10 max-w-xl mx-auto font-medium">Nuestro sistema monitorea el cumplimiento en tiempo real. Ante cualquier duda, contacta con nuestros especialistas.</p>
+                <div class="flex flex-wrap justify-center gap-6">
+                    <a href="help.html" class="bg-white text-black px-8 py-3.5 rounded-xl font-black uppercase tracking-widest text-[10px] hover:bg-gray-200 transition">Contactar Soporte</a>
+                    <a href="legal.html" class="bg-transparent border border-gray-700 text-white px-8 py-3.5 rounded-xl font-black uppercase tracking-widest text-[10px] hover:bg-white/5 transition">Términos Legales</a>
+                </div>
             </div>
         </section>
 
     </main>
 
-    <footer class="border-t border-dark-border py-12 px-6 bg-dark-card text-xs text-gray-500 mt-auto">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 mb-8 text-center md:text-left">
-            <div>
-                <div class="flex items-center justify-center md:justify-start gap-2 mb-4">
-                    <i class="ph-fill ph-wave-sine text-xl text-brand"></i>
-                    <span class="font-bold text-white">Ethernal<span class="text-gray-500">Capitals</span></span>
+    <footer class="border-t border-dark-border py-12 px-6 bg-white text-gray-500 text-xs mt-auto">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 mb-12 text-center md:text-left">
+            <div class="md:col-span-1">
+                <div class="flex items-center justify-center md:justify-start gap-3 mb-6">
+                    <img src="favicon.png?v=3" alt="Logo" class="w-8 h-8 opacity-80">
+                    <div class="flex flex-col justify-center">
+                        <span class="text-sm font-extrabold tracking-widest uppercase leading-none text-black">Ethernal</span>
+                        <span class="text-[9px] font-semibold tracking-[0.2em] uppercase leading-tight text-gray-400 mt-0.5">Capitals</span>
+                    </div>
                 </div>
-                <p>La firma de fondeo líder para traders profesionales. Tu talento, nuestro capital.</p>
+                <p class="text-sm font-medium leading-relaxed">La firma de fondeo de élite para traders profesionales. Tu talento, nuestro capital.</p>
             </div>
             <div>
-                <h4 class="font-bold text-white mb-4 uppercase tracking-wider">Legal</h4>
-                <ul class="space-y-2">
-                    <li><a href="legal.html" class="hover:text-brand font-medium transition">Términos y Condiciones</a></li>
-                    <li><a href="legal.html" class="hover:text-brand font-medium transition">Política de Privacidad</a></li>
-                    <li><a href="legal.html" class="hover:text-brand font-medium transition">Descargo de Responsabilidad</a></li>
+                <h4 class="font-bold text-black mb-6 uppercase tracking-widest text-[10px]">Legal</h4>
+                <ul class="space-y-3 font-medium">
+                    <li><a href="legal.html" class="hover:text-black transition">Términos y Condiciones</a></li>
+                    <li><a href="legal.html" class="hover:text-black transition">Política de Privacidad</a></li>
+                    <li><a href="legal.html" class="hover:text-black transition">Riesgo</a></li>
                 </ul>
             </div>
             <div>
-                <h4 class="font-bold text-white mb-4 uppercase tracking-wider">Soporte</h4>
-                <ul class="space-y-2">
-                    <li><a href="help.html" class="hover:text-brand font-medium transition">Centro de Ayuda (FAQ)</a></li>
-                    <li><a href="help.html" class="hover:text-brand font-medium transition">Contactar Soporte</a></li>
-                    <li><a href="rules.html" class="hover:text-brand font-medium transition">Reglas de Trading</a></li>
+                <h4 class="font-bold text-black mb-6 uppercase tracking-widest text-[10px]">Soporte</h4>
+                <ul class="space-y-3 font-medium">
+                    <li><a href="help.html" class="hover:text-black transition">Centro de Ayuda</a></li>
+                    <li><a href="help.html" class="hover:text-black transition">Contacto</a></li>
+                    <li><a href="rules.html" class="hover:text-black transition text-black font-extrabold">Reglas</a></li>
                 </ul>
             </div>
             <div>
-                <h4 class="font-bold text-white mb-4 uppercase tracking-wider">Síguenos</h4>
+                <h4 class="font-bold text-black mb-6 uppercase tracking-widest text-[10px]">Social</h4>
                 <div class="flex justify-center md:justify-start gap-4">
-                    <a href="#" class="w-8 h-8 rounded bg-dark-bg flex items-center justify-center hover:bg-brand hover:text-white transition shadow-sm"><i class="ph-fill ph-twitter-logo"></i></a>
-                    <a href="#" class="w-8 h-8 rounded bg-dark-bg flex items-center justify-center hover:bg-brand hover:text-white transition shadow-sm"><i class="ph-fill ph-instagram-logo"></i></a>
-                    <a href="#" class="w-8 h-8 rounded bg-dark-bg flex items-center justify-center hover:bg-brand hover:text-white transition shadow-sm"><i class="ph-fill ph-discord-logo"></i></a>
+                    <a href="#" class="w-10 h-10 rounded-full border border-gray-100 flex items-center justify-center hover:bg-black hover:text-white transition"><i class="ph-fill ph-twitter-logo text-lg"></i></a>
+                    <a href="#" class="w-10 h-10 rounded-full border border-gray-100 flex items-center justify-center hover:bg-black hover:text-white transition"><i class="ph-fill ph-instagram-logo text-lg"></i></a>
+                    <a href="#" class="w-10 h-10 rounded-full border border-gray-100 flex items-center justify-center hover:bg-black hover:text-white transition"><i class="ph-fill ph-discord-logo text-lg"></i></a>
                 </div>
             </div>
         </div>
-        <div class="border-t border-dark-border pt-8 text-center">
+        <div class="border-t border-gray-100 pt-8 text-center uppercase tracking-[0.2em] font-bold text-[9px]">
             &copy; 2026 Ethernal Capitals Global LLC. Todos los derechos reservados.
         </div>
     </footer>
