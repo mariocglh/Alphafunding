@@ -347,219 +347,242 @@ function renderAccountsSelector() {
 }
 
 async function selectAccount(accId) {
-    currentAccountId = accId;
-    const acc = accountsData.find(a => a.id === accId);
-    currentAccountStatus = acc.status;
-    
-    await fetch(`${API_URL}/check-risk`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ accountId: accId }) });
-    const evalRes = await fetch(`${API_URL}/evaluate-account`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ accountId: accId }) });
-    const ev = await evalRes.json();
-    
-    const controls = document.getElementById('tradingControls');
-    if (acc.status === 'BREACHED' || ev.verdict === 'SUSPENDIDO') {
-        showGameOver();
-        controls.classList.add('opacity-50', 'pointer-events-none'); 
-    } else {
-        closeGameOver();
-        controls.classList.remove('opacity-50', 'pointer-events-none'); 
-    }
-
-    let initial = acc.initialBalance;
-    if (!initial) { 
-        if (acc.plan.includes('200k')) initial = 200000;
-        else if (acc.plan.includes('100k')) initial = 100000;
-        else if (acc.plan.includes('50k')) initial = 50000;
-        else if (acc.plan.includes('10k')) initial = 10000;
-        else initial = 100000;
-    }
-    
-    if(acc.status === 'LIVE' && acc.balance > initial * 1.5) initial = acc.balance;
-
-    const isLive = acc.status === 'LIVE';
-    const profit = acc.balance - initial;
-
-    if(isLive) {
-        document.getElementById('accountStats').innerHTML = `
-            <div class="glass-panel p-5 rounded-xl border-l-2 border-brand live-glow relative overflow-hidden group">
-                <div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition"><i class="ph-fill ph-wallet text-4xl text-brand"></i></div>
-                <div class="text-gray-500 text-[10px] font-bold uppercase mb-1 tracking-widest">Balance Total</div>
-                <div class="text-3xl font-bold text-white tracking-tight">$${acc.balance.toLocaleString()}</div>
-            </div>
-            
-            <div class="glass-panel p-5 rounded-xl border-l-2 border-gold live-glow relative overflow-hidden group">
-                <div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition"><i class="ph-fill ph-coins text-4xl text-gold"></i></div>
-                <div class="text-gray-500 text-[10px] font-bold uppercase mb-1 tracking-widest">Beneficio Retirable</div>
-                <div class="text-3xl font-bold ${profit >= 0 ? 'text-gold' : 'text-gray-400'} tracking-tight">
-                    ${profit > 0 ? '+' : ''}$${profit.toLocaleString()}
-                </div>
-            </div>
-
-            <div class="glass-panel p-5 rounded-xl border-l-2 border-purple-500 relative overflow-hidden group">
-                <div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition"><i class="ph-fill ph-chart-line-up text-4xl text-purple-500"></i></div>
-                <div class="text-gray-500 text-[10px] font-bold uppercase mb-1 tracking-widest">Equidad</div>
-                <div class="text-2xl font-bold text-white">$${acc.equity.toLocaleString()}</div>
-            </div>
-
-            <div class="glass-panel p-5 rounded-xl border-l-2 border-blue-500 relative overflow-hidden group bg-blue-500/10">
-                <div class="absolute right-0 top-0 p-4 opacity-20 group-hover:opacity-30 transition"><i class="ph-fill ph-crown text-4xl text-blue-400"></i></div>
-                <div class="text-blue-300 text-[10px] font-bold uppercase mb-1 tracking-widest">Estado</div>
-                <div class="text-xl font-bold text-white flex items-center gap-2">
-                    TRADER PRO <i class="ph-fill ph-seal-check text-blue-400"></i>
-                </div>
-            </div>
-        `;
-    } else {
-        document.getElementById('accountStats').innerHTML = `
-            <div class="glass-panel p-5 rounded-xl border-l-2 border-brand relative overflow-hidden group">
-                <div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition"><i class="ph-fill ph-wallet text-4xl text-brand"></i></div>
-                <div class="text-gray-500 text-[10px] font-bold uppercase mb-1 tracking-widest">Balance</div>
-                <div class="text-2xl font-bold text-white">$${acc.balance.toFixed(2)}</div>
-            </div>
-            <div class="glass-panel p-5 rounded-xl border-l-2 border-purple-500 relative overflow-hidden group">
-                <div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition"><i class="ph-fill ph-chart-line-up text-4xl text-purple-500"></i></div>
-                <div class="text-gray-500 text-[10px] font-bold uppercase mb-1 tracking-widest">Equidad</div>
-                <div class="text-2xl font-bold text-white">$${acc.balance.toFixed(2)}</div>
-            </div>
-            <div class="glass-panel p-5 rounded-xl border-l-2 border-orange-500 relative overflow-hidden group">
-                    <div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition"><i class="ph-fill ph-medal text-4xl text-orange-500"></i></div>
-                <div class="text-gray-500 text-[10px] font-bold uppercase mb-1 tracking-widest">Plan & Apalancamiento</div>
-                <div class="text-xl font-bold text-white truncate">${acc.plan} <span class="text-xs text-orange-400 bg-orange-500/10 px-2 py-0.5 rounded ml-1">1:100</span></div>
-            </div>
-            <div class="glass-panel p-5 rounded-xl border-l-2 ${acc.status === 'ACTIVE' ? 'border-success' : (acc.status === 'PASSED' ? 'border-brand' : 'border-danger')} relative overflow-hidden group">
-                <div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition"><i class="ph-fill ph-activity text-4xl"></i></div>
-                <div class="text-gray-500 text-[10px] font-bold uppercase mb-1 tracking-widest">Estado</div>
-                <div class="text-xl font-bold text-white">${acc.status}</div>
-            </div>
-        `;
-    }
-
-    const maxLoss = initial * 0.10;
-    const dailyMax = initial * 0.05;
-
-    if (isLive) {
-        document.getElementById('profitProgressText').innerText = "SIN LÍMITE 🚀";
-        document.getElementById('profitProgressBar').style.width = "100%";
-        document.getElementById('profitProgressBar').className = "progress-bar bg-blue-500 h-2 rounded-full animate-pulse shadow-[0_0_10px_blue]"; 
-        document.getElementById('targetMoneyContainer').innerHTML = "<span class='text-blue-400 font-bold text-xs'>100% Tuyo</span>";
-    } else {
-        const profitTarget = initial * 0.08;
-        const profitPercentReal = (ev.profit / initial) * 100;
-        const profitBar = Math.max(0, Math.min(100, (ev.profit / profitTarget) * 100));
+    try {
+        currentAccountId = accId;
+        const acc = accountsData.find(a => a.id === accId);
+        currentAccountStatus = acc.status;
         
-        document.getElementById('profitProgressText').innerText = `${profitPercentReal.toFixed(2)}% / 8%`;
-        document.getElementById('profitProgressBar').className = "progress-bar bg-gradient-to-r from-green-500 to-green-400 h-2 rounded-full";
-        document.getElementById('profitProgressBar').style.width = `${profitBar}%`;
-        document.getElementById('targetMoneyContainer').innerHTML = `<span>Falta:</span> <span class="text-white font-mono">$<span id="targetMoney">${(profitTarget - ev.profit).toFixed(2)}</span></span>`;
-    }
+        // 1. Pintamos la tabla de inmediato. Si lo de abajo falla, la tabla funcionará igual.
+        updateTrades(acc);
 
-    const currentTotalLoss = initial - acc.equity;
-    let totalLossPercent = 0;
-    let totalBar = 0;
-    if (currentTotalLoss > 0) {
-        totalLossPercent = (currentTotalLoss / initial) * 100;
-        totalBar = (currentTotalLoss / maxLoss) * 100;
-    }
-    document.getElementById('ddProgressBar').style.width = `${Math.min(100, totalBar)}%`;
-    document.getElementById('ddProgressText').innerText = `-${totalLossPercent.toFixed(2)}% / 10%`;
-    document.getElementById('maxLossMoney').innerText = (maxLoss - currentTotalLoss).toFixed(2);
-
-    const dailyStart = acc.dailyStartBalance || initial;
-    const currentDailyLoss = dailyStart - acc.equity;
-    let dailyLossPercent = 0;
-    let dailyBar = 0;
-    if (currentDailyLoss > 0) {
-        dailyLossPercent = (currentDailyLoss / initial) * 100;
-        dailyBar = (currentDailyLoss / dailyMax) * 100;
-    }
-    document.getElementById('dailyProgressBar').style.width = `${Math.min(100, dailyBar)}%`;
-    document.getElementById('dailyProgressText').innerText = `-${dailyLossPercent.toFixed(2)}% / 5%`;
-    document.getElementById('dailyLossMoney').innerText = (dailyMax - currentDailyLoss).toFixed(2);
-
-    if (isLive) {
-            document.getElementById('daysProgressText').innerText = "ILIMITADO";
-            document.getElementById('daysProgressBar').style.width = "100%";
-            document.getElementById('daysLabel').innerText = "Modo Profesional";
-    } else {
-        document.getElementById('daysProgressBar').style.width = `${(ev.validDays / 5) * 100}%`;
-        document.getElementById('daysProgressText').innerText = `${ev.validDays} / 5`;
-        document.getElementById('daysLabel').innerText = "Consistencia Requerida";
-    }
-
-    const badge = document.getElementById('verdictBadge');
-    const existingBtn = document.getElementById('claimButton');
-    if(existingBtn) existingBtn.remove();
-    
-    if (acc.status === 'PASSED' || ev.verdict === 'APROBADO') {
-        badge.innerText = "¡APROBADO!"; 
-        badge.className = "px-3 py-0.5 rounded-full text-[10px] font-bold bg-success text-white animate-pulse border border-green-500 shadow-[0_0_10px_green]";
+        // 2. Peticiones protegidas
+        await fetch(`${API_URL}/check-risk`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ accountId: accId }) }).catch(() => {});
+        const evalRes = await fetch(`${API_URL}/evaluate-account`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ accountId: accId }) }).catch(() => null);
         
-        if(acc.status !== 'FUNDED') {
-            document.getElementById('accountStats').insertAdjacentHTML('afterend', `
-                <div id="claimButton" class="mt-4 bg-gradient-to-r from-yellow-600 to-yellow-400 p-1 rounded-xl shadow-lg shadow-yellow-500/20 animate-bounce cursor-pointer" onclick="claimFunded('${acc.id}')">
-                    <div class="bg-dark-bg/90 hover:bg-dark-bg/50 text-white font-bold py-4 rounded-lg transition flex items-center justify-center gap-3 uppercase tracking-widest border border-yellow-500">
-                        <i class="ph-fill ph-trophy text-2xl text-yellow-400"></i>
-                        Reclamar Cuenta Fondeada ($${initial.toLocaleString()})
+        // Creamos un objeto por defecto por si el servidor falla
+        let ev = { profit: 0, validDays: 0, verdict: 'EN PROGRESO' };
+        if (evalRes && evalRes.ok) {
+            try { ev = await evalRes.json(); } catch(e) {}
+        }
+        
+        const controls = document.getElementById('tradingControls');
+        if (acc.status === 'BREACHED' || ev.verdict === 'SUSPENDIDO') {
+            showGameOver();
+            controls.classList.add('opacity-50', 'pointer-events-none'); 
+        } else {
+            closeGameOver();
+            controls.classList.remove('opacity-50', 'pointer-events-none'); 
+        }
+
+        let initial = acc.initialBalance;
+        if (!initial) { 
+            if ((acc.plan || '').includes('200k')) initial = 200000;
+            else if ((acc.plan || '').includes('100k')) initial = 100000;
+            else if ((acc.plan || '').includes('50k')) initial = 50000;
+            else if ((acc.plan || '').includes('10k')) initial = 10000;
+            else initial = 100000;
+        }
+        
+        if(acc.status === 'LIVE' && acc.balance > initial * 1.5) initial = acc.balance;
+
+        const isLive = acc.status === 'LIVE';
+        const profit = acc.balance - initial;
+
+        if(isLive) {
+            document.getElementById('accountStats').innerHTML = `
+                <div class="glass-panel p-5 rounded-xl border-l-2 border-brand live-glow relative overflow-hidden group">
+                    <div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition"><i class="ph-fill ph-wallet text-4xl text-brand"></i></div>
+                    <div class="text-gray-500 text-[10px] font-bold uppercase mb-1 tracking-widest">Balance Total</div>
+                    <div class="text-3xl font-bold text-white tracking-tight">$${acc.balance.toLocaleString()}</div>
+                </div>
+                
+                <div class="glass-panel p-5 rounded-xl border-l-2 border-gold live-glow relative overflow-hidden group">
+                    <div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition"><i class="ph-fill ph-coins text-4xl text-gold"></i></div>
+                    <div class="text-gray-500 text-[10px] font-bold uppercase mb-1 tracking-widest">Beneficio Retirable</div>
+                    <div class="text-3xl font-bold ${profit >= 0 ? 'text-gold' : 'text-gray-400'} tracking-tight">
+                        ${profit > 0 ? '+' : ''}$${profit.toLocaleString()}
                     </div>
                 </div>
-            `);
-        }
-    } else if (acc.status === 'BREACHED' || ev.verdict === 'SUSPENDIDO') {
-        badge.innerText = "SUSPENDIDO (QUEMADA)"; 
-        badge.className = "px-3 py-0.5 rounded-full text-[10px] font-bold bg-danger text-white border border-red-500 shadow-[0_0_10px_red]";
-        document.getElementById('ddProgressBar').className = "progress-bar bg-danger h-2 rounded-full";
-        document.getElementById('dailyProgressBar').className = "progress-bar bg-danger h-2 rounded-full";
-    } else if (acc.status === 'LIVE') {
-        badge.innerText = "CUENTA REAL (LIVE)"; 
-        badge.className = "px-3 py-0.5 rounded-full text-[10px] font-bold bg-blue-600 text-white border border-blue-400 shadow-[0_0_10px_blue]";
-    } else {
-        badge.innerText = "EN PROGRESO"; 
-        badge.className = "px-3 py-0.5 rounded-full text-[10px] font-bold bg-gray-700 text-gray-300 border border-gray-600";
-    }
 
-    updateTrades(acc);
+                <div class="glass-panel p-5 rounded-xl border-l-2 border-purple-500 relative overflow-hidden group">
+                    <div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition"><i class="ph-fill ph-chart-line-up text-4xl text-purple-500"></i></div>
+                    <div class="text-gray-500 text-[10px] font-bold uppercase mb-1 tracking-widest">Equidad</div>
+                    <div class="text-2xl font-bold text-white">$${acc.equity.toLocaleString()}</div>
+                </div>
+
+                <div class="glass-panel p-5 rounded-xl border-l-2 border-blue-500 relative overflow-hidden group bg-blue-500/10">
+                    <div class="absolute right-0 top-0 p-4 opacity-20 group-hover:opacity-30 transition"><i class="ph-fill ph-crown text-4xl text-blue-400"></i></div>
+                    <div class="text-blue-300 text-[10px] font-bold uppercase mb-1 tracking-widest">Estado</div>
+                    <div class="text-xl font-bold text-white flex items-center gap-2">
+                        TRADER PRO <i class="ph-fill ph-seal-check text-blue-400"></i>
+                    </div>
+                </div>
+            `;
+        } else {
+            document.getElementById('accountStats').innerHTML = `
+                <div class="glass-panel p-5 rounded-xl border-l-2 border-brand relative overflow-hidden group">
+                    <div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition"><i class="ph-fill ph-wallet text-4xl text-brand"></i></div>
+                    <div class="text-gray-500 text-[10px] font-bold uppercase mb-1 tracking-widest">Balance</div>
+                    <div class="text-2xl font-bold text-white">$${acc.balance.toFixed(2)}</div>
+                </div>
+                <div class="glass-panel p-5 rounded-xl border-l-2 border-purple-500 relative overflow-hidden group">
+                    <div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition"><i class="ph-fill ph-chart-line-up text-4xl text-purple-500"></i></div>
+                    <div class="text-gray-500 text-[10px] font-bold uppercase mb-1 tracking-widest">Equidad</div>
+                    <div class="text-2xl font-bold text-white">$${acc.equity.toFixed(2)}</div>
+                </div>
+                <div class="glass-panel p-5 rounded-xl border-l-2 border-orange-500 relative overflow-hidden group">
+                        <div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition"><i class="ph-fill ph-medal text-4xl text-orange-500"></i></div>
+                    <div class="text-gray-500 text-[10px] font-bold uppercase mb-1 tracking-widest">Plan & Apalancamiento</div>
+                    <div class="text-xl font-bold text-white truncate">${acc.plan} <span class="text-xs text-orange-400 bg-orange-500/10 px-2 py-0.5 rounded ml-1">1:100</span></div>
+                </div>
+                <div class="glass-panel p-5 rounded-xl border-l-2 ${acc.status === 'ACTIVE' ? 'border-success' : (acc.status === 'PASSED' ? 'border-brand' : 'border-danger')} relative overflow-hidden group">
+                    <div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition"><i class="ph-fill ph-activity text-4xl"></i></div>
+                    <div class="text-gray-500 text-[10px] font-bold uppercase mb-1 tracking-widest">Estado</div>
+                    <div class="text-xl font-bold text-white">${acc.status}</div>
+                </div>
+            `;
+        }
+
+        const maxLoss = initial * 0.10;
+        const dailyMax = initial * 0.05;
+
+        if (isLive) {
+            document.getElementById('profitProgressText').innerText = "SIN LÍMITE 🚀";
+            document.getElementById('profitProgressBar').style.width = "100%";
+            document.getElementById('profitProgressBar').className = "progress-bar bg-blue-500 h-2 rounded-full animate-pulse shadow-[0_0_10px_blue]"; 
+            document.getElementById('targetMoneyContainer').innerHTML = "<span class='text-blue-400 font-bold text-xs'>100% Tuyo</span>";
+        } else {
+            const profitTarget = initial * 0.08;
+            const profitPercentReal = (ev.profit / initial) * 100;
+            const profitBar = Math.max(0, Math.min(100, (ev.profit / profitTarget) * 100));
+            
+            document.getElementById('profitProgressText').innerText = `${profitPercentReal.toFixed(2)}% / 8%`;
+            document.getElementById('profitProgressBar').className = "progress-bar bg-gradient-to-r from-green-500 to-green-400 h-2 rounded-full";
+            document.getElementById('profitProgressBar').style.width = `${profitBar}%`;
+            document.getElementById('targetMoneyContainer').innerHTML = `<span>Falta:</span> <span class="text-white font-mono">$<span id="targetMoney">${(profitTarget - ev.profit).toFixed(2)}</span></span>`;
+        }
+
+        const currentTotalLoss = initial - acc.equity;
+        let totalLossPercent = 0;
+        let totalBar = 0;
+        if (currentTotalLoss > 0) {
+            totalLossPercent = (currentTotalLoss / initial) * 100;
+            totalBar = (currentTotalLoss / maxLoss) * 100;
+        }
+        document.getElementById('ddProgressBar').style.width = `${Math.min(100, totalBar)}%`;
+        document.getElementById('ddProgressText').innerText = `-${totalLossPercent.toFixed(2)}% / 10%`;
+        document.getElementById('maxLossMoney').innerText = (maxLoss - currentTotalLoss).toFixed(2);
+
+        const dailyStart = acc.dailyStartBalance || initial;
+        const currentDailyLoss = dailyStart - acc.equity;
+        let dailyLossPercent = 0;
+        let dailyBar = 0;
+        if (currentDailyLoss > 0) {
+            dailyLossPercent = (currentDailyLoss / initial) * 100;
+            dailyBar = (currentDailyLoss / dailyMax) * 100;
+        }
+        document.getElementById('dailyProgressBar').style.width = `${Math.min(100, dailyBar)}%`;
+        document.getElementById('dailyProgressText').innerText = `-${dailyLossPercent.toFixed(2)}% / 5%`;
+        document.getElementById('dailyLossMoney').innerText = (dailyMax - currentDailyLoss).toFixed(2);
+
+        if (isLive) {
+                document.getElementById('daysProgressText').innerText = "ILIMITADO";
+                document.getElementById('daysProgressBar').style.width = "100%";
+                document.getElementById('daysLabel').innerText = "Modo Profesional";
+        } else {
+            document.getElementById('daysProgressBar').style.width = `${((ev.validDays || 0) / 5) * 100}%`;
+            document.getElementById('daysProgressText').innerText = `${ev.validDays || 0} / 5`;
+            document.getElementById('daysLabel').innerText = "Consistencia Requerida";
+        }
+
+        const badge = document.getElementById('verdictBadge');
+        const existingBtn = document.getElementById('claimButton');
+        if(existingBtn) existingBtn.remove();
+        
+        if (acc.status === 'PASSED' || ev.verdict === 'APROBADO') {
+            badge.innerText = "¡APROBADO!"; 
+            badge.className = "px-3 py-0.5 rounded-full text-[10px] font-bold bg-success text-white animate-pulse border border-green-500 shadow-[0_0_10px_green]";
+            
+            if(acc.status !== 'FUNDED') {
+                document.getElementById('accountStats').insertAdjacentHTML('afterend', `
+                    <div id="claimButton" class="mt-4 bg-gradient-to-r from-yellow-600 to-yellow-400 p-1 rounded-xl shadow-lg shadow-yellow-500/20 animate-bounce cursor-pointer" onclick="claimFunded('${acc.id}')">
+                        <div class="bg-dark-bg/90 hover:bg-dark-bg/50 text-white font-bold py-4 rounded-lg transition flex items-center justify-center gap-3 uppercase tracking-widest border border-yellow-500">
+                            <i class="ph-fill ph-trophy text-2xl text-yellow-400"></i>
+                            Reclamar Cuenta Fondeada ($${initial.toLocaleString()})
+                        </div>
+                    </div>
+                `);
+            }
+        } else if (acc.status === 'BREACHED' || ev.verdict === 'SUSPENDIDO') {
+            badge.innerText = "SUSPENDIDO (QUEMADA)"; 
+            badge.className = "px-3 py-0.5 rounded-full text-[10px] font-bold bg-danger text-white border border-red-500 shadow-[0_0_10px_red]";
+            document.getElementById('ddProgressBar').className = "progress-bar bg-danger h-2 rounded-full";
+            document.getElementById('dailyProgressBar').className = "progress-bar bg-danger h-2 rounded-full";
+        } else if (acc.status === 'LIVE') {
+            badge.innerText = "CUENTA REAL (LIVE)"; 
+            badge.className = "px-3 py-0.5 rounded-full text-[10px] font-bold bg-blue-600 text-white border border-blue-400 shadow-[0_0_10px_blue]";
+        } else {
+            badge.innerText = "EN PROGRESO"; 
+            badge.className = "px-3 py-0.5 rounded-full text-[10px] font-bold bg-gray-700 text-gray-300 border border-gray-600";
+        }
+    } catch (error) {
+        console.error("Fallo general al seleccionar cuenta:", error);
+        document.getElementById('verdictBadge').innerText = "ERROR AL CARGAR";
+    }
 }
 
 // --- CORRECCIÓN DE LA TABLA DE TRADES (Línea 527 aprox de tu imagen) ---
 async function updateTrades(acc) {
-    const token = localStorage.getItem('token');
-    const res = await fetch(`${API_URL}/account-analysis/${acc.id}`, { headers: { 'Authorization': `Bearer ${token}` } });
-    const analysis = await res.json();
-    
-    const allTrades = [...(acc.openTrades || []), ...analysis.history];
-
-    let html = allTrades.map(t => {
-        const isClosed = t.status === 'CLOSED';
-        const profitClass = t.profit >= 0 ? 'text-success' : 'text-danger';
-        const typeClass = t.type === 'BUY' ? 'bg-blue-500/10 text-blue-400 border-blue-500/20' : 'bg-red-500/10 text-red-400 border-red-500/20';
+    try {
+        const token = localStorage.getItem('token');
+        const res = await fetch(`${API_URL}/account-analysis/${acc.id}`, { headers: { 'Authorization': `Bearer ${token}` } }).catch(() => null);
         
-        // CORRECCIÓN: Usamos el capital inicial de la cuenta para el % real
-        const capitalReferencia = acc.initialBalance || 100000;
-        const percentValue = ((t.profit / capitalReferencia) * 100).toFixed(2);
-        const percentClass = percentValue >= 0 ? 'text-success' : 'text-danger';
+        let history = [];
+        if (res && res.ok) {
+            try {
+                const analysis = await res.json();
+                history = analysis.history || [];
+            } catch(e) {}
+        }
         
-        const dateObj = new Date(t.closeTime || t.openTime);
-        const dateStr = dateObj.toLocaleDateString() + ' ' + dateObj.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        const allTrades = [...(acc.openTrades || []), ...history];
 
-        return `
-        <tr class="border-b border-dark-border text-xs hover:bg-dark-hover transition">
-            <td class="p-4 text-gray-500">${dateStr}</td>
-            <td class="p-4 font-mono text-gray-500">#${t.ticket || t.id.slice(0,6)}</td>
-            <td class="p-4 font-bold text-white">${t.symbol}</td>
-            <td class="p-4"><span class="px-2 py-1 rounded border ${typeClass} font-bold text-[10px]">${t.type}</span></td>
-            <td class="p-4 text-gray-300">${t.lots}</td>
-            <td class="p-4 text-gray-400">${t.openPrice}</td>
-            <td class="p-4 text-gray-400">${t.closePrice || '...'}</td>
-            <td class="p-4 text-center font-bold ${percentClass}">${percentValue > 0 ? '+' : ''}${percentValue}%</td>
-            <td class="p-4 font-bold ${profitClass} text-sm">$${t.profit.toFixed(2)}</td>
-            <td class="p-4 text-right">
-                ${!isClosed 
-                    ? `<button onclick="closeTrade('${t.id}')" class="bg-brand text-white px-3 py-1.5 rounded text-[10px] font-bold hover:bg-brand-dark transition shadow-lg shadow-brand/20">CERRAR</button>` 
-                    : '<span class="text-gray-600 font-bold text-[10px] uppercase">FINALIZADO</span>'}
-            </td>
-        </tr>`;
-    }).join('');
-    
-    document.getElementById('tradesTableBody').innerHTML = html || '<tr><td colspan="10" class="p-8 text-center text-gray-500 italic">No hay operaciones registradas.</td></tr>';
+        let html = allTrades.map(t => {
+            const isClosed = t.status === 'CLOSED';
+            const profitClass = t.profit >= 0 ? 'text-success' : 'text-danger';
+            const typeClass = t.type === 'BUY' ? 'bg-blue-500/10 text-blue-400 border-blue-500/20' : 'bg-red-500/10 text-red-400 border-red-500/20';
+            
+            // CORRECCIÓN: Usamos el capital inicial de la cuenta para el % real
+            const capitalReferencia = acc.initialBalance || 100000;
+            const percentValue = ((t.profit / capitalReferencia) * 100).toFixed(2);
+            const percentClass = percentValue >= 0 ? 'text-success' : 'text-danger';
+            
+            const dateObj = new Date(t.closeTime || t.openTime);
+            const dateStr = dateObj.toLocaleDateString() + ' ' + dateObj.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+
+            return `
+            <tr class="border-b border-dark-border text-xs hover:bg-dark-hover transition">
+                <td class="p-4 text-gray-500">${dateStr}</td>
+                <td class="p-4 font-mono text-gray-500">#${t.ticket || t.id.slice(0,6)}</td>
+                <td class="p-4 font-bold text-white">${t.symbol}</td>
+                <td class="p-4"><span class="px-2 py-1 rounded border ${typeClass} font-bold text-[10px]">${t.type}</span></td>
+                <td class="p-4 text-gray-300">${t.lots}</td>
+                <td class="p-4 text-gray-400">${t.openPrice}</td>
+                <td class="p-4 text-gray-400">${t.closePrice || '...'}</td>
+                <td class="p-4 text-center font-bold ${percentClass}">${percentValue > 0 ? '+' : ''}${percentValue}%</td>
+                <td class="p-4 font-bold ${profitClass} text-sm">$${t.profit.toFixed(2)}</td>
+                <td class="p-4 text-right">
+                    ${!isClosed 
+                        ? `<button onclick="closeTrade('${t.id}')" class="bg-brand text-white px-3 py-1.5 rounded text-[10px] font-bold hover:bg-brand-dark transition shadow-lg shadow-brand/20">CERRAR</button>` 
+                        : '<span class="text-gray-600 font-bold text-[10px] uppercase">FINALIZADO</span>'}
+                </td>
+            </tr>`;
+        }).join('');
+        
+        document.getElementById('tradesTableBody').innerHTML = html || '<tr><td colspan="10" class="p-8 text-center text-gray-500 italic">No hay operaciones registradas.</td></tr>';
+    } catch (error) {
+        console.error("Error al pintar los trades:", error);
+    }
 }
 
 function tryTrade(type) {
