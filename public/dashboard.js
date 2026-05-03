@@ -132,11 +132,13 @@ async function initDashboard() {
         document.getElementById('userIdDisplay').innerText = userId.slice(0, 8);
         
         const headerImg = document.getElementById('headerProfileImg');
-        headerImg.parentElement.innerHTML = `
-            <div id="headerProfileImg" class="w-10 h-10 rounded-full border-2 border-brand bg-brand/10 flex items-center justify-center text-brand font-bold text-lg shadow-lg">
-                ${inicial}
-            </div>
-        `;
+        if(headerImg) {
+            headerImg.parentElement.innerHTML = `
+                <div id="headerProfileImg" class="w-10 h-10 rounded-full border-2 border-brand bg-brand/10 flex items-center justify-center text-brand font-bold text-lg shadow-lg">
+                    ${inicial}
+                </div>
+            `;
+        }
 
         accountsData = data.accounts.filter(a => a.status !== 'MERGED');
         filteredAccounts = [...accountsData]; 
@@ -145,7 +147,10 @@ async function initDashboard() {
         if (accountsData.length > 0) {
             selectAccount(currentAccountId || accountsData[0].id);
         } else {
-            document.getElementById('accountStats').innerHTML = `<div class="col-span-4 text-center py-12 bg-dark-card rounded-xl border border-dashed border-gray-700"><p class="text-gray-400 mb-4">No tienes cuentas. ¡Empieza ya!</p><button onclick="showSection('shop')" class="bg-brand text-white px-8 py-3 rounded-xl font-bold">Ir a la Tienda</button></div>`;
+            const stats = document.getElementById('accountStats');
+            if(stats) {
+                stats.innerHTML = `<div class="col-span-4 text-center py-12 bg-dark-card rounded-xl border border-dashed border-gray-700"><p class="text-gray-400 mb-4">No tienes cuentas. ¡Empieza ya!</p><button onclick="showSection('shop')" class="bg-brand text-white px-8 py-3 rounded-xl font-bold">Ir a la Tienda</button></div>`;
+            }
         }
     } catch (error) { 
         console.error(error);
@@ -185,6 +190,7 @@ function resetFilters() {
 // --- GESTIÓN DE CUENTAS (RENDERIZADO) ---
 function renderManagementPanel() {
     const grid = document.getElementById('managementGrid');
+    if(!grid) return;
     
     if(filteredAccounts.length === 0) {
         grid.innerHTML = '<div class="col-span-3 text-center text-gray-500 py-10 italic">No se encontraron cuentas con estos filtros.</div>';
@@ -269,11 +275,13 @@ function toggleMergeSelection(accId) {
     const btnPanel = document.getElementById('mergeActionPanel');
     const btnText = document.getElementById('mergeBtnText');
     
-    if(mergeSelection.length >= 2) { 
-        btnPanel.classList.remove('hidden');
-        btnText.innerHTML = `<i class="ph-bold ph-intersect"></i> FUSIONAR (${mergeSelection.length}) CUENTAS`;
-    } else {
-        btnPanel.classList.add('hidden');
+    if(btnPanel && btnText) {
+        if(mergeSelection.length >= 2) { 
+            btnPanel.classList.remove('hidden');
+            btnText.innerHTML = `<i class="ph-bold ph-intersect"></i> FUSIONAR (${mergeSelection.length}) CUENTAS`;
+        } else {
+            btnPanel.classList.add('hidden');
+        }
     }
 }
 
@@ -330,6 +338,7 @@ async function deleteAccount(accId) {
 // --- TERMINAL LOGIC ---
 function renderAccountsSelector() {
         const selector = document.getElementById('accountSelector');
+        if(!selector) return;
         selector.innerHTML = accountsData.map(acc => {
             let statusIcon = '🔵';
             let statusText = 'ACTIVA';
@@ -352,26 +361,28 @@ async function selectAccount(accId) {
         const acc = accountsData.find(a => a.id === accId);
         currentAccountStatus = acc.status;
         
-        // 1. Pintamos la tabla de inmediato. Si lo de abajo falla, la tabla funcionará igual.
+        // 1. Pintamos la tabla de inmediato
         updateTrades(acc);
 
         // 2. Peticiones protegidas
         await fetch(`${API_URL}/check-risk`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ accountId: accId }) }).catch(() => {});
         const evalRes = await fetch(`${API_URL}/evaluate-account`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ accountId: accId }) }).catch(() => null);
         
-        // Creamos un objeto por defecto por si el servidor falla
+        // Creamos un objeto por defecto
         let ev = { profit: 0, validDays: 0, verdict: 'EN PROGRESO' };
         if (evalRes && evalRes.ok) {
             try { ev = await evalRes.json(); } catch(e) {}
         }
         
         const controls = document.getElementById('tradingControls');
-        if (acc.status === 'BREACHED' || ev.verdict === 'SUSPENDIDO') {
-            showGameOver();
-            controls.classList.add('opacity-50', 'pointer-events-none'); 
-        } else {
-            closeGameOver();
-            controls.classList.remove('opacity-50', 'pointer-events-none'); 
+        if(controls) {
+            if (acc.status === 'BREACHED' || ev.verdict === 'SUSPENDIDO') {
+                showGameOver();
+                controls.classList.add('opacity-50', 'pointer-events-none'); 
+            } else {
+                closeGameOver();
+                controls.classList.remove('opacity-50', 'pointer-events-none'); 
+            }
         }
 
         let initial = acc.initialBalance;
@@ -388,78 +399,90 @@ async function selectAccount(accId) {
         const isLive = acc.status === 'LIVE';
         const profit = acc.balance - initial;
 
-        if(isLive) {
-            document.getElementById('accountStats').innerHTML = `
-                <div class="glass-panel p-5 rounded-xl border-l-2 border-brand live-glow relative overflow-hidden group">
-                    <div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition"><i class="ph-fill ph-wallet text-4xl text-brand"></i></div>
-                    <div class="text-gray-500 text-[10px] font-bold uppercase mb-1 tracking-widest">Balance Total</div>
-                    <div class="text-3xl font-bold text-white tracking-tight">$${acc.balance.toLocaleString()}</div>
-                </div>
-                
-                <div class="glass-panel p-5 rounded-xl border-l-2 border-gold live-glow relative overflow-hidden group">
-                    <div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition"><i class="ph-fill ph-coins text-4xl text-gold"></i></div>
-                    <div class="text-gray-500 text-[10px] font-bold uppercase mb-1 tracking-widest">Beneficio Retirable</div>
-                    <div class="text-3xl font-bold ${profit >= 0 ? 'text-gold' : 'text-gray-400'} tracking-tight">
-                        ${profit > 0 ? '+' : ''}$${profit.toLocaleString()}
+        const accountStatsEl = document.getElementById('accountStats');
+        if(accountStatsEl) {
+            if(isLive) {
+                accountStatsEl.innerHTML = `
+                    <div class="glass-panel p-5 rounded-xl border-l-2 border-brand live-glow relative overflow-hidden group">
+                        <div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition"><i class="ph-fill ph-wallet text-4xl text-brand"></i></div>
+                        <div class="text-gray-500 text-[10px] font-bold uppercase mb-1 tracking-widest">Balance Total</div>
+                        <div class="text-3xl font-bold text-white tracking-tight">$${acc.balance.toLocaleString()}</div>
                     </div>
-                </div>
-
-                <div class="glass-panel p-5 rounded-xl border-l-2 border-purple-500 relative overflow-hidden group">
-                    <div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition"><i class="ph-fill ph-chart-line-up text-4xl text-purple-500"></i></div>
-                    <div class="text-gray-500 text-[10px] font-bold uppercase mb-1 tracking-widest">Equidad</div>
-                    <div class="text-2xl font-bold text-white">$${acc.equity.toLocaleString()}</div>
-                </div>
-
-                <div class="glass-panel p-5 rounded-xl border-l-2 border-blue-500 relative overflow-hidden group bg-blue-500/10">
-                    <div class="absolute right-0 top-0 p-4 opacity-20 group-hover:opacity-30 transition"><i class="ph-fill ph-crown text-4xl text-blue-400"></i></div>
-                    <div class="text-blue-300 text-[10px] font-bold uppercase mb-1 tracking-widest">Estado</div>
-                    <div class="text-xl font-bold text-white flex items-center gap-2">
-                        TRADER PRO <i class="ph-fill ph-seal-check text-blue-400"></i>
+                    
+                    <div class="glass-panel p-5 rounded-xl border-l-2 border-gold live-glow relative overflow-hidden group">
+                        <div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition"><i class="ph-fill ph-coins text-4xl text-gold"></i></div>
+                        <div class="text-gray-500 text-[10px] font-bold uppercase mb-1 tracking-widest">Beneficio Retirable</div>
+                        <div class="text-3xl font-bold ${profit >= 0 ? 'text-gold' : 'text-gray-400'} tracking-tight">
+                            ${profit > 0 ? '+' : ''}$${profit.toLocaleString()}
+                        </div>
                     </div>
-                </div>
-            `;
-        } else {
-            document.getElementById('accountStats').innerHTML = `
-                <div class="glass-panel p-5 rounded-xl border-l-2 border-brand relative overflow-hidden group">
-                    <div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition"><i class="ph-fill ph-wallet text-4xl text-brand"></i></div>
-                    <div class="text-gray-500 text-[10px] font-bold uppercase mb-1 tracking-widest">Balance</div>
-                    <div class="text-2xl font-bold text-white">$${acc.balance.toFixed(2)}</div>
-                </div>
-                <div class="glass-panel p-5 rounded-xl border-l-2 border-purple-500 relative overflow-hidden group">
-                    <div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition"><i class="ph-fill ph-chart-line-up text-4xl text-purple-500"></i></div>
-                    <div class="text-gray-500 text-[10px] font-bold uppercase mb-1 tracking-widest">Equidad</div>
-                    <div class="text-2xl font-bold text-white">$${acc.equity.toFixed(2)}</div>
-                </div>
-                <div class="glass-panel p-5 rounded-xl border-l-2 border-orange-500 relative overflow-hidden group">
-                        <div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition"><i class="ph-fill ph-medal text-4xl text-orange-500"></i></div>
-                    <div class="text-gray-500 text-[10px] font-bold uppercase mb-1 tracking-widest">Plan & Apalancamiento</div>
-                    <div class="text-xl font-bold text-white truncate">${acc.plan} <span class="text-xs text-orange-400 bg-orange-500/10 px-2 py-0.5 rounded ml-1">1:100</span></div>
-                </div>
-                <div class="glass-panel p-5 rounded-xl border-l-2 ${acc.status === 'ACTIVE' ? 'border-success' : (acc.status === 'PASSED' ? 'border-brand' : 'border-danger')} relative overflow-hidden group">
-                    <div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition"><i class="ph-fill ph-activity text-4xl"></i></div>
-                    <div class="text-gray-500 text-[10px] font-bold uppercase mb-1 tracking-widest">Estado</div>
-                    <div class="text-xl font-bold text-white">${acc.status}</div>
-                </div>
-            `;
+
+                    <div class="glass-panel p-5 rounded-xl border-l-2 border-purple-500 relative overflow-hidden group">
+                        <div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition"><i class="ph-fill ph-chart-line-up text-4xl text-purple-500"></i></div>
+                        <div class="text-gray-500 text-[10px] font-bold uppercase mb-1 tracking-widest">Equidad</div>
+                        <div class="text-2xl font-bold text-white">$${acc.equity.toLocaleString()}</div>
+                    </div>
+
+                    <div class="glass-panel p-5 rounded-xl border-l-2 border-blue-500 relative overflow-hidden group bg-blue-500/10">
+                        <div class="absolute right-0 top-0 p-4 opacity-20 group-hover:opacity-30 transition"><i class="ph-fill ph-crown text-4xl text-blue-400"></i></div>
+                        <div class="text-blue-300 text-[10px] font-bold uppercase mb-1 tracking-widest">Estado</div>
+                        <div class="text-xl font-bold text-white flex items-center gap-2">
+                            TRADER PRO <i class="ph-fill ph-seal-check text-blue-400"></i>
+                        </div>
+                    </div>
+                `;
+            } else {
+                accountStatsEl.innerHTML = `
+                    <div class="glass-panel p-5 rounded-xl border-l-2 border-brand relative overflow-hidden group">
+                        <div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition"><i class="ph-fill ph-wallet text-4xl text-brand"></i></div>
+                        <div class="text-gray-500 text-[10px] font-bold uppercase mb-1 tracking-widest">Balance</div>
+                        <div class="text-2xl font-bold text-white">$${acc.balance.toFixed(2)}</div>
+                    </div>
+                    <div class="glass-panel p-5 rounded-xl border-l-2 border-purple-500 relative overflow-hidden group">
+                        <div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition"><i class="ph-fill ph-chart-line-up text-4xl text-purple-500"></i></div>
+                        <div class="text-gray-500 text-[10px] font-bold uppercase mb-1 tracking-widest">Equidad</div>
+                        <div class="text-2xl font-bold text-white">$${acc.equity.toFixed(2)}</div>
+                    </div>
+                    <div class="glass-panel p-5 rounded-xl border-l-2 border-orange-500 relative overflow-hidden group">
+                            <div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition"><i class="ph-fill ph-medal text-4xl text-orange-500"></i></div>
+                        <div class="text-gray-500 text-[10px] font-bold uppercase mb-1 tracking-widest">Plan & Apalancamiento</div>
+                        <div class="text-xl font-bold text-white truncate">${acc.plan} <span class="text-xs text-orange-400 bg-orange-500/10 px-2 py-0.5 rounded ml-1">1:100</span></div>
+                    </div>
+                    <div class="glass-panel p-5 rounded-xl border-l-2 ${acc.status === 'ACTIVE' ? 'border-success' : (acc.status === 'PASSED' ? 'border-brand' : 'border-danger')} relative overflow-hidden group">
+                        <div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition"><i class="ph-fill ph-activity text-4xl"></i></div>
+                        <div class="text-gray-500 text-[10px] font-bold uppercase mb-1 tracking-widest">Estado</div>
+                        <div class="text-xl font-bold text-white">${acc.status}</div>
+                    </div>
+                `;
+            }
         }
 
         const maxLoss = initial * 0.10;
         const dailyMax = initial * 0.05;
 
+        // PROTECCIÓN DE DOM: Comprobamos si los contenedores existen antes de modificarlos
+        const elProfitText = document.getElementById('profitProgressText');
+        const elProfitBar = document.getElementById('profitProgressBar');
+        const elTargetMoney = document.getElementById('targetMoneyContainer');
+
         if (isLive) {
-            document.getElementById('profitProgressText').innerText = "SIN LÍMITE 🚀";
-            document.getElementById('profitProgressBar').style.width = "100%";
-            document.getElementById('profitProgressBar').className = "progress-bar bg-blue-500 h-2 rounded-full animate-pulse shadow-[0_0_10px_blue]"; 
-            document.getElementById('targetMoneyContainer').innerHTML = "<span class='text-blue-400 font-bold text-xs'>100% Tuyo</span>";
+            if(elProfitText) elProfitText.innerText = "SIN LÍMITE 🚀";
+            if(elProfitBar) {
+                elProfitBar.style.width = "100%";
+                elProfitBar.className = "progress-bar bg-blue-500 h-2 rounded-full animate-pulse shadow-[0_0_10px_blue]"; 
+            }
+            if(elTargetMoney) elTargetMoney.innerHTML = "<span class='text-blue-400 font-bold text-xs'>100% Tuyo</span>";
         } else {
             const profitTarget = initial * 0.08;
             const profitPercentReal = (ev.profit / initial) * 100;
             const profitBar = Math.max(0, Math.min(100, (ev.profit / profitTarget) * 100));
             
-            document.getElementById('profitProgressText').innerText = `${profitPercentReal.toFixed(2)}% / 8%`;
-            document.getElementById('profitProgressBar').className = "progress-bar bg-gradient-to-r from-green-500 to-green-400 h-2 rounded-full";
-            document.getElementById('profitProgressBar').style.width = `${profitBar}%`;
-            document.getElementById('targetMoneyContainer').innerHTML = `<span>Falta:</span> <span class="text-white font-mono">$<span id="targetMoney">${(profitTarget - ev.profit).toFixed(2)}</span></span>`;
+            if(elProfitText) elProfitText.innerText = `${profitPercentReal.toFixed(2)}% / 8%`;
+            if(elProfitBar) {
+                elProfitBar.className = "progress-bar bg-gradient-to-r from-green-500 to-green-400 h-2 rounded-full";
+                elProfitBar.style.width = `${profitBar}%`;
+            }
+            if(elTargetMoney) elTargetMoney.innerHTML = `<span>Falta:</span> <span class="text-white font-mono">$${(profitTarget - ev.profit).toFixed(2)}</span>`;
         }
 
         const currentTotalLoss = initial - acc.equity;
@@ -469,9 +492,10 @@ async function selectAccount(accId) {
             totalLossPercent = (currentTotalLoss / initial) * 100;
             totalBar = (currentTotalLoss / maxLoss) * 100;
         }
-        document.getElementById('ddProgressBar').style.width = `${Math.min(100, totalBar)}%`;
-        document.getElementById('ddProgressText').innerText = `-${totalLossPercent.toFixed(2)}% / 10%`;
-        document.getElementById('maxLossMoney').innerText = (maxLoss - currentTotalLoss).toFixed(2);
+        
+        if(document.getElementById('ddProgressBar')) document.getElementById('ddProgressBar').style.width = `${Math.min(100, totalBar)}%`;
+        if(document.getElementById('ddProgressText')) document.getElementById('ddProgressText').innerText = `-${totalLossPercent.toFixed(2)}% / 10%`;
+        if(document.getElementById('maxLossMoney')) document.getElementById('maxLossMoney').innerText = (maxLoss - currentTotalLoss).toFixed(2);
 
         const dailyStart = acc.dailyStartBalance || initial;
         const currentDailyLoss = dailyStart - acc.equity;
@@ -481,53 +505,58 @@ async function selectAccount(accId) {
             dailyLossPercent = (currentDailyLoss / initial) * 100;
             dailyBar = (currentDailyLoss / dailyMax) * 100;
         }
-        document.getElementById('dailyProgressBar').style.width = `${Math.min(100, dailyBar)}%`;
-        document.getElementById('dailyProgressText').innerText = `-${dailyLossPercent.toFixed(2)}% / 5%`;
-        document.getElementById('dailyLossMoney').innerText = (dailyMax - currentDailyLoss).toFixed(2);
+        if(document.getElementById('dailyProgressBar')) document.getElementById('dailyProgressBar').style.width = `${Math.min(100, dailyBar)}%`;
+        if(document.getElementById('dailyProgressText')) document.getElementById('dailyProgressText').innerText = `-${dailyLossPercent.toFixed(2)}% / 5%`;
+        if(document.getElementById('dailyLossMoney')) document.getElementById('dailyLossMoney').innerText = (dailyMax - currentDailyLoss).toFixed(2);
 
         if (isLive) {
-                document.getElementById('daysProgressText').innerText = "ILIMITADO";
-                document.getElementById('daysProgressBar').style.width = "100%";
-                document.getElementById('daysLabel').innerText = "Modo Profesional";
+            if(document.getElementById('daysProgressText')) document.getElementById('daysProgressText').innerText = "ILIMITADO";
+            if(document.getElementById('daysProgressBar')) document.getElementById('daysProgressBar').style.width = "100%";
+            if(document.getElementById('daysLabel')) document.getElementById('daysLabel').innerText = "Modo Profesional";
         } else {
-            document.getElementById('daysProgressBar').style.width = `${((ev.validDays || 0) / 5) * 100}%`;
-            document.getElementById('daysProgressText').innerText = `${ev.validDays || 0} / 5`;
-            document.getElementById('daysLabel').innerText = "Consistencia Requerida";
+            if(document.getElementById('daysProgressBar')) document.getElementById('daysProgressBar').style.width = `${((ev.validDays || 0) / 5) * 100}%`;
+            if(document.getElementById('daysProgressText')) document.getElementById('daysProgressText').innerText = `${ev.validDays || 0} / 5`;
+            if(document.getElementById('daysLabel')) document.getElementById('daysLabel').innerText = "Consistencia Requerida";
         }
 
         const badge = document.getElementById('verdictBadge');
         const existingBtn = document.getElementById('claimButton');
         if(existingBtn) existingBtn.remove();
         
-        if (acc.status === 'PASSED' || ev.verdict === 'APROBADO') {
-            badge.innerText = "¡APROBADO!"; 
-            badge.className = "px-3 py-0.5 rounded-full text-[10px] font-bold bg-success text-white animate-pulse border border-green-500 shadow-[0_0_10px_green]";
-            
-            if(acc.status !== 'FUNDED') {
-                document.getElementById('accountStats').insertAdjacentHTML('afterend', `
-                    <div id="claimButton" class="mt-4 bg-gradient-to-r from-yellow-600 to-yellow-400 p-1 rounded-xl shadow-lg shadow-yellow-500/20 animate-bounce cursor-pointer" onclick="claimFunded('${acc.id}')">
-                        <div class="bg-dark-bg/90 hover:bg-dark-bg/50 text-white font-bold py-4 rounded-lg transition flex items-center justify-center gap-3 uppercase tracking-widest border border-yellow-500">
-                            <i class="ph-fill ph-trophy text-2xl text-yellow-400"></i>
-                            Reclamar Cuenta Fondeada ($${initial.toLocaleString()})
-                        </div>
-                    </div>
-                `);
+        if(badge) {
+            if (acc.status === 'PASSED' || ev.verdict === 'APROBADO') {
+                badge.innerText = "¡APROBADO!"; 
+                badge.className = "px-3 py-0.5 rounded-full text-[10px] font-bold bg-success text-white animate-pulse border border-green-500 shadow-[0_0_10px_green]";
+                
+                if(acc.status !== 'FUNDED') {
+                    if(accountStatsEl) {
+                        accountStatsEl.insertAdjacentHTML('afterend', `
+                            <div id="claimButton" class="mt-4 bg-gradient-to-r from-yellow-600 to-yellow-400 p-1 rounded-xl shadow-lg shadow-yellow-500/20 animate-bounce cursor-pointer" onclick="claimFunded('${acc.id}')">
+                                <div class="bg-dark-bg/90 hover:bg-dark-bg/50 text-white font-bold py-4 rounded-lg transition flex items-center justify-center gap-3 uppercase tracking-widest border border-yellow-500">
+                                    <i class="ph-fill ph-trophy text-2xl text-yellow-400"></i>
+                                    Reclamar Cuenta Fondeada ($${initial.toLocaleString()})
+                                </div>
+                            </div>
+                        `);
+                    }
+                }
+            } else if (acc.status === 'BREACHED' || ev.verdict === 'SUSPENDIDO') {
+                badge.innerText = "SUSPENDIDO (QUEMADA)"; 
+                badge.className = "px-3 py-0.5 rounded-full text-[10px] font-bold bg-danger text-white border border-red-500 shadow-[0_0_10px_red]";
+                if(document.getElementById('ddProgressBar')) document.getElementById('ddProgressBar').className = "progress-bar bg-danger h-2 rounded-full";
+                if(document.getElementById('dailyProgressBar')) document.getElementById('dailyProgressBar').className = "progress-bar bg-danger h-2 rounded-full";
+            } else if (acc.status === 'LIVE') {
+                badge.innerText = "CUENTA REAL (LIVE)"; 
+                badge.className = "px-3 py-0.5 rounded-full text-[10px] font-bold bg-blue-600 text-white border border-blue-400 shadow-[0_0_10px_blue]";
+            } else {
+                badge.innerText = "EN PROGRESO"; 
+                badge.className = "px-3 py-0.5 rounded-full text-[10px] font-bold bg-gray-700 text-gray-300 border border-gray-600";
             }
-        } else if (acc.status === 'BREACHED' || ev.verdict === 'SUSPENDIDO') {
-            badge.innerText = "SUSPENDIDO (QUEMADA)"; 
-            badge.className = "px-3 py-0.5 rounded-full text-[10px] font-bold bg-danger text-white border border-red-500 shadow-[0_0_10px_red]";
-            document.getElementById('ddProgressBar').className = "progress-bar bg-danger h-2 rounded-full";
-            document.getElementById('dailyProgressBar').className = "progress-bar bg-danger h-2 rounded-full";
-        } else if (acc.status === 'LIVE') {
-            badge.innerText = "CUENTA REAL (LIVE)"; 
-            badge.className = "px-3 py-0.5 rounded-full text-[10px] font-bold bg-blue-600 text-white border border-blue-400 shadow-[0_0_10px_blue]";
-        } else {
-            badge.innerText = "EN PROGRESO"; 
-            badge.className = "px-3 py-0.5 rounded-full text-[10px] font-bold bg-gray-700 text-gray-300 border border-gray-600";
         }
     } catch (error) {
         console.error("Fallo general al seleccionar cuenta:", error);
-        document.getElementById('verdictBadge').innerText = "ERROR AL CARGAR";
+        const errBadge = document.getElementById('verdictBadge');
+        if(errBadge) errBadge.innerText = "ERROR AL CARGAR";
     }
 }
 
@@ -579,7 +608,10 @@ async function updateTrades(acc) {
             </tr>`;
         }).join('');
         
-        document.getElementById('tradesTableBody').innerHTML = html || '<tr><td colspan="10" class="p-8 text-center text-gray-500 italic">No hay operaciones registradas.</td></tr>';
+        const tableBody = document.getElementById('tradesTableBody');
+        if(tableBody) {
+            tableBody.innerHTML = html || '<tr><td colspan="10" class="p-8 text-center text-gray-500 italic">No hay operaciones registradas.</td></tr>';
+        }
     } catch (error) {
         console.error("Error al pintar los trades:", error);
     }
@@ -591,8 +623,13 @@ function tryTrade(type) {
         return;
     }
 
-    const symbol = document.getElementById('symbolSelector').value;
-    const lots = document.getElementById('lotSize').value;
+    const symbolEl = document.getElementById('symbolSelector');
+    const lotsEl = document.getElementById('lotSize');
+    
+    if(!symbolEl || !lotsEl) return;
+    
+    const symbol = symbolEl.value;
+    const lots = lotsEl.value;
     const token = localStorage.getItem('token');
     if(!currentAccountId) return showToast("Selecciona una cuenta.", "error");
     
@@ -654,15 +691,12 @@ async function tryPurchase(priceId) {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}` 
             },
-            // Enviamos el priceId real de Stripe. El servidor usará este ID 
-            // para saber qué cobrar sin posibilidad de error.
             body: JSON.stringify({ priceId, userId })
         });
 
         const data = await response.json();
         
         if (data.url) {
-            // Redirección oficial a Stripe
             window.location.href = data.url;
         } else {
             showToast("Error: " + (data.error || "No se pudo crear la sesión"), "error");
@@ -673,12 +707,10 @@ async function tryPurchase(priceId) {
     }
 }
 
-// Lógica para detectar si vuelve de pagar (al cargar la página)
 window.onload = () => {
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('payment') === 'success') {
         showToast("¡Pago completado! Tu capital se está activando...", "success");
-        // Aquí podrías llamar a una función para refrescar las cuentas
     }
     if (urlParams.get('payment') === 'cancel') {
         showToast("Pago cancelado", "error");
@@ -696,6 +728,7 @@ async function claimFunded(accountId) {
 
 function adjustLots(delta) {
         const input = document.getElementById('lotSize');
+        if(!input) return;
         let val = parseFloat(input.value) + delta;
         if(val < 0.01) val = 0.01;
         input.value = val.toFixed(1);
@@ -710,12 +743,10 @@ function logout() {
 
 function checkAutoBuy() {
     const urlParams = new URLSearchParams(window.location.search);
-    const priceId = urlParams.get('priceId'); // Recibimos el ID de Stripe desde la URL
+    const priceId = urlParams.get('priceId'); 
     
     if (priceId) {
-        // Ejecutamos la compra inmediatamente
         tryPurchase(priceId);
-        // Limpiamos la URL para que no intente comprar de nuevo al recargar
         window.history.replaceState({}, document.title, "dashboard.html");
     }
 }
@@ -752,16 +783,15 @@ function loadTradingView(symbol = "BINANCE:BTCUSD") {
     });
 }
 
-// 🔥 INICIALIZACIÓN ULTRARRÁPIDA (Carga cuentas al instante)
-document.getElementById('symbolSelector').addEventListener('change', (e) => loadTradingView(e.target.value));
+// 🔥 INICIALIZACIÓN ULTRARRÁPIDA
+const symSelector = document.getElementById('symbolSelector');
+if(symSelector) symSelector.addEventListener('change', (e) => loadTradingView(e.target.value));
 
-// Ejecutamos la lógica de cuentas de inmediato
 checkAutoBuy();
 initDashboard();
 
-// 🔥 EL TRUCO DE VELOCIDAD:
-// Bajamos el delay al mínimo (300ms) para que el gráfico salga casi al instante
-// pero sin bloquear la "ruedita" de carga del navegador.
 setTimeout(() => {
-    loadTradingView();
+    if(document.getElementById('tradingview_container')) {
+        loadTradingView();
+    }
 }, 300);
