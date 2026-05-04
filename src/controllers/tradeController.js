@@ -48,6 +48,17 @@ exports.placeTrade = async (req, res) => {
                 }
             }
 
+            // ---------------------------------------------------------
+            // 🛡️ REGLA 5: CONTROL DE MARGEN (Apalancamiento 1:100)
+            // ---------------------------------------------------------
+            const LEVERAGE = 100; // Tu apalancamiento
+            const CONTRACT_SIZE = 100000; // Tamaño estándar de 1 lote
+            const requiredMargin = (cleanLots * CONTRACT_SIZE) / LEVERAGE;
+
+            if (account.equity < requiredMargin) {
+                throw new Error(`⛔ MARGEN INSUFICIENTE: Necesitas $${requiredMargin.toFixed(2)} libres para abrir ${cleanLots} lotes.`);
+            }
+
             const realPrice = await getServerPrice(symbol);
             
             const newTrade = await tx.trade.create({
@@ -98,15 +109,15 @@ exports.closeTrade = async (req, res) => {
 
             // Si duró menos de 30 segundos y ganó dinero, ANULAMOS la ganancia.
             // ---------------------------------------------------------
-// 🛡️ REGLA 4B: ANTI-ARBITRAJE (Mínimo 2 minutos)
-// ---------------------------------------------------------
-const MIN_DURATION = 120; // 120 segundos = 2 minutos
+            // 🛡️ REGLA 4B: ANTI-ARBITRAJE (Mínimo 2 minutos)
+            // ---------------------------------------------------------
+            const MIN_DURATION = 120; // 120 segundos = 2 minutos
 
-// Si duró menos de 2 minutos y ganó dinero, ANULAMOS la ganancia.
-if (durationSeconds < MIN_DURATION && finalProfit > 0) {
-    finalProfit = 0; // Se queda en 0
-    logger.warn(`⚠️ Scalping/Arbitraje detectado en trade ${trade.ticket}. Duración: ${durationSeconds}s. Beneficio anulado.`);
-}
+            // Si duró menos de 2 minutos y ganó dinero, ANULAMOS la ganancia.
+            if (durationSeconds < MIN_DURATION && finalProfit > 0) {
+                finalProfit = 0; // Se queda en 0
+                logger.warn(`⚠️ Scalping/Arbitraje detectado en trade ${trade.ticket}. Duración: ${durationSeconds}s. Beneficio anulado.`);
+            }
 
             await tx.trade.update({
                 where: { id: tradeId },
